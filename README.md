@@ -16,6 +16,7 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 ### 🔧 Additional Macros
 
 - **`auto_pid.cfg`** - Automated PID tuning for extruder and bed
+- **`beeper.cfg`** - M300 beeper/tone support with sound macros (requires pin configuration)
 - **`rename_existing.cfg`** - Enhanced G-code overrides (M109, M190, M117, etc.)
 - **`save_config.cfg`** - Safe SAVE_CONFIG with extruder cooling and print-state detection
 - **`shutdown.cfg`** - Safe shutdown with conditional cooling and delayed execution
@@ -64,6 +65,7 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 3. **Include in printer.cfg:**
    ```ini
    [include nerdygriffin-macros/auto_pid.cfg]
+   [include nerdygriffin-macros/beeper.cfg]              # Optional: Requires pin configuration
    [include nerdygriffin-macros/filament_management.cfg]
    [include nerdygriffin-macros/rename_existing.cfg]
    [include nerdygriffin-macros/save_config.cfg]
@@ -90,6 +92,22 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 3. **Restart Klipper**
 
 ## Configuration
+
+### Beeper Pin Configuration (Required for beeper.cfg)
+
+The beeper requires hardware-specific pin configuration. Add this to your `printer.cfg` **after** including `beeper.cfg`:
+
+```ini
+[pwm_cycle_time beeper]
+pin: YOUR_PIN_HERE    # Examples below
+
+# Common pins by board:
+#   Raspberry Pi GPIO: gpio23, gpio24, gpio25
+#   BTT Octopus:       PE5
+#   BTT SKR:           PA8, PB15
+#   RAMPS:             ar37
+#   Fysetc Spider:     PA15
+```
 
 ### Customizing Filament Distances
 
