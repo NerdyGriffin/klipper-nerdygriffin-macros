@@ -23,7 +23,23 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 
 ## Installation
 
-### Method 1: Moonraker Auto-Update (Recommended)
+### Method 1: Automated Installation (Recommended)
+
+1. **Clone and run the install script:**
+   ```bash
+   cd ~
+   git clone https://github.com/NerdyGriffin/klipper-nerdygriffin-macros.git
+   cd klipper-nerdygriffin-macros
+   ./install.sh
+   ```
+   > **Note:**
+   > The install script will create the symlink and optionally configure Moonraker's update_manager. It will detect your config directory automatically.
+
+2. **Follow the on-screen instructions** to add the macros to your `printer.cfg`
+
+3. **Restart Klipper and Moonraker**
+
+### Method 2: Moonraker Auto-Update (Manual Setup)
 
 1. **Clone the repository and create symlink:**
    ```bash
@@ -60,7 +76,7 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
    sudo systemctl restart klipper
    ```
 
-### Method 2: Manual Installation
+### Method 3: Manual Installation
 
 1. **Clone the repository and create symlink:**
    ```bash
