@@ -16,10 +16,10 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 ### 🔧 Additional Macros
 
 - **`auto_pid.cfg`** - Automated PID tuning for extruder and bed
-- **`shutdown.cfg`** - Safe shutdown with conditional cooling and delayed execution
-- **`tacho_macros.cfg`** - Part cooling fan preflight checks
 - **`rename_existing.cfg`** - Enhanced G-code overrides (M109, M190, M117, etc.)
 - **`save_config.cfg`** - Safe SAVE_CONFIG with extruder cooling and print-state detection
+- **`shutdown.cfg`** - Safe shutdown with conditional cooling and delayed execution
+- **`tacho_macros.cfg`** - Part cooling fan preflight checks
 
 ## Installation
 
@@ -44,12 +44,12 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 
 3. **Include in printer.cfg:**
    ```ini
-   [include ~/klipper-nerdygriffin-macros/macros/filament_management.cfg]
    [include ~/klipper-nerdygriffin-macros/macros/auto_pid.cfg]
-   [include ~/klipper-nerdygriffin-macros/macros/shutdown.cfg]
-   [include ~/klipper-nerdygriffin-macros/macros/tacho_macros.cfg]
+   [include ~/klipper-nerdygriffin-macros/macros/filament_management.cfg]
    [include ~/klipper-nerdygriffin-macros/macros/rename_existing.cfg]
    [include ~/klipper-nerdygriffin-macros/macros/save_config.cfg]
+   [include ~/klipper-nerdygriffin-macros/macros/shutdown.cfg]
+   [include ~/klipper-nerdygriffin-macros/macros/tacho_macros.cfg]
    ```
 
 4. **Restart Klipper:**
