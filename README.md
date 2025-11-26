@@ -25,11 +25,14 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 
 ### Method 1: Moonraker Auto-Update (Recommended)
 
-1. **Clone the repository:**
+1. **Clone the repository and create symlink:**
    ```bash
    cd ~
    git clone https://github.com/NerdyGriffin/klipper-nerdygriffin-macros.git
+   ln -sf ~/klipper-nerdygriffin-macros/macros ~/printer_data/config/nerdygriffin-macros
    ```
+   > **Note:**
+   > This will clone the repository to your home directory and create a symbolic link in your config folder for easy access. If you have an older Klipper setup, your config path may be different (e.g., `~/klipper_config/`).
 
 2. **Add to moonraker.conf:**
    ```ini
@@ -42,12 +45,7 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
    managed_services: klipper
    ```
 
-3. **Create a symlink in your config directory:**
-   ```bash
-   ln -sf ~/klipper-nerdygriffin-macros/macros ~/printer_data/config/nerdygriffin-macros
-   ```
-
-4. **Include in printer.cfg:**
+3. **Include in printer.cfg:**
    ```ini
    [include nerdygriffin-macros/auto_pid.cfg]
    [include nerdygriffin-macros/filament_management.cfg]
@@ -64,20 +62,16 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 
 ### Method 2: Manual Installation
 
-1. **Clone the repository:**
+1. **Clone the repository and create symlink:**
    ```bash
-   cd ~/printer_data/config
+   cd ~
    git clone https://github.com/NerdyGriffin/klipper-nerdygriffin-macros.git
-   ```
-
-2. **Create symlink:**
-   ```bash
    ln -sf ~/klipper-nerdygriffin-macros/macros ~/printer_data/config/nerdygriffin-macros
    ```
 
-3. **Include in printer.cfg** (same as above)
+2. **Include in printer.cfg** (same as above)
 
-4. **Restart Klipper**
+3. **Restart Klipper**
 
 ## Configuration
 
