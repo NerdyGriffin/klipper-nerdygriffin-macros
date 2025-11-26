@@ -17,10 +17,12 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 
 - **`auto_pid.cfg`** - Automated PID tuning for extruder and bed
 - **`beeper.cfg`** - M300 beeper/tone support with sound macros (requires pin configuration)
+- **`client_macros.cfg`** - Mainsail/Fluidd pause/resume/cancel hooks with optional AFC integration
 - **`rename_existing.cfg`** - Enhanced G-code overrides (M109, M190, M117, etc.)
-- **`save_config.cfg`** - Safe SAVE_CONFIG with extruder cooling and print-state detection
-- **`shutdown.cfg`** - Safe shutdown with conditional cooling and delayed execution
+- **`save_config.cfg`** - Safe SAVE_CONFIG with extruder cooling and print-state detection (includes delayed_save_config)
+- **`shutdown.cfg`** - Safe shutdown with conditional cooling (includes delayed_shutdown for timed execution)
 - **`tacho_macros.cfg`** - Part cooling fan preflight checks
+- **`utility_macros.cfg`** - Utility helpers (macros: DEEP_CLEAN_NOZZLE, CENTER, UNSAFE_LOWER_BED; delayed: ENABLE/DISABLE_ENCODER_SENSOR)
 
 ## Installation
 
@@ -66,11 +68,13 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
    ```ini
    [include nerdygriffin-macros/auto_pid.cfg]
    [include nerdygriffin-macros/beeper.cfg]              # Optional: Requires pin configuration
+   [include nerdygriffin-macros/client_macros.cfg]
    [include nerdygriffin-macros/filament_management.cfg]
    [include nerdygriffin-macros/rename_existing.cfg]
    [include nerdygriffin-macros/save_config.cfg]
    [include nerdygriffin-macros/shutdown.cfg]
    [include nerdygriffin-macros/tacho_macros.cfg]
+   [include nerdygriffin-macros/utility_macros.cfg]
    ```
 
 5. **Restart Klipper:**
@@ -92,6 +96,28 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 3. **Restart Klipper**
 
 ## Configuration
+
+### Client Macros Configuration (Required for client_macros.cfg)
+
+The client macros require `_CLIENT_VARIABLE` override in your `printer.cfg` to hook into Mainsail/Fluidd pause/resume/cancel:
+
+```ini
+[gcode_macro _CLIENT_VARIABLE]
+variable_custom_park_x    : 5.0
+variable_custom_park_y    : 5.0
+variable_retract          : 30.0
+variable_unretract        : 30.0
+variable_speed_hop        : 150.0
+variable_speed_move       : 1000.0
+variable_park_at_cancel   : True
+variable_use_fw_retract   : False
+variable_user_pause_macro : "_AFTER_PAUSE"    # Hook to plugin macro
+variable_user_resume_macro: "_BEFORE_RESUME"  # Hook to plugin macro
+variable_user_cancel_macro: "_BEFORE_CANCEL"  # Hook to plugin macro
+gcode:
+```
+
+**Note:** The `_AFTER_PAUSE`, `_BEFORE_RESUME`, and `_BEFORE_CANCEL` macros from the plugin handle filament sensor management and optional AFC integration. See [mainsail.cfg](https://github.com/mainsail-crew/mainsail-config/blob/master/client.cfg) for all available `_CLIENT_VARIABLE` options.
 
 ### Beeper Pin Configuration (Required for beeper.cfg)
 
@@ -200,6 +226,18 @@ CONDITIONAL_SHUTDOWN             # Shutdown if enabled
 ```gcode
 PREFLIGHT_CHECK                  # Check part cooling fan before print
 ```
+
+### Utility Macros
+```gcode
+DEEP_CLEAN_NOZZLE                # Deep clean with temp stepping
+DEEP_CLEAN_NOZZLE TEMP=280       # Start cleaning from specific temp
+CENTER                           # Move toolhead to bed center
+UNSAFE_LOWER_BED                 # Emergency: lower bed 10mm without homing
+```
+
+**Delayed G-code (automatic, not called directly):**
+- `ENABLE_ENCODER_SENSOR` - Auto-enables filament encoder sensor after delay
+- `DISABLE_ENCODER_SENSOR` - Auto-disables filament encoder sensor on startup
 
 ### Safe Config Saving
 ```gcode
