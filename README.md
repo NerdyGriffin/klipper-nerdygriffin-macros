@@ -42,17 +42,22 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
    managed_services: klipper
    ```
 
-3. **Include in printer.cfg:**
-   ```ini
-   [include ~/klipper-nerdygriffin-macros/macros/auto_pid.cfg]
-   [include ~/klipper-nerdygriffin-macros/macros/filament_management.cfg]
-   [include ~/klipper-nerdygriffin-macros/macros/rename_existing.cfg]
-   [include ~/klipper-nerdygriffin-macros/macros/save_config.cfg]
-   [include ~/klipper-nerdygriffin-macros/macros/shutdown.cfg]
-   [include ~/klipper-nerdygriffin-macros/macros/tacho_macros.cfg]
+3. **Create a symlink in your config directory:**
+   ```bash
+   ln -sf ~/klipper-nerdygriffin-macros/macros ~/printer_data/config/nerdygriffin-macros
    ```
 
-4. **Restart Klipper:**
+4. **Include in printer.cfg:**
+   ```ini
+   [include nerdygriffin-macros/auto_pid.cfg]
+   [include nerdygriffin-macros/filament_management.cfg]
+   [include nerdygriffin-macros/rename_existing.cfg]
+   [include nerdygriffin-macros/save_config.cfg]
+   [include nerdygriffin-macros/shutdown.cfg]
+   [include nerdygriffin-macros/tacho_macros.cfg]
+   ```
+
+5. **Restart Klipper:**
    ```bash
    sudo systemctl restart klipper
    ```
@@ -65,9 +70,14 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
    git clone https://github.com/NerdyGriffin/klipper-nerdygriffin-macros.git
    ```
 
-2. **Include in printer.cfg** (same as above)
+2. **Create symlink:**
+   ```bash
+   ln -sf ~/klipper-nerdygriffin-macros/macros ~/printer_data/config/nerdygriffin-macros
+   ```
 
-3. **Restart Klipper**
+3. **Include in printer.cfg** (same as above)
+
+4. **Restart Klipper**
 
 ## Configuration
 
