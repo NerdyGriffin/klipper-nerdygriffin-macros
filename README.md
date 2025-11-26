@@ -19,6 +19,7 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 - **`shutdown.cfg`** - Safe shutdown with conditional cooling and delayed execution
 - **`tacho_macros.cfg`** - Part cooling fan preflight checks
 - **`rename_existing.cfg`** - Enhanced G-code overrides (M109, M190, M117, etc.)
+- **`save_config.cfg`** - Safe SAVE_CONFIG with extruder cooling and print-state detection
 
 ## Installation
 
@@ -48,6 +49,7 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
    [include ~/klipper-nerdygriffin-macros/macros/shutdown.cfg]
    [include ~/klipper-nerdygriffin-macros/macros/tacho_macros.cfg]
    [include ~/klipper-nerdygriffin-macros/macros/rename_existing.cfg]
+   [include ~/klipper-nerdygriffin-macros/macros/save_config.cfg]
    ```
 
 4. **Restart Klipper:**
@@ -160,6 +162,13 @@ CONDITIONAL_SHUTDOWN             # Shutdown if enabled
 ### Preflight Check
 ```gcode
 PREFLIGHT_CHECK                  # Check part cooling fan before print
+```
+
+### Safe Config Saving
+```gcode
+SAFE_SAVE_CONFIG                 # Save config with safety checks
+SET_COMPLETE_SAVE_CONFIG ENABLE=1  # Enable post-print save
+CONDITIONAL_SAVE_CONFIG          # Save if enabled (called automatically)
 ```
 
 ## Contributing
