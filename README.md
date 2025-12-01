@@ -18,6 +18,7 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 - **`auto_pid.cfg`** - Automated PID tuning for extruder and bed
 - **`beeper.cfg`** - M300 beeper/tone support with sound macros (requires pin configuration)
 - **`client_macros.cfg`** - Mainsail/Fluidd pause/resume/cancel hooks with optional AFC integration
+- **`heat_soak.cfg`** - Hardware-agnostic chamber preheating with auto-sensor detection, LED animations, and M191 support
 - **`maintenance_macros.cfg`** - Maintenance helpers:
   - `NOZZLE_CHANGE_POSITION` - Park for nozzle changes with conditional NW_RETRACT support
   - `SETTLE_BELT_TENSION` - Belt settling routine with configurable calibrated position (Source: Andrew Ellis)
@@ -74,6 +75,7 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
    [include nerdygriffin-macros/beeper.cfg]              # Optional: Requires pin configuration
    [include nerdygriffin-macros/client_macros.cfg]
    [include nerdygriffin-macros/filament_management.cfg]
+   [include nerdygriffin-macros/heat_soak.cfg]
    [include nerdygriffin-macros/maintenance_macros.cfg]
    [include nerdygriffin-macros/rename_existing.cfg]
    [include nerdygriffin-macros/save_config.cfg]
@@ -255,9 +257,49 @@ CENTER                           # Move toolhead to bed center
 UNSAFE_LOWER_BED                 # Emergency: lower bed 10mm without homing
 ```
 
+### Heat Soak
+```gcode
+HEAT_SOAK CHAMBER=50 DURATION=10 # Heat soak chamber to 50C for 10 minutes
+M191 S50                          # Marlin-style chamber wait (uses HEAT_SOAK to emulate chamber heating)
+```
+
 **Delayed G-code (automatic, not called directly):**
 - `ENABLE_ENCODER_SENSOR` - Auto-enables filament encoder sensor after delay
 - `DISABLE_ENCODER_SENSOR` - Auto-disables filament encoder sensor on startup
+
+### Heat Soak Configuration (optional overrides)
+
+The `HEAT_SOAK` macro provides hardware-agnostic chamber preheating with optional LED animations. It auto-detects chamber temperature sensors and supports per-printer customization.
+
+**Default Variables:**
+- `variable_max_chamber_temp: 60` - Maximum chamber temp achievable via passive heating (stock hotend and bed heaters, no additional insulation)
+- `variable_led_count: 10` - Number of LEDs per panel strip
+- `variable_ext_assist_multiplier: 4` - Extruder assist temp multiplier (chamber_temp × multiplier, capped at 200°C)
+- `variable_chamber_sensor_name: ""` - Explicit sensor name (empty = auto-detect)
+- `variable_enable_chamber_leds: True` - Enable panel/bed LED animation
+
+**Auto-Detection Logic:**
+The macro searches for chamber sensors in this order:
+1. Explicit `chamber_sensor_name` (if provided)
+2. `temperature_sensor chamber`
+3. `temperature_sensor nitehawk-36` (toolhead proxy)
+
+**Example Overrides:**
+
+For V0 (measured limits, stronger assist):
+```ini
+[gcode_macro HEAT_SOAK]
+variable_max_chamber_temp: 58           # V0 measured limit
+variable_ext_assist_multiplier: 5       # Stronger extruder assist for V0
+variable_chamber_sensor_name: "chamber" # Explicit sensor name
+```
+
+For VT.1548 (no panel LEDs yet):
+```ini
+[gcode_macro HEAT_SOAK]
+variable_enable_chamber_leds: False       # No panel/bed LEDs installed yet
+variable_chamber_sensor_name: "nitehawk-36"  # Use toolhead as proxy
+```
 
 ### Safe Config Saving
 ```gcode
