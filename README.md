@@ -18,6 +18,7 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 - **`auto_pid.cfg`** - Automated PID tuning for extruder and bed
 - **`beeper.cfg`** - M300 beeper/tone support with sound macros (requires pin configuration)
 - **`client_macros.cfg`** - Mainsail/Fluidd pause/resume/cancel hooks with optional AFC integration
+- **`maintenance_macros.cfg`** - Maintenance helpers (NOZZLE_CHANGE_POSITION with conditional NW_RETRACT support)
 - **`rename_existing.cfg`** - Enhanced G-code overrides (M109, M190, M117, etc.)
 - **`save_config.cfg`** - Safe SAVE_CONFIG with extruder cooling and print-state detection (includes delayed_save_config)
 - **`shutdown.cfg`** - Safe shutdown with conditional cooling (includes delayed_shutdown for timed execution)
@@ -70,6 +71,7 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
    [include nerdygriffin-macros/beeper.cfg]              # Optional: Requires pin configuration
    [include nerdygriffin-macros/client_macros.cfg]
    [include nerdygriffin-macros/filament_management.cfg]
+   [include nerdygriffin-macros/maintenance_macros.cfg]
    [include nerdygriffin-macros/rename_existing.cfg]
    [include nerdygriffin-macros/save_config.cfg]
    [include nerdygriffin-macros/shutdown.cfg]
