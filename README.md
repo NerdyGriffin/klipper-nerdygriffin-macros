@@ -18,7 +18,9 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 - **`auto_pid.cfg`** - Automated PID tuning for extruder and bed
 - **`beeper.cfg`** - M300 beeper/tone support with sound macros (requires pin configuration)
 - **`client_macros.cfg`** - Mainsail/Fluidd pause/resume/cancel hooks with optional AFC integration
-- **`maintenance_macros.cfg`** - Maintenance helpers (NOZZLE_CHANGE_POSITION with conditional NW_RETRACT support)
+- **`maintenance_macros.cfg`** - Maintenance helpers:
+  - `NOZZLE_CHANGE_POSITION` - Park for nozzle changes with conditional NW_RETRACT support
+  - `SETTLE_BELT_TENSION` - Belt settling routine with configurable calibrated position (Source: Andrew Ellis)
 - **`rename_existing.cfg`** - Enhanced G-code overrides (M109, M190, M117, etc.)
 - **`save_config.cfg`** - Safe SAVE_CONFIG with extruder cooling and print-state detection (includes delayed_save_config)
 - **`shaketune.cfg`** - Shake&Tune wrapper macros with hardware-agnostic positioning and conditional Z_TILT_ADJUST
@@ -167,6 +169,20 @@ variable_purge_distance: 100    # Distance to purge (default: 100mm)
 variable_unload_distance: 65    # Distance to unload (default: 65mm)
 variable_purge_distance: 12.45  # Purge before unload (default: 12.45mm)
 ```
+
+### Customizing Belt Tension Calibration Position
+
+The `SETTLE_BELT_TENSION` macro parks at a calibrated Y position for belt frequency measurement. Override the position in your `printer.cfg`:
+
+```ini
+# Override calibrated Y position for belt tension measurement
+[gcode_macro SETTLE_BELT_TENSION]
+variable_y_calibrated: 116  # The Y position that results in exactly 130mm between idler centers
+                            # Common values: 116 (V0 120mm bed), 120 (Trident 300mm bed)
+                            # Measure your actual belt span and adjust accordingly
+```
+
+**Note:** The Y calibrated position depends on your specific printer geometry and desired belt span for frequency measurement. See the macro comments for frequency targets at different belt lengths.
 
 ## Hardware Compatibility
 
