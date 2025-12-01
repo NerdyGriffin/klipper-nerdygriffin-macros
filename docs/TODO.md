@@ -8,3 +8,7 @@
   - Proposed: Add variables like `variable_panel_right_led`, `variable_panel_left_led`, `variable_bed_led`, `variable_toolhead_led`
   - Allow empty strings to skip non-existent LEDs
   - Priority: Medium (current gating with `enable_chamber_leds` is acceptable workaround)
+
+### Filament Management
+- [ ] Consider removing temperature parameter from LOAD/UNLOAD filament macros
+  - The latest versions of mainsail, KlipperScreen, or AFC seem to bypass this behavior or require the extruder above min_print_temp before the macro is allowed to run
