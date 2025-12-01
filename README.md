@@ -21,6 +21,7 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 - **`maintenance_macros.cfg`** - Maintenance helpers (NOZZLE_CHANGE_POSITION with conditional NW_RETRACT support)
 - **`rename_existing.cfg`** - Enhanced G-code overrides (M109, M190, M117, etc.)
 - **`save_config.cfg`** - Safe SAVE_CONFIG with extruder cooling and print-state detection (includes delayed_save_config)
+- **`shaketune.cfg`** - Shake&Tune wrapper macros with hardware-agnostic positioning and conditional Z_TILT_ADJUST
 - **`shutdown.cfg`** - Safe shutdown with conditional cooling (includes delayed_shutdown for timed execution)
 - **`tacho_macros.cfg`** - Part cooling fan preflight checks
 - **`utility_macros.cfg`** - Utility helpers (macros: DEEP_CLEAN_NOZZLE, CENTER, UNSAFE_LOWER_BED; delayed: ENABLE/DISABLE_ENCODER_SENSOR)
@@ -74,6 +75,7 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
    [include nerdygriffin-macros/maintenance_macros.cfg]
    [include nerdygriffin-macros/rename_existing.cfg]
    [include nerdygriffin-macros/save_config.cfg]
+   [include nerdygriffin-macros/shaketune.cfg]           # Optional: Requires Shake&Tune installed
    [include nerdygriffin-macros/shutdown.cfg]
    [include nerdygriffin-macros/tacho_macros.cfg]
    [include nerdygriffin-macros/utility_macros.cfg]
