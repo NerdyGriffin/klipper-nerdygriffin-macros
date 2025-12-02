@@ -18,12 +18,22 @@
         }
     ],
     "settings": {
+        "[code-workspace][json][yaml]": {
+            "editor.autoIndent": "advanced",
+            "editor.detectIndentation": false,
+            "editor.insertSpaces": true,
+            "editor.quickSuggestions": {
+                "comments": true,
+                "other": true,
+                "strings": true
+            },
+            "editor.tabSize": 2
+        },
         "[klipper-config]": {
             "editor.tabSize": 4
         },
         "editor.detectIndentation": false,
         "editor.insertSpaces": true,
-        "editor.tabSize": 4,
         "files.associations": {
             "*.cfg": "klipper-config"
         },
