@@ -1,10 +1,8 @@
 ---
+description: 'Audit copilot-instructions across printers/macros; propose non-destructive patches.'
 agent: agent
+model: Auto (copilot)
 ---
-name: Drift Check: Copilot Instructions
-description: Audit copilot-instructions across printers/macros; propose non-destructive patches.
-Task: Perform a drift check across all copilot-instructions.
-
 # Copilot Instructions Drift-Check Prompt
 
 Use this prompt to audit and update all `.github/copilot-instructions.md` files across printers and the macros repo, keeping guidance aligned with the current configs.
