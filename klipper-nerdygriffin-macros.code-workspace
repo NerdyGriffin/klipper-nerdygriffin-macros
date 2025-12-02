@@ -9,10 +9,6 @@
             "path": "/home/pi/printers/v0-3048/printer_data/config"
         },
         {
-            "name": "VT-1548: macros (read-only)",
-            "path": "/home/pi/printers/vt-1548/klipper-nerdygriffin-macros"
-        },
-        {
             "name": "VT-1548: config",
             "path": "/home/pi/printers/vt-1548/printer_data/config"
         }
