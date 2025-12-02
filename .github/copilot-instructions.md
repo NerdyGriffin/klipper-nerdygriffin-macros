@@ -2,6 +2,21 @@
 
 This repository provides hardware-agnostic Klipper G-code macros designed to be symlinked into printer-specific configs and extended via local overrides.
 
+## NFS Mount Architecture (CRITICAL)
+
+⚠️ **NEVER edit `/home/pi/printers/vt-1548/klipper-nerdygriffin-macros`** - This is a read-only NFS mount of the remote VT-1548's macros repo, visible for comparison only.
+
+**Single source of truth for macros edits:**
+- Local path: `/home/pi/printers/v0-3048/klipper-nerdygriffin-macros` (same as `/home/pi/klipper-nerdygriffin-macros`)
+- This is the ONLY location to edit macro files
+- After editing, sync to VT-1548 using `dev/sync_macros_repo.sh`
+
+**Mounted paths visible in workspace:**
+- `/home/pi/printers/v0-3048/klipper-nerdygriffin-macros` → **WRITABLE** (local bind mount)
+- `/home/pi/printers/vt-1548/klipper-nerdygriffin-macros` → **READ-ONLY** (NFS mount for reference)
+
+If asked to update macros, apply edits ONLY to the v0-3048 path.
+
 ## Architecture & Intent
 - Core macros live in `macros/*.cfg` and avoid printer-specific pins/geometry.
 - Intended usage: create a symlink in printer configs (e.g., `ln -sf ~/klipper-nerdygriffin-macros/macros ~/printer_data/config/nerdygriffin-macros`) and include files from `printer.cfg`.
