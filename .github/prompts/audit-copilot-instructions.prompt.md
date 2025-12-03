@@ -3,9 +3,8 @@ description: 'Audit copilot-instructions across printers/macros; propose non-des
 agent: agent
 model: Auto (copilot)
 ---
-# Copilot Instructions Drift-Check Prompt
 
-Use this prompt to audit and update all `.github/copilot-instructions.md` files across printers and the macros repo, keeping guidance aligned with the current configs.
+Perform an audit and update all `.github/copilot-instructions.md` files across printers and the macros repo, keeping guidance aligned with the current configs.
 
 ## Objectives
 - Verify architecture, subsystems, and workflows match current configs.
