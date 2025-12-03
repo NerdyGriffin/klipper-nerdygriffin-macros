@@ -86,6 +86,15 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
   tail -f ~/printer_data/logs/klippy.log
   ```
 
+## Terminal Command Best Practices
+- **Always use verbose flags** (`-v` or `--verbose`) with file operations for visual confirmation:
+  - `cp -v` instead of `cp`
+  - `mv -v` instead of `mv`
+  - `rm -v` instead of `rm`
+  - `rmdir -v` instead of `rmdir`
+  - `ln -sfv` instead of `ln -sf`
+- This provides immediate feedback and helps catch errors early.
+
 ## Contribution Guidelines
 - Keep macros hardware-agnostic and configurable via variables.
 - Prefer conditional checks over hard failures when optional hardware is absent.
