@@ -1,7 +1,7 @@
 ---
 agent: agent
 ---
-Define the task to achieve, including specific requirements, constraints, and success criteria.
+
 Perform a review of all the staged and unstaged changes in all Git repositories within this workspace.
 
 - Provide a summary of the changes
