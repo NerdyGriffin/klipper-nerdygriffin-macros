@@ -1,44 +1,55 @@
+// Klipper Macros Development Workspace
+// Folder order: Macros first (primary dev focus), then both printer configs for testing
+// Note: klipper-nerdygriffin-macros is at same path on both printers (/home/pi/...)
 {
-    "folders": [
-        {
-            "name": "V0-3048: macros",
-            "path": "/home/pi/printers/v0-3048/klipper-nerdygriffin-macros"
-        },
-        {
-            "name": "V0-3048: config",
-            "path": "/home/pi/printers/v0-3048/printer_data/config"
-        },
-        {
-            "name": "VT-1548: config",
-            "path": "/home/pi/printers/vt-1548/printer_data/config"
-        }
-    ],
-    "settings": {
-        "[code-workspace][json][yaml]": {
-            "editor.autoIndent": "advanced",
-            "editor.detectIndentation": false,
-            "editor.insertSpaces": true,
-            "editor.quickSuggestions": {
-                "comments": true,
-                "other": true,
-                "strings": true
-            },
-            "editor.tabSize": 2
-        },
-        "[klipper-config]": {
-            "editor.tabSize": 4
-        },
-        "editor.detectIndentation": false,
-        "editor.insertSpaces": true,
-        "files.associations": {
-            "*.cfg": "klipper-config"
-        },
-        "files.watcherExclude": {
-            "**/.git/**": true,
-            "**/*.bak": true,
-            "**/*.bkp": true,
-            "**/ShakeTune_results/**": true
-        },
-        "terminal.integrated.cwd": "/home/pi/printers/v0-3048/klipper-nerdygriffin-macros"
+  "folders": [
+    {
+      "name": "V0-3048: macros",
+      "path": "/home/pi/klipper-nerdygriffin-macros"
+    },
+    {
+      "name": "V0-3048: config",
+      "path": "/home/pi/printer_data/config"
+    },
+    {
+      "name": "VT-1548: config",
+      "path": "/mnt/vt-1548/printer_data/config"
     }
+  ],
+  "settings": {
+    "[code-workspace][json][yaml]": {
+      "editor.autoIndent": "advanced",
+      "editor.detectIndentation": false,
+      "editor.insertSpaces": true,
+      "editor.quickSuggestions": {
+        "comments": true,
+        "other": true,
+        "strings": true
+      },
+      "editor.tabSize": 2
+    },
+    "[klipper-config]": {
+      "editor.tabSize": 4
+    },
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "files.associations": {
+      "*.cfg": "klipper-config"
+    },
+    "files.watcherExclude": {
+      "**/.git/**": true,
+      "**/*.bak": true,
+      "**/*.bkp": true,
+      "**/ShakeTune_results/**": true
+    },
+    "search.exclude": {
+      "**/.git": true,
+      "**/backup/**": true,
+      "**/deprecated/**": true,
+      "**/ShakeTune_results/**": true,
+      "**/*.bak": true,
+      "**/*.bkp": true,
+      "**/*.var": true
+    }
+  }
 }
