@@ -29,6 +29,12 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
 - **`tacho_macros.cfg`** - Part cooling fan preflight checks
 - **`utility_macros.cfg`** - Utility helpers (macros: DEEP_CLEAN_NOZZLE, CENTER, UNSAFE_LOWER_BED; delayed: ENABLE/DISABLE_ENCODER_SENSOR)
 
+#### Utility Macros (details)
+- **DEEP_CLEAN_NOZZLE**: Runs a multi-step nozzle clean with temperature stepping; optionally accepts `TEMP=<start>` to begin at a specific temperature.
+- **CENTER**: Moves the toolhead to the calculated bed center using configured axis limits.
+- **UNSAFE_LOWER_BED**: Lowers the bed by 10mm without requiring homing; intended for recovery situations only.
+- **ENABLE_ENCODER_SENSOR / DISABLE_ENCODER_SENSOR** (delayed): Automatically scheduled helpers to enable the `encoder_sensor` during active printing and disable it on startup/idle; not intended to be called directly.
+
 ## Installation
 
 ### Method 1: Automated Installation (Recommended)
@@ -85,7 +91,7 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
    [include nerdygriffin-macros/utility_macros.cfg]
    ```
 
-5. **Restart Klipper:**
+4. **Restart Klipper:**
    ```bash
    sudo systemctl restart klipper
    ```
@@ -217,6 +223,12 @@ These macros expect the following to be defined in your config:
 Most of these are provided by:
 - [Mainsail config](https://github.com/mainsail-crew/mainsail-config)
 - [Voron Design configs](https://github.com/VoronDesign/Voron-Stealthburner)
+ - [KAMP (Klipper Adaptive Meshing & Purging)](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging)
+ - [Shake&Tune](https://github.com/Frix-x/klippain-shaketune)
+
+### Compatibility
+- Minimum Klipper version: v0.13.0 (tested on stable channel; managed via Moonraker `update_manager`)
+- For the latest tuned values (e.g., pressure advance), consult your `printer.cfg` rather than this README.
 
 ## Usage
 
@@ -266,6 +278,8 @@ M191 S50                          # Marlin-style chamber wait (uses HEAT_SOAK to
 **Delayed G-code (automatic, not called directly):**
 - `ENABLE_ENCODER_SENSOR` - Auto-enables filament encoder sensor after delay
 - `DISABLE_ENCODER_SENSOR` - Auto-disables filament encoder sensor on startup
+
+Note: The enable/disable helpers are triggered by print lifecycle macros (e.g., `PRINT_START`/`PRINT_END`) or delayed_gcode scheduling within this library; they do not require manual invocation.
 
 ### Heat Soak Configuration (optional overrides)
 
