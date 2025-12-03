@@ -1,94 +1,94 @@
-# LED Variables Design
+# LED Variables Design (Dict-based)
 
-This document proposes a standardized, hardware-agnostic way to reference LED groups across printers using variables, enabling shared status and animation macros without hard-coding device names.
+Standardize, hardware-agnostic LED control using logical group dicts in `_LED_VARS`. This enables shared status/animation macros without hard-coding device names or indices.
 
 ## Goals
-- Avoid hard-coding LED device names (e.g., `panel_left`, `bed_light`, `toolhead`).
-- Allow printers with different LED hardware to reuse the same macros.
-- Support devices that expose multiple pixels via a single LED name.
+- Avoid hard-coded LED names (e.g., `chamber_left`, `bed_light`, `toolhead`).
+- Support devices with multiple pixels via per-device indices.
+- Keep per-printer customization in a single macro block.
 
-## Approach: `_LED_VARS` Macro
-A variable-only macro defines mappings from logical LED groups to physical LED device names and (optionally) pixel indices.
+## Location
+- `_LED_VARS` now lives in `macros/status-macros.cfg` alongside the status helpers and `STATUS_*` macros.
+- This reduces includes and keeps LED config near its consumers.
 
-File: `macros/led_variables.cfg`
+## Approach: Dicts per Logical Group
+Define dicts that map physical LED names to indices for each logical group. Empty dict means the group is absent.
+
+Example (inside `macros/status-macros.cfg`):
 ```ini
 [gcode_macro _LED_VARS]
-# Logical LED device names (string). Empty = not present
-variable_nozzle_led: ""
-variable_logo_led: ""           # optional logo indicator
-variable_bed_led: ""
-variable_chamber_led_right: ""
-variable_chamber_led_left: ""
-
-# Optional pixel index mapping for multi-LED devices (comma-separated list)
-# Example for a toolhead device with two nozzle pixels: "0,1"
-variable_nozzle_led_indices: ""
-variable_bed_led_indices: ""
-variable_chamber_led_right_indices: ""
-variable_chamber_led_left_indices: ""
+description: Adjustable LED settings for status macros.
+# Dicts: key = neopixel device name, value = index or comma-string of indices
+variable_chamber_map: {'chamber_left': '', 'chamber_right': ''} # Empty index = whole device
+variable_logo_map: {'bed_light': 1, 'toolhead': 1}
+variable_nozzle_map: {'toolhead': '2,3'}
 
 gcode:
-    # This macro is variable-only. No gcode.
+    # Variable-only macro; no gcode executed.
 ```
 
-## Usage Pattern in Other Macros
+### Helper Macro Pattern
+Helpers iterate the dicts, normalize the index value to a list, and set colors conditionally:
 ```ini
-[gcode_macro STATUS_READY]
-gcode:
-    {% set L = printer['gcode_macro _LED_VARS'] %}
-
-    {% if L.nozzle_led and ("neopixel " ~ L.nozzle_led) in printer %}
-        SET_LED LED={L.nozzle_led} RED=0.0 GREEN=0.4 BLUE=0.0
-    {% endif %}
-
-    {% if L.bed_led and ("neopixel " ~ L.bed_led) in printer %}
-        SET_LED LED={L.bed_led} RED=0.0 GREEN=0.4 BLUE=0.0
-    {% endif %}
-
-    {% if L.chamber_led_right and ("neopixel " ~ L.chamber_led_right) in printer %}
-        SET_LED LED={L.chamber_led_right} RED=0.0 GREEN=0.4 BLUE=0.0
-    {% endif %}
-
-    {% if L.chamber_led_left and ("neopixel " ~ L.chamber_led_left) in printer %}
-        SET_LED LED={L.chamber_led_left} RED=0.0 GREEN=0.4 BLUE=0.0
-    {% endif %}
-```
-
-If indices are used (e.g., for per-pixel control):
-```ini
-{% set idx = (L.nozzle_led_indices or "") | string %}
-{% set idx_list = idx.split(',') if idx else [] %}
-{% for i in idx_list %}
-    SET_LED LED={L.nozzle_led} INDEX={i|int} RED=0.0 GREEN=0.4 BLUE=0.0
+{% set L = printer['gcode_macro _LED_VARS'] %}
+{% for name, idx in L.logo_map.items() %}
+    {% set idx_str = (idx|string).strip() %}
+    {% set indices = idx_str.split(',') if idx_str else [''] %}
+    {% for i in indices %}
+        {% if ("neopixel " ~ name) in printer %}
+            {% if i %}
+                SET_LED LED={name} INDEX={{ i|int }} RED={RED} GREEN={GREEN} BLUE={BLUE} WHITE={WHITE}
+            {% else %}
+                SET_LED LED={name} RED={RED} GREEN={GREEN} BLUE={BLUE} WHITE={WHITE}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
 {% endfor %}
 ```
 
-## Example Printer Overrides
-V0.3048 (toolhead + bed + chamber panels):
+Notes:
+- Accept int or comma-separated string for indices; empty value applies to the whole device.
+- Always guard with `("neopixel " ~ name) in printer` before `SET_LED`.
+
+### Heat Soak Animation
+- `HEAT_SOAK` uses `chamber_map` to animate per-index progress from red → green.
+- If a device in `chamber_map` has no indices, it uses the device’s `chain_count` from the neopixel config as the animation length.
+- If indices are provided, the animation length is the number of indices specified.
+- `logo_map` devices (e.g., bed light or toolhead logo pixel) are updated with the same fade color for visual feedback.
+- No brightness parameterization is introduced; brightness remains as configured per device.
+
+## Printer Override Examples
+
+V0.3048 (toolhead + bed + chamber):
 ```ini
 [gcode_macro _LED_VARS]
-variable_nozzle_led: "toolhead"
-variable_bed_led: "bed_light"
-variable_chamber_led_right: "panel_right"
-variable_chamber_led_left: "panel_left"
-variable_nozzle_led_indices: "0,1"
+variable_chamber_map: {'chamber_left': '', 'chamber_right': ''}
+variable_logo_map: {'bed_light': '', 'toolhead': 1}
+variable_nozzle_map: {'toolhead': '2,3'}
 ```
 
-VT.1548 (toolhead only at present):
+VT.1548 (toolhead only):
 ```ini
 [gcode_macro _LED_VARS]
-variable_nozzle_led: "toolhead"
-variable_bed_led: ""
-variable_chamber_led_right: ""
-variable_chamber_led_left: ""
-variable_nozzle_led_indices: "0,1"
+variable_logo_map: {'toolhead': 3}
+variable_nozzle_map: {'toolhead': '1,2'}
+```
+
+If chamber strip LEDs are installed:
+```ini
+[gcode_macro _LED_VARS]
+variable_chamber_map: {'panel_left': '', 'panel_right': ''}
+variable_logo_map: {'toolhead': 3}
+variable_nozzle_map: {'toolhead': '1,2'}
 ```
 
 ## Migration Notes
-- Existing macros that use hard-coded LED names can be refactored to reference `_LED_VARS`.
-- Macros should always check that a device exists in `printer` before issuing `SET_LED`/`SET_LED_TEMPLATE`.
-- Start with non-critical macros (e.g., heat soak animations) to validate the pattern, then extend to full status macros.
+- Status helpers (`_SET_LOGO_LEDS`, `_SET_NOZZLE_LEDS`, `_SET_CHAMBER_LEDS`) should iterate dicts and avoid hard-coded names.
+- Deprecate previous `variable_*_led`, `*_indices`, and adopt `*_map` dict variables.
+- Ensure helpers no-op when dicts are empty or devices are absent.
+ - Consolidate direct `SET_LED` calls in macros (e.g., `HEAT_SOAK`) to use dict iteration.
+ - `HEAT_SOAK` no longer uses `variable_led_count`; animation length is derived from `chain_count` or explicit indices.
 
 ## Future Extensions
-- Add color palette variables (e.g., `variable_color_ready`, `variable_color_heating`) if per-printer color customization is desired.
-- Introduce `_STATUS_VARS` for pattern-specific tuning (blink rates, brightness caps) if needed later.
+- Optional palette dicts (e.g., `ready`, `heating`, `printing`) for per-printer color tuning.
+- Optional `variable_brightness_max` to cap brightness consistently.

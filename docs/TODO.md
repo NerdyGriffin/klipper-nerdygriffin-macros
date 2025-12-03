@@ -14,6 +14,7 @@
   - Proposed: Add variables like `variable_panel_right_led`, `variable_panel_left_led`, `variable_bed_led`, `variable_toolhead_led`
   - Allow empty strings to skip non-existent LEDs
   - Priority: Medium (current gating with `enable_chamber_leds` is acceptable workaround)
+- Consider moving the progress bar animation to a shared helper macro that can be called with different LED names
 
 ### Filament Management
 - [ ] Consider removing temperature parameter from LOAD/UNLOAD filament macros

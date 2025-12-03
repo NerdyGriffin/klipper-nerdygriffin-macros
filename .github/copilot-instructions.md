@@ -73,6 +73,10 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
   cd ~/klipper-nerdygriffin-macros
   ./install.sh
   ```
+- Restart + tail logs after config edits:
+  ```bash
+  sudo systemctl restart klipper && sleep 2 && tail -n 60 ~/printer_data/logs/klippy.log
+  ```
 - Add Moonraker update manager (optional) per README, then restart Klipper:
   ```bash
   sudo systemctl restart klipper
