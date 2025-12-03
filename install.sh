@@ -47,7 +47,7 @@ if [ -L "${SYMLINK_PATH}" ]; then
     read -p "Do you want to recreate it? (y/N): " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        rm "${SYMLINK_PATH}"
+        rm -v "${SYMLINK_PATH}"
         echo -e "${GREEN}✓${NC} Removed existing symlink"
     else
         echo -e "${BLUE}ℹ${NC}  Keeping existing symlink"
@@ -55,7 +55,7 @@ if [ -L "${SYMLINK_PATH}" ]; then
 fi
 
 if [ ! -L "${SYMLINK_PATH}" ]; then
-    ln -sf "${SCRIPT_DIR}/macros" "${SYMLINK_PATH}"
+    ln -sfv "${SCRIPT_DIR}/macros" "${SYMLINK_PATH}"
     echo -e "${GREEN}✓${NC} Created symlink: ${SYMLINK_PATH} -> ${SCRIPT_DIR}/macros"
 fi
 
@@ -104,16 +104,18 @@ echo -e "${BLUE}================================================${NC}"
 echo ""
 echo -e "${YELLOW}Next steps:${NC}"
 echo ""
-echo "1. Add these lines to your printer.cfg:"
+echo "1. Add these lines to your printer.cfg (full list detected at runtime):"
 echo ""
-echo -e "${BLUE}   [include nerdygriffin-macros/auto_pid.cfg]${NC}"
-echo -e "${BLUE}   [include nerdygriffin-macros/beeper.cfg]              # Optional${NC}"
-echo -e "${BLUE}   [include nerdygriffin-macros/filament_management.cfg]${NC}"
-echo -e "${BLUE}   [include nerdygriffin-macros/rename_existing.cfg]${NC}"
-echo -e "${BLUE}   [include nerdygriffin-macros/save_config.cfg]${NC}"
-echo -e "${BLUE}   [include nerdygriffin-macros/shutdown.cfg]${NC}"
-echo -e "${BLUE}   [include nerdygriffin-macros/tacho_macros.cfg]${NC}"
+for f in "${SCRIPT_DIR}"/macros/*.cfg; do
+    base="$(basename "$f")"
+    if [ "$base" = "beeper.cfg" ]; then
+        printf "\e[0;34m   [include nerdygriffin-macros/%s]\e[0m              # Optional: requires pin configuration\n" "$base"
+    else
+        printf "\e[0;34m   [include nerdygriffin-macros/%s]\e[0m\n" "$base"
+    fi
+done
 echo ""
+echo -e "${BLUE}   Tip:${NC} This is a comprehensive list. You can include only the macros you intend to use."
 echo -e "${YELLOW}   Note: beeper.cfg requires pin configuration. See README.md${NC}"
 echo ""
 echo "2. Remove or comment out any duplicate includes of these files"
