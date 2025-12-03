@@ -44,12 +44,12 @@
     },
     "search.exclude": {
       "**/.git": true,
-      "**/backup/**": true,
-      "**/deprecated/**": true,
-      "**/ShakeTune_results/**": true,
       "**/*.bak": true,
       "**/*.bkp": true,
-      "**/*.var": true
+      "**/*.var": true,
+      "**/backup/**": true,
+      "**/deprecated/**": true,
+      "**/ShakeTune_results/**": true
     }
   }
 }
