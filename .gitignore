@@ -13,5 +13,3 @@ Thumbs.db
 *.bak
 *.backup
 *_backup_*
-# Session summaries (not tracked)
-docs/SESSION_SUMMARY.md
