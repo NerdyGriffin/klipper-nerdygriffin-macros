@@ -6,6 +6,8 @@ model: Auto (copilot)
 
 Perform a review of the documentation and provide a TODO list of issues and potential improvements.
 
+- Avoid referring to files that are not tracked in version control, not included in the documentation index, or outside the current repository.
+  - If documentation references such files, flag the reference and suggest either adding the file to tracking or removing the reference.
 - Ask for clarifications if any part of the documentation is ambiguous.
 - For complex items that may require multiple steps, break them down into sub-tasks or suggest adding them to TODO.md files in the relevant repos.
 
