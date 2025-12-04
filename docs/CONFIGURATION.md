@@ -105,14 +105,34 @@ variable_purge_distance: 12.45  # Purge before unload (default: 12.45mm)
 The `SETTLE_BELT_TENSION` macro parks at a calibrated Y position for belt frequency measurement. Override the position in your `printer.cfg`:
 
 ```ini
-# Override calibrated Y position for belt tension measurement
 [gcode_macro SETTLE_BELT_TENSION]
-variable_y_calibrated: 116  # The Y position that results in exactly 130mm between idler centers
-                            # Common values: 116 (V0 120mm bed), 120 (Trident 300mm bed)
-                            # Measure your actual belt span and adjust accordingly
+variable_y_calibrated: 116  # Override with your printer's calibrated Y position
 ```
 
-**Note:** The Y calibrated position depends on your specific printer geometry and desired belt span for frequency measurement. See the macro comments for frequency targets at different belt lengths.
+### Frequency Reference Table
+
+Use this table to determine your target belt frequency based on your printer's geometry:
+
+| Belt Span | Target Frequency |
+|-----------|------------------|
+| 150mm     | 110 Hz           |
+| 140mm     | 118 Hz           |
+| 130mm     | 127 Hz           |
+| 120mm     | 138 Hz           |
+
+### Calibration Steps
+
+1. Measure the distance between your belt idler centers
+2. Use the table above to find your target frequency
+3. Run `SETTLE_BELT_TENSION` to park the toolhead at your calibrated position
+4. Use input shaper analysis to measure actual belt frequency
+5. Adjust `variable_y_calibrated` until your measured frequency matches the target
+
+**Common Values:**
+- V0 (120mm bed): `y_calibrated: 116`
+- Trident 300mm: `y_calibrated: 120`
+
+**Note:** Actual frequency will depend on belt tension, so adjust tension first, then verify frequency matches target.
 
 ---
 
@@ -367,4 +387,3 @@ This macro requires the [Shake&Tune extension](https://github.com/jdehooog/klipp
 ### Usage
 
 Refer to the [Shake&Tune documentation](https://github.com/jdehooog/klippy-shake-tune) for detailed usage instructions.
-
