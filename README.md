@@ -13,6 +13,12 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
   - `PURGE_FILAMENT` - Purge at a safe location
 - **Unified cleanup**: Consistent sensor management and state restoration
 
+### 🎨 Status & LED Management (`status-macros.cfg`)
+- **Hardware-agnostic LED control**: Dict-based `_LED_VARS` system adapts to any printer's LED configuration
+- **Status macros**: `STATUS_*` macros (HEATING, PRINTING, HOMING, MESHING, etc.) with automatic LED control
+- **LED animations**: `HEAT_SOAK` includes animated chamber progress bar and logo fade
+- **Zero configuration**: Sensible defaults work out-of-the-box; customize via `_LED_VARS` override in `printer.cfg`
+
 ### 🔧 Additional Macros
 
 - **`auto_pid.cfg`** - Automated PID tuning for extruder and bed
@@ -149,6 +155,30 @@ pin: YOUR_PIN_HERE    # Examples below
 #   Fysetc Spider:     PA15
 ```
 
+### Status Macros & LED Configuration (Required for status-macros.cfg)
+
+The status macros use a hardware-agnostic dict-based LED configuration system (`_LED_VARS`). This allows all printers to use the same macros regardless of their LED hardware.
+
+**Quick Setup (Toolhead LEDs Only):**
+Add this to your `printer.cfg` after including `status-macros.cfg`:
+
+```ini
+[gcode_macro _LED_VARS]
+variable_chamber_map: {}
+variable_logo_map: {'toolhead': 1}
+variable_nozzle_map: {'toolhead': '2,3'}
+gcode:
+```
+
+Replace `toolhead` with your actual neopixel device name(s) and adjust indices (1, 2, 3) to match your LED configuration.
+
+**Complete Setup Guide:**
+See [`docs/LED_VARIABLES.md`](docs/LED_VARIABLES.md) for:
+- Detailed configuration examples for various printer types
+- How to use multiple LED devices
+- LED animation behavior during `HEAT_SOAK`
+- How to add custom LED devices
+
 ### Customizing Filament Parking Positions
 
 The filament macros automatically detect AFC hardware and use appropriate parking positions. For non-AFC setups, you can customize the parking positions:
@@ -214,23 +244,38 @@ All macros calculate positions dynamically based on your printer's configured be
 These macros expect the following to be defined in your config:
 
 - `_CG28` - Conditional homing macro
-- `STATUS_*` macros - For status LED updates (e.g., from stealthburner_leds.cfg)
-- `RESET_STATUS` - Reset status LEDs
-- `SET_DISPLAY_TEXT` - For LCD/web interface messages
-- `_CLIENT_VARIABLE` - Mainsail/Fluidd client variables
-- `encoder_sensor` - Filament motion sensor (or modify macro accordingly)
+- `STATUS_*` macros - **Provided by `status-macros.cfg`** (or from other LED macro libraries like stealthburner_leds.cfg)
+- `RESET_STATUS` - **Provided by `status-macros.cfg`**
+- `SET_DISPLAY_TEXT` - For LCD/web interface messages (provided by Mainsail/Klipper)
+- `_CLIENT_VARIABLE` - Mainsail/Fluidd client variables (optional, for pause/resume hooks)
+- `encoder_sensor` - Filament motion sensor (optional, or modify macro accordingly)
 
-Most of these are provided by:
+Most of the remaining dependencies are provided by:
 - [Mainsail config](https://github.com/mainsail-crew/mainsail-config)
 - [Voron Design configs](https://github.com/VoronDesign/Voron-Stealthburner)
- - [KAMP (Klipper Adaptive Meshing & Purging)](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging)
- - [Shake&Tune](https://github.com/Frix-x/klippain-shaketune)
+- [KAMP (Klipper Adaptive Meshing & Purging)](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging)
+- [Shake&Tune](https://github.com/Frix-x/klippain-shaketune)
 
 ### Compatibility
 - Minimum Klipper version: v0.13.0 (tested on stable channel; managed via Moonraker `update_manager`)
 - For the latest tuned values (e.g., pressure advance), consult your `printer.cfg` rather than this README.
 
 ## Usage
+
+### Status Macros
+```gcode
+STATUS_HEATING      # Red/orange LEDs, "Heating..." message
+STATUS_HOMING       # Cyan LEDs, "Homing..." message
+STATUS_LEVELING     # Purple LEDs, "Leveling..." message
+STATUS_MESHING      # Lime LEDs, "Meshing..." message
+STATUS_CLEANING     # Blue LEDs, "Cleaning..." message
+STATUS_PRINTING     # Blue logo, white nozzle, white chamber, no message
+STATUS_READY        # Dim white LEDs, no message
+STATUS_OFF          # All LEDs off, no message
+RESET_STATUS        # Auto-select PRINTING or READY based on printer state
+```
+
+All status macros automatically respect your `_LED_VARS` configuration and adapt to your printer's LED setup.
 
 ### Filament Operations
 ```gcode
@@ -287,10 +332,15 @@ The `HEAT_SOAK` macro provides hardware-agnostic chamber preheating with optiona
 
 **Default Variables:**
 - `variable_max_chamber_temp: 60` - Maximum chamber temp achievable via passive heating (stock hotend and bed heaters, no additional insulation)
-- `variable_led_count: 10` - Number of LEDs per panel strip
 - `variable_ext_assist_multiplier: 4` - Extruder assist temp multiplier (chamber_temp × multiplier, capped at 200°C)
 - `variable_chamber_sensor_name: ""` - Explicit sensor name (empty = auto-detect)
-- `variable_enable_chamber_leds: True` - Enable panel/bed LED animation
+- `variable_frame_rate: 12` - LED animation frame rate in Hz (12 FPS default)
+
+**LED Animation:**
+- Uses `_LED_VARS` dict-based system (see [`docs/LED_VARIABLES.md`](docs/LED_VARIABLES.md) for full details)
+- `chamber_map`: Animates chamber/enclosure LEDs with red→green progress bar
+- `logo_map`: Fades logo/bed light from red→green alongside chamber animation
+- Safe by design: missing devices are automatically skipped
 
 **Auto-Detection Logic:**
 The macro searches for chamber sensors in this order:
@@ -305,14 +355,28 @@ For V0 (measured limits, stronger assist):
 [gcode_macro HEAT_SOAK]
 variable_max_chamber_temp: 58           # V0 measured limit
 variable_ext_assist_multiplier: 5       # Stronger extruder assist for V0
-variable_chamber_sensor_name: "chamber" # Explicit sensor name
+variable_chamber_sensor_name: "chamber" # Explicit sensor name (if available)
 ```
 
-For VT.1548 (no panel LEDs yet):
+For printers with toolhead-only sensors:
 ```ini
 [gcode_macro HEAT_SOAK]
-variable_enable_chamber_leds: False       # No panel/bed LEDs installed yet
-variable_chamber_sensor_name: "nitehawk-36"  # Use toolhead as proxy
+variable_chamber_sensor_name: "nitehawk-36"  # Use toolhead as temperature proxy
+```
+
+For custom LED animation speed:
+```ini
+[gcode_macro HEAT_SOAK]
+variable_frame_rate: 8  # Slower animation (8 FPS instead of 12)
+```
+
+**LED Configuration:**
+See [`docs/LED_VARIABLES.md`](docs/LED_VARIABLES.md) for detailed LED setup examples. Quick setup for toolhead-only:
+```ini
+[gcode_macro _LED_VARS]
+variable_chamber_map: {}
+variable_logo_map: {'toolhead': 1}
+variable_nozzle_map: {'toolhead': '2,3'}
 ```
 
 ### Safe Config Saving

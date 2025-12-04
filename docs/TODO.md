@@ -15,6 +15,8 @@
   - Allow empty strings to skip non-existent LEDs
   - Priority: Medium (current gating with `enable_chamber_leds` is acceptable workaround)
 - Consider moving the progress bar animation to a shared helper macro that can be called with different LED names
+- Update _LED_VARS to accept a range of indices instead of just comma-separated lists
+  - e.g. `variable_chamber_map: {'chamber_strip': '1-8'}` instead of `variable_chamber_map: {'chamber_strip': '1,2,3,4,5,6,7,8'}`
 
 ### Filament Management
 - [ ] Consider removing temperature parameter from LOAD/UNLOAD filament macros
