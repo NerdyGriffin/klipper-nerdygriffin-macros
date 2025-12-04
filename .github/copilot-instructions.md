@@ -103,6 +103,12 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 - Keep macros hardware-agnostic and configurable via variables.
 - Prefer conditional checks over hard failures when optional hardware is absent.
 - Maintain consistent naming (`variable_*`), state save/restore, and status signaling patterns.
+  - **G-Code Macro Naming**
+    - Macro names and parameters should be UPPER_SNAKE_CASE (e.g., `LOAD_FILAMENT`).
+  - **Variables**
+    - Macro variables are defined with the prefix `variable_` (e.g., `variable_x_park`), but referenced without it (e.g., `{x_park}`).
+    - Variable names should be lower_snake_case (e.g., `variable_max_chamber_temp`).
+    - Variable names may not contain any upper case characters.
 - Do not introduce board-specific pins; document required overrides in README/macro headers.
 
 ## Pointers
