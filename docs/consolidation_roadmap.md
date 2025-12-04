@@ -214,21 +214,79 @@ VT.1548 (Future):
 
 ---
 
-### print_macros.cfg
-**Reason**: Different workflows (AFC vs CLEAN_NOZZLE, Z_TILT vs bed_screws) [This line needs review]
-**Status**: 🔄 PLANNED - Consolidate common patterns while preserving printer-specific workflows
+## ✅ COMPLETED: print_macros.cfg
 
-**Consolidation Approach**:
-- Extract AFC detection patterns (conditional `AFC_PARK`, `AFC_BRUSH`, tool loading)
-- Standardize sensor management (encoder_sensor enable/disable)
-- Common state handling (gcode offsets, pressure advance, velocity limits)
-- Keep printer-specific: leveling sequence (Z_TILT vs bed_screws), nozzle cleaning method (CLEAN_NOZZLE vs AFC_BRUSH)
+### Status: CONSOLIDATED
+- **Consolidated**: January 2025
+- **Location**: `macros/print_macros.cfg`
+- **Features**: Hardware-agnostic PRINT_START/PRINT_END with AFC, Beacon, bed_mesh, z_tilt support
+- **Pattern**: Conditional logic for all printer-specific hardware
 
-**User Note**: Manual changes in progress to align workflows before consolidation
+### Implementation
+Successfully consolidated with conditional detection of AFC, CLEAN_NOZZLE, Beacon probe, bed_mesh, and z_tilt. Both printers now use identical macros from the plugin repo.
+
+**Implementation Pattern**:
+```gcode
+[gcode_macro PRINT_START]
+gcode:
+    # AFC vs CLEAN_NOZZLE detection
+    {% if printer['gcode_macro AFC_BRUSH'] is defined %}
+        AFC_BRUSH
+    {% elif printer['gcode_macro CLEAN_NOZZLE'] is defined %}
+        CLEAN_NOZZLE
+    {% endif %}
+
+    # Beacon vs standard Z homing
+    {% if 'beacon' in printer %}
+        G28 Z METHOD=CONTACT CALIBRATE=1
+    {% else %}
+        G28 Z
+    {% endif %}
+
+    # Conditional bed leveling
+    {% if 'z_tilt' in printer %}
+        Z_TILT_ADJUST
+    {% endif %}
+
+    # Conditional bed mesh
+    {% if 'bed_mesh' in printer %}
+        BED_MESH_CLEAR
+        BED_MESH_CALIBRATE
+    {% endif %}
+```
+
+**Key Features**:
+- Optimized PRINT_END parking (Y-only initial move, conditional X)
+- AFC silicone pad parking vs non-AFC corner parking with retract
+- Beacon thermal offset management (+0.07mm during print, removed after)
+- _CLIENT_EXTRUDE conditional (non-AFC only for first layer prime)
+- Configurable HEAT_SOAK (2 min default, 15 min for high-temp prints)
+
+**Benefits**:
+- Single source of truth for print start/end logic
+- Automatically adapts to available hardware
+- Supports both AFC and non-AFC workflows
+- Works with Beacon or standard probes
+- Reduces 161 lines of duplicate code
+
+**Effort**: COMPLETED
 
 ### homing.cfg
-**Reason**: Different homing logic, HOME_CURRENT values, probe types [this line needs review]
+**Reason**: Different homing logic, HOME_CURRENT values, probe types
 **Status**: 🔄 PLANNED - Abstract common sensorless current adjustment logic
+
+**Consolidation Approach**:
+- Extract `_CG28` conditional homing wrapper
+- Common sensorless current adjustment pattern with per-printer variables
+- Standardize fan/LED handling during homing
+- Keep printer-specific: HOME_CURRENT values, Z probe offsets, endstop positions
+
+**Challenges**:
+- Beacon vs Klicky vs endstop-based Z homing
+- Sensorless tuning varies per printer/motor combination
+- Current adjustment timing sensitive to motor type
+
+**Effort**: MEDIUM - Requires careful testing to avoid homing failures
 
 ## NOT RECOMMENDED FOR CONSOLIDATION
 
