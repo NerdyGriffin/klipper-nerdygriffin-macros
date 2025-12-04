@@ -19,6 +19,7 @@ Hardware-agnostic Klipper macros for Voron printers with automatic AFC detection
 - `filament_management.cfg` - Load/unload/purge operations
 - `heat_soak.cfg` - Chamber preheating with sensor auto-detection
 - `maintenance_macros.cfg` - Belt settling, nozzle changes
+- `nozzle_wiper.cfg` - Servo-actuated nozzle purge bucket and brush system
 - `print_macros.cfg` - PRINT_START/PRINT_END with AFC, Beacon, and bed mesh support
 - `rename_existing.cfg` - Enhanced G-code overrides (M109, M190, M117)
 - `save_config.cfg` - Safe SAVE_CONFIG with print-state detection
@@ -72,6 +73,7 @@ The install script will:
    [include nerdygriffin-macros/filament_management.cfg]
    [include nerdygriffin-macros/heat_soak.cfg]
    [include nerdygriffin-macros/maintenance_macros.cfg]
+   [include nerdygriffin-macros/nozzle_wiper.cfg]        # Optional: Requires servo hardware
    [include nerdygriffin-macros/print_macros.cfg]        # Optional: PRINT_START/PRINT_END
    [include nerdygriffin-macros/rename_existing.cfg]
    [include nerdygriffin-macros/save_config.cfg]
