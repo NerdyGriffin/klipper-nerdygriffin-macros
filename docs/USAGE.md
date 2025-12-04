@@ -25,13 +25,13 @@ All status macros automatically respect your `_LED_VARS` configuration and adapt
 ## Filament Operations
 
 ```gcode
-LOAD_FILAMENT                    # Load with default temp
-LOAD_FILAMENT TEMP=240           # Load at specific temp
-UNLOAD_FILAMENT                  # Unload with default temp
-UNLOAD_FILAMENT TEMP=240         # Unload at specific temp
-PURGE_FILAMENT                   # Purge 100mm
-PURGE_FILAMENT TEMP=230 SPEED=200  # Custom purge
+LOAD_FILAMENT                    # Load filament (uses printer.extruder.target)
+UNLOAD_FILAMENT                  # Unload filament (uses printer.extruder.target)
+PURGE_FILAMENT                   # Purge 100mm (uses printer.extruder.target)
+PURGE_FILAMENT SPEED=200         # Custom purge speed
 ```
+
+**Note**: Temperature is automatically determined from `printer.extruder.target`. Set target temperature via your frontend (Mainsail/Fluidd) or KlipperScreen before calling these macros.
 
 ---
 

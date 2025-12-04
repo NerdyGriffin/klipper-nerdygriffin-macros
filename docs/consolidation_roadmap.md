@@ -214,23 +214,31 @@ VT.1548 (Future):
 
 ---
 
+### print_macros.cfg
+**Reason**: Different workflows (AFC vs CLEAN_NOZZLE, Z_TILT vs bed_screws) [This line needs review]
+**Status**: 🔄 PLANNED - Consolidate common patterns while preserving printer-specific workflows
+
+**Consolidation Approach**:
+- Extract AFC detection patterns (conditional `AFC_PARK`, `AFC_BRUSH`, tool loading)
+- Standardize sensor management (encoder_sensor enable/disable)
+- Common state handling (gcode offsets, pressure advance, velocity limits)
+- Keep printer-specific: leveling sequence (Z_TILT vs bed_screws), nozzle cleaning method (CLEAN_NOZZLE vs AFC_BRUSH)
+
+**User Note**: Manual changes in progress to align workflows before consolidation
+
+### homing.cfg
+**Reason**: Different homing logic, HOME_CURRENT values, probe types [this line needs review]
+**Status**: 🔄 PLANNED - Abstract common sensorless current adjustment logic
+
 ## NOT RECOMMENDED FOR CONSOLIDATION
 
 ### autotune.cfg
 **Reason**: Hardware-specific motor tuning (OMC vs LDO steppers)
 **Status**: ❌ Keep printer-specific
 
-### print_macros.cfg
-**Reason**: Different workflows (AFC vs CLEAN_NOZZLE, Z_TILT vs bed_screws)
-**Status**: ❌ Keep printer-specific (user agreed)
-
 ### KAMP_Settings.cfg
 **Reason**: External plugin configuration, printer-specific purge tuning
 **Status**: ❌ Keep printer-specific (user agreed)
-
-### homing.cfg
-**Reason**: Different homing logic, HOME_CURRENT values, probe types
-**Status**: ❌ Keep printer-specific
 
 ### TEST_SPEED.cfg
 **Reason**: External source (Andrew Ellis), identical copies already
@@ -273,7 +281,7 @@ All priority consolidation targets have been successfully implemented:
 | heat_soak | ✅ DONE | MEDIUM | MEDIUM | Sensor auto-detect + _LED_VARS system |
 | status_macros | ✅ DONE | HIGH | MEDIUM | Dict-based LED mapping implemented |
 | autotune | ❌ KEEP LOCAL | N/A | N/A | Hardware-specific motor tuning |
-| print_macros | ❌ KEEP LOCAL | N/A | N/A | Different workflows (AFC vs CLEAN_NOZZLE) |
+| print_macros | 🔄 PLANNED | MEDIUM | MEDIUM | Extract common patterns (AFC detection, sensor management, state handling) |
 | KAMP_Settings | ❌ KEEP LOCAL | N/A | N/A | External plugin, printer-specific tuning |
 | homing | 🔄 PLANNED | MEDIUM | MEDIUM | Abstract sensorless current logic; probe-specific paths remain local |
 | TEST_SPEED | ❌ KEEP LOCAL | N/A | N/A | External source (Andrew Ellis), identical copies |
