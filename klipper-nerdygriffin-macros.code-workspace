@@ -51,6 +51,7 @@
       "**/deprecated/**": true,
       "**/nerdygriffin_macros/**": true,
       "**/ShakeTune_results/**": true
-    }
+    },
+    "files.eol": "\n"
   }
 }
