@@ -62,10 +62,16 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 
 ## External Dependencies & Expectations
 - Provided externally by printer configs or other repos:
-  - `_CG28`, `STATUS_*`, `RESET_STATUS`, `_CLIENT_VARIABLE`
-  - Filament sensors (e.g., `encoder_sensor`)
-  - AFC macros (`AFC_PARK`, `AFC_BRUSH`, `AFC_CUT`) if multi-material is installed
-  - Shake&Tune install for `shaketune.cfg` use
+  - `_CG28` conditional homing (required)
+  - `_CLIENT_VARIABLE` for Mainsail/Fluidd integration (optional)
+  - Filament sensors (e.g., `encoder_sensor`) - optional
+  - AFC macros (`AFC_PARK`, `AFC_BRUSH`, `AFC_CUT`) - auto-detected if installed
+  - Shake&Tune install for `shaketune.cfg` use - optional
+
+- Provided by this plugin:
+  - `STATUS_*` macros in `status_macros.cfg`
+  - `RESET_STATUS` in `status_macros.cfg`
+  - `_AFTER_PAUSE`, `_BEFORE_RESUME`, `_BEFORE_CANCEL` in `client_macros.cfg`
 
 ## Common Workflows
 - Install and link:
@@ -111,9 +117,16 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
     - Variable names may not contain any upper case characters.
 - Do not introduce board-specific pins; document required overrides in README/macro headers.
 
+## Documentation Structure
+- `README.md` - Concise overview, installation, and feature list
+- `docs/CONFIGURATION.md` - Detailed configuration examples
+- `docs/USAGE.md` - Usage examples and workflows
+- `docs/LED_VARIABLES.md` - LED system setup guide
+- `docs/consolidation_roadmap.md` - Development history
+
 ## Pointers
-- See `README.md` for install, expected dependencies, and full usage examples.
 - Example consumer implementations: printer repos that symlink this directory and override variables/macros in `printer.cfg`.
+- This plugin is in active development; breaking changes may occur before v1.0.0.
 
 ## Ease of use
 - If I repeated request actions that contradict these instructions, propose ways to improve these instructions.

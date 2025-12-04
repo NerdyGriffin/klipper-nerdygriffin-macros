@@ -2,6 +2,12 @@
 
 ## Future Enhancements
 
+### Performance Optimization
+- [ ] Monitor and optimize Klipper startup time with plugin includes
+  - Measure baseline startup time on both printers
+  - Profile config parsing overhead from symlinked macros
+  - Consider lazy-loading patterns for optional features if startup time becomes an issue
+
 ## Printer cleanup
 - Ensure all custom config files have appropriate headers and documentation
 
@@ -37,3 +43,4 @@
 - Near-term candidate (after LED design): `status_macros.cfg` (requires LED group abstraction first).
 - Future design task: LED group variable mapping (`_LED_VARS`) before broad status macro consolidation.
 - Re-evaluate `homing.cfg` for partial abstraction (sensorless current + probe sequencing) once other high-value targets complete.
+- Re-evaluate `print_macros.cfg` for potential shared purge/start-end logic after AFC and CLEAN_NOZZLE workflows stabilize.
