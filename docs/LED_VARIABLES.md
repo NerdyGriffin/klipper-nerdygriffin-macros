@@ -1,6 +1,6 @@
 # LED Variables Design (Dict-based)
 
-**Status**: ✅ **IMPLEMENTED** in `macros/status-macros.cfg`
+**Status**: ✅ **IMPLEMENTED** in `macros/status_macros.cfg`
 
 This document describes the hardware-agnostic LED control system using logical group dicts in `_LED_VARS`. It enables shared status/animation macros without hard-coding device names or indices, and is the current standard for all LED configuration in this macro library.
 
@@ -10,7 +10,7 @@ This document describes the hardware-agnostic LED control system using logical g
 - Keep per-printer customization in a single macro block (`_LED_VARS` in your `printer.cfg`).
 
 ## Location
-- `_LED_VARS` is defined in `macros/status-macros.cfg` (with a default configuration).
+- `_LED_VARS` is defined in `macros/status_macros.cfg` (with a default configuration).
 - Copy and override `_LED_VARS` in your `printer.cfg` to customize for your specific hardware.
 - All `STATUS_*` macros and helpers (`_SET_LOGO_LEDS`, `_SET_NOZZLE_LEDS`, `_SET_CHAMBER_LEDS`) use this system.
 - `HEAT_SOAK` uses `_LED_VARS` for per-printer LED animations.
@@ -136,12 +136,12 @@ variable_nozzle_map: {'toolhead': '2,3'}
 
 ## Configuration Steps
 
-1. **Include `status-macros.cfg`** in your `printer.cfg`:
+1. **Include `status_macros.cfg`** in your `printer.cfg`:
    ```ini
-   [include nerdygriffin-macros/status-macros.cfg]
+   [include nerdygriffin-macros/status_macros.cfg]
    ```
 
-2. **Copy the `_LED_VARS` macro** from `macros/status-macros.cfg` to your `printer.cfg`
+2. **Copy the `_LED_VARS` macro** from `macros/status_macros.cfg` to your `printer.cfg`
 
 3. **Edit `_LED_VARS`** in your `printer.cfg` to match your LED hardware:
    - Replace device names with your actual neopixel section names
@@ -157,7 +157,7 @@ variable_nozzle_map: {'toolhead': '2,3'}
 ## Implementation Status
 
 ✅ **Dict-based `_LED_VARS` system is fully implemented:**
-- `_LED_VARS` macro defined in `macros/status-macros.cfg`
+- `_LED_VARS` macro defined in `macros/status_macros.cfg`
 - `_SET_LOGO_LEDS`, `_SET_NOZZLE_LEDS`, `_SET_CHAMBER_LEDS` iterate dicts and safely skip missing devices
 - All `STATUS_*` macros use the dict-based helpers
 - `HEAT_SOAK` animates `chamber_map` with device-aware progress bar using `chain_count`

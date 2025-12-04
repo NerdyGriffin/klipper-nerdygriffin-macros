@@ -115,7 +115,7 @@ variable_ext_assist_multiplier: 5  # V0 tuning
 
 ---
 
-## PRIORITY 3: status-macros.cfg & heat_soak.cfg LED Logic
+## PRIORITY 3: status_macros.cfg & heat_soak.cfg LED Logic
 
 ### Current Status
 - **Very similar structure**, different LED hardware
@@ -204,7 +204,7 @@ VT.1548 (Future):
 ```
 
 **Challenges**:
-- Many macros to update (~20+ status states in status-macros.cfg)
+- Many macros to update (~20+ status states in status_macros.cfg)
 - Heat soak LED animation needs group-aware logic
 - Need to design standardized LED group names across printers
 - Transition plan for existing LED-specific code
@@ -265,7 +265,7 @@ VT.1548 (Future):
    - **Risk**: MEDIUM (sensor detection logic, LED timing)
 
 ### Future Consideration
-3. **status-macros.cfg** - Evaluate after gaining more experience with conditional LED patterns from heat_soak consolidation
+3. **status_macros.cfg** - Evaluate after gaining more experience with conditional LED patterns from heat_soak consolidation
 
 ---
 

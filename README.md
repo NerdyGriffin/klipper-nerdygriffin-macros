@@ -13,7 +13,7 @@ A collection of hardware-agnostic Klipper macros designed for Voron printers, wi
   - `PURGE_FILAMENT` - Purge at a safe location
 - **Unified cleanup**: Consistent sensor management and state restoration
 
-### 🎨 Status & LED Management (`status-macros.cfg`)
+### 🎨 Status & LED Management (`status_macros.cfg`)
 - **Hardware-agnostic LED control**: Dict-based `_LED_VARS` system adapts to any printer's LED configuration
 - **Status macros**: `STATUS_*` macros (HEATING, PRINTING, HOMING, MESHING, etc.) with automatic LED control
 - **LED animations**: `HEAT_SOAK` includes animated chamber progress bar and logo fade
@@ -155,12 +155,12 @@ pin: YOUR_PIN_HERE    # Examples below
 #   Fysetc Spider:     PA15
 ```
 
-### Status Macros & LED Configuration (Required for status-macros.cfg)
+### Status Macros & LED Configuration (Required for status_macros.cfg)
 
 The status macros use a hardware-agnostic dict-based LED configuration system (`_LED_VARS`). This allows all printers to use the same macros regardless of their LED hardware.
 
 **Quick Setup (Toolhead LEDs Only):**
-Add this to your `printer.cfg` after including `status-macros.cfg`:
+Add this to your `printer.cfg` after including `status_macros.cfg`:
 
 ```ini
 [gcode_macro _LED_VARS]
@@ -244,8 +244,8 @@ All macros calculate positions dynamically based on your printer's configured be
 These macros expect the following to be defined in your config:
 
 - `_CG28` - Conditional homing macro
-- `STATUS_*` macros - **Provided by `status-macros.cfg`** (or from other LED macro libraries like stealthburner_leds.cfg)
-- `RESET_STATUS` - **Provided by `status-macros.cfg`**
+- `STATUS_*` macros - **Provided by `status_macros.cfg`** (or from other LED macro libraries like stealthburner_leds.cfg)
+- `RESET_STATUS` - **Provided by `status_macros.cfg`**
 - `SET_DISPLAY_TEXT` - For LCD/web interface messages (provided by Mainsail/Klipper)
 - `_CLIENT_VARIABLE` - Mainsail/Fluidd client variables (optional, for pause/resume hooks)
 - `encoder_sensor` - Filament motion sensor (optional, or modify macro accordingly)

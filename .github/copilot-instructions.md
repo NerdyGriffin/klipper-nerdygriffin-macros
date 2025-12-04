@@ -114,3 +114,6 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 ## Pointers
 - See `README.md` for install, expected dependencies, and full usage examples.
 - Example consumer implementations: printer repos that symlink this directory and override variables/macros in `printer.cfg`.
+
+## Ease of use
+- If I repeated request actions that contradict these instructions, propose ways to improve these instructions.
