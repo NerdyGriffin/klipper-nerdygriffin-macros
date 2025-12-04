@@ -231,3 +231,140 @@ NW_TEST_CLEAN_NOZZLE    # Test macro: heats to 240°C, homes, then cleans (for c
 ```
 
 **Calibration Note:** The macro intentionally sets bucket positions to `-1000` by default to force calibration. You must override these values in your `printer.cfg` before using the macro.
+
+---
+
+## Auto PID Calibration (auto_pid.cfg)
+
+The `auto_pid.cfg` provides convenient macros for tuning PID parameters for your extruder and bed heaters.
+
+### Usage
+
+```gcode
+AUTO_PID_CALIBRATE HEATER=extruder TARGET=260    # Calibrate extruder at 260°C
+AUTO_PID_CALIBRATE HEATER=heater_bed TARGET=100  # Calibrate bed at 100°C
+```
+
+**Note:** During PID calibration, the heater will cycle multiple times to find optimal parameters. Keep the printer supervised and ensure adequate ventilation.
+
+---
+
+## Print Start/End Macros (print_macros.cfg)
+
+The `print_macros.cfg` provides hardware-agnostic `PRINT_START` and `PRINT_END` macros that automatically detect your printer's capabilities (AFC, nozzle wiper, Beacon probe, etc.) and adjust behavior accordingly.
+
+### PRINT_START Behavior
+
+- Performs conditional homing via `_CG28`
+- Heats bed and extruder to target temperatures
+- Optionally performs heat soak if chamber temperature is specified
+- Cleans nozzle via `CLEAN_NOZZLE` if available (or `AFC_BRUSH` for AFC systems)
+- Performs z-tilt adjustment if configured
+- Auto-calibrates or homes Z (Beacon contact mode on first home)
+- Generates bed mesh
+- Performs smart park (KAMP) and line purge
+
+### PRINT_END Behavior
+
+- Retracts filament
+- Parks toolhead (AFC-aware positioning)
+- Disables heaters and cooling
+- Manages filament sensors (encoder auto-disabled)
+- Optionally saves configuration
+
+### Customization
+
+```gcode
+PRINT_START BED=100 EXTRUDER=240 CHAMBER=45
+```
+
+**Note:** Chamber temperature is optional; omit if not needed.
+
+---
+
+## Shutdown & Reboot (shutdown.cfg)
+
+The `shutdown.cfg` provides macros for safe shutdown and reboot operations.
+
+### Usage
+
+```gcode
+SHUTDOWN          # Safely shut down the printer
+REBOOT_HOST       # Reboot the host system
+```
+
+**Note:** These macros perform cleanup operations before shutdown to ensure safe state.
+
+---
+
+## Beeper/Tacho Macros (tacho_macros.cfg)
+
+The `tacho_macros.cfg` provides utilities for monitoring fan tachometer feedback and performing pre-flight checks.
+
+### Usage
+
+```gcode
+TACHOMETER_TEST            # Test and display tachometer values
+FAN_PREFLIGHT_CHECK        # Verify all fans are operational
+```
+
+---
+
+## Utility Macros (utility_macros.cfg)
+
+The `utility_macros.cfg` provides various helper macros for common operations.
+
+### Common Utilities
+
+```gcode
+_CONDITIONAL_UNRETRACT     # Unretract filament if needed (after purge or load)
+TURN_OFF_HEATERS           # Safe heater disable
+M117 "Message"             # Display message on panel (if available)
+```
+
+---
+
+## Rename Existing (rename_existing.cfg)
+
+The `rename_existing.cfg` safely overrides Klipper built-in commands by renaming them and providing wrapper macros. This allows plugins to hook into standard G-code commands without conflicts.
+
+### Affected Commands
+
+- `M109` (Set extruder temp and wait) → wrapped by extruder temp macro
+- `M190` (Set bed temp and wait) → wrapped by bed temp macro
+- `M117` (Display message) → wrapped for compatibility
+- `G28` (Home all axes) → wrapped by conditional homing
+
+**Note:** All original commands remain available with underscore prefix (e.g., `_G28`, `_M109`).
+
+---
+
+## Save Config (save_config.cfg)
+
+The `save_config.cfg` provides utilities for safely saving printer configuration.
+
+### Usage
+
+```gcode
+SAVE_CONFIG              # Save configuration immediately
+SAVE_CONFIG_DELAYED      # Schedule configuration save (useful to avoid Klipper restart loops)
+```
+
+### Delayed Save
+
+Use `SAVE_CONFIG_DELAYED` when making multiple configuration changes that might cause restart loops. It schedules the save to occur after a delay, allowing time for other operations to complete.
+
+---
+
+## Shake&Tune Integration (shaketune.cfg)
+
+The `shaketune.cfg` provides convenient wrappers for the Shake&Tune input shaper analysis tool.
+
+### Installation
+
+This macro requires the [Shake&Tune extension](https://github.com/jdehooog/klippy-shake-tune) to be installed separately.
+
+### Usage
+
+Refer to the [Shake&Tune documentation](https://github.com/jdehooog/klippy-shake-tune) for detailed usage instructions.
+
