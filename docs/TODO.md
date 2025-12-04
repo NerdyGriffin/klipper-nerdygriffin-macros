@@ -18,14 +18,15 @@
   - [ ] Research best practices for Klipper plugin development
 
 ### HEAT_SOAK LED Parametrization
-- [ ] Make LED names configurable via variables instead of hardcoded
-  - Current hardcoded: `panel_right`, `panel_left`, `bed_light`, `toolhead`
-  - Proposed: Add variables like `variable_panel_right_led`, `variable_panel_left_led`, `variable_bed_led`, `variable_toolhead_led`
-  - Allow empty strings to skip non-existent LEDs
-  - Priority: Medium (current gating with `enable_chamber_leds` is acceptable workaround)
-- Consider moving the progress bar animation to a shared helper macro that can be called with different LED names
-- Update _LED_VARS to accept a range of indices instead of just comma-separated lists
+- [x] ~~Make LED names configurable via variables instead of hardcoded~~ **COMPLETED January 2025**
+  - ✅ Unified chamber_map, logo_map, and nozzle_map into single animation loop
+  - ✅ Added configurable start_color and end_color variables (RGBW dicts)
+  - ✅ Fixed COLOR_SCALE to use device_len (works with any chain length)
+  - ✅ Single LEDs fade smoothly across entire duration, multi-LED chains show progress bar
+  - ✅ All LED zones participate in animation (chamber, logo, nozzle)
+- [ ] Update _LED_VARS to accept a range of indices instead of just comma-separated lists
   - e.g. `variable_chamber_map: {'chamber_strip': '1-8'}` instead of `variable_chamber_map: {'chamber_strip': '1,2,3,4,5,6,7,8'}`
+  - Priority: High (current comma-separated syntax works fine, but is tedious for long chains)
 
 ### Filament Management
 - [ ] Consider removing temperature parameter from LOAD/UNLOAD filament macros

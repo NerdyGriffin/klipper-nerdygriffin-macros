@@ -46,12 +46,21 @@ variable_y_calibrated: 116  # V0: 116, VT: 120
 
 ### Status: CONSOLIDATED
 - **Consolidated**: December 2024 (Pre-documentation)
+- **Refactored**: December 2025 (Unified LED animation with configurable colors)
 - **Location**: `macros/heat_soak.cfg`
-- **Features**: Auto sensor detection, dict-based LED mapping, per-printer overrides
-- **LED System**: Implemented with `_LED_VARS` (chamber_map, logo_map, nozzle_map)
+- **Features**: Auto sensor detection, dict-based LED mapping, configurable colors, per-printer overrides
+- **LED System**: Unified animation for chamber_map, logo_map, and nozzle_map with RGBW color interpolation
 
 ### Implementation
 Successfully consolidated with conditional logic for sensor detection and hardware-agnostic LED control.
+
+**December 2025 Enhancement**:
+- Unified all LED zones (chamber, logo, nozzle) into single animation loop
+- Added `variable_start_color` and `variable_end_color` (RGBW dicts) for customizable fade colors
+- Fixed COLOR_SCALE calculation to use `device_len` instead of hardcoded `10`
+- Single LEDs fade smoothly across entire timer duration (no more 10-loop repetition)
+- Multi-LED chains display proper progress bar with per-segment color fade
+- Explicit WHITE=0.0 support for RGBW LED strips
 
 **Approach**: Dynamic sensor detection + optional LED support
 
