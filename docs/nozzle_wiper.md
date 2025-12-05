@@ -1,10 +1,25 @@
-# Nozzle Wiper Configuration (nozzle_wiper.cfg)
+# Nozzle Wiper (nozzle_wiper.cfg)
 
 The `nozzle_wiper.cfg` provides servo-actuated nozzle cleaning with a purge bucket and brush. All hardware values are configurable via printer-specific overrides.
 
-## Required Hardware Setup
+## Usage
 
-First, define the servo in your `printer.cfg`:
+```gcode
+CLEAN_NOZZLE            # Full routine: deploy → purge → wipe → retract
+NW_PURGE                # Purge filament only (no wipe)
+NW_WIPE                 # Wipe nozzle only (no purge)
+NW_TEST_CLEAN_NOZZLE    # Test macro: heats to 240°C, homes, then cleans (for calibration)
+```
+
+> **Warning**:
+>
+> **Bucket positions MUST be calibrated before use.** The macro intentionally sets bucket positions to `-1000` by default to force calibration. You must override these values in your `printer.cfg` before the macro will function correctly.
+
+## Configuration
+
+### Required: Servo Hardware
+
+Define the servo in your `printer.cfg`:
 
 ```ini
 [servo wipeServo]
@@ -14,9 +29,9 @@ minimum_pulse_width: 0.0005
 maximum_pulse_width: 0.0025
 ```
 
-## Required Position Calibration
+### Required: Bucket Position
 
-After including `nozzle_wiper.cfg`, override the bucket and brush positions in your `printer.cfg`:
+After including `nozzle_wiper.cfg`, override the bucket positions:
 
 ```ini
 [gcode_macro NW_BUCKET_POS]
@@ -25,7 +40,7 @@ variable_y: 40    # Calibrated Y position for bucket center
 variable_z: 60    # Safe Z height for cleaning operations
 ```
 
-## Optional: Customize Brush Geometry
+### Optional: Brush Geometry
 
 Override brush dimensions and wiping behavior:
 
@@ -45,7 +60,7 @@ variable_prep_spd_xy: 30000    # Travel speed (mm/min)
 variable_wipe_spd_xy: 30000    # Wiping speed (mm/min)
 ```
 
-## Optional: Customize Purge Parameters
+### Optional: Purge Parameters
 
 ```ini
 [gcode_macro NW_PURGE]
@@ -56,11 +71,9 @@ variable_purge_ret: 2          # Retract amount after purge (mm)
 variable_ooze_dwell: 2         # Dwell time after retract (seconds)
 ```
 
-## Usage
+### Calibration Steps
 
-```gcode
-CLEAN_NOZZLE            # Full routine: deploy → purge → wipe → retract
-NW_TEST_CLEAN_NOZZLE    # Test macro: heats to 240°C, homes, then cleans (for calibration)
-```
-
-**Calibration Note:** The macro intentionally sets bucket positions to `-1000` by default to force calibration. You must override these values in your `printer.cfg` before using the macro.
+1. The macro intentionally sets bucket positions to `-1000` by default to force calibration
+2. Use `NW_TEST_CLEAN_NOZZLE` to test your setup after adding initial position estimates
+3. Adjust bucket and brush positions until the nozzle correctly reaches all positions
+4. Verify positions are correct and the nozzle cleans without collisions

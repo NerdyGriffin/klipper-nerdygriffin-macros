@@ -110,11 +110,6 @@ variable_nozzle_map: {'toolhead': '2,3'}
 gcode:
 ```
 
-**For detailed configuration:**
-- [`docs/CONFIGURATION.md`](docs/CONFIGURATION.md) - Full configuration examples
-- [`docs/LED_VARIABLES.md`](docs/LED_VARIABLES.md) - LED system setup guide
-- [`docs/USAGE.md`](docs/USAGE.md) - Usage examples and workflows
-
 ## Hardware Compatibility
 
 ### AFC (Armored Filament Changer)
@@ -149,10 +144,31 @@ Dict-based `_LED_VARS` system supports any combination of neopixels across toolh
 
 ## Documentation
 
-- [Configuration Guide](docs/CONFIGURATION.md) - Detailed configuration examples
-- [Usage Guide](docs/USAGE.md) - Macro usage and workflows
-- [LED Variables](docs/LED_VARIABLES.md) - LED system configuration
-- [Consolidation Roadmap](docs/consolidation_roadmap.md) - Development history
+| Macro File | Description |
+|-------|-------------|
+| [auto_pid.cfg](docs/auto_pid.md) | Extruder and bed heater PID tuning |
+| [beeper.cfg](docs/beeper.md) | Hardware-specific pin setup for audio feedback |
+| [client_macros.cfg](docs/client_macros.md) | Mainsail/Fluidd pause/resume/cancel integration |
+| [filament_management.cfg](docs/filament_management.md) | Load, unload, and purge with AFC auto-detect |
+| [heat_soak.cfg](docs/heat_soak.md) | Chamber preheating with LED animations |
+| [maintenance_macros.cfg](docs/maintenance_macros.md) | Belt tension calibration and nozzle change utilities |
+| [nozzle_wiper.cfg](docs/nozzle_wiper.md) | Servo-based nozzle cleaning with calibration guide |
+| [print_macros.cfg](docs/print_macros.md) | PRINT_START/PRINT_END with hardware detection |
+| [rename_existing.cfg](docs/rename_existing.md) | Safe G-code command overrides |
+| [save_config.cfg](docs/save_config.md) | Configuration persistence and delayed saves |
+| [shaketune.cfg](docs/shaketune.md) | Input shaper analysis wrappers |
+| [shutdown.cfg](docs/shutdown.md) | Safe shutdown and host reboot operations |
+| [status_macros.cfg](docs/status_macros.md) | LED system setup and customization |
+| [tacho_macros.cfg](docs/tacho_macros.md) | Fan tachometer monitoring and pre-flight checks |
+| [utility_macros.cfg](docs/utility_macros.md) | Common helper functions and utilities |
+
+## Development
+
+| Document | Description |
+|----------|-------------|
+| [dev/consolidation_roadmap.md](docs/dev/consolidation_roadmap.md) | Development history and planning |
+| [dev/STYLE_GUIDE.md](docs/dev/STYLE_GUIDE.md) | Documentation formatting standards |
+| [dev/TODO.md](docs/dev/TODO.md) | Development task tracking |
 
 ## Contributing
 
