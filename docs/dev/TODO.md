@@ -28,9 +28,6 @@
 - [ ] Consider removing temperature parameter from LOAD/UNLOAD filament macros
   - Context: latest mainsail/KlipperScreen/AFC versions bypass this or require extruder above min_print_temp before macro runs
 
-### Belt Tension Macro cleanup
-- [ ] Remove SPEED, ACCEL, ITERATIONS, MIN_CRUISE_RATIO, BOUND, SMALLPATTERNSIZE parameters from `SETTLE_BELT_TENSION` - not needed, hold-over from source
-
 ## Backlog
 
 ### Documentation & Code Quality

@@ -4,12 +4,14 @@ The `rename_existing.cfg` safely overrides Klipper built-in commands by renaming
 
 ## Affected Commands
 
-| Original | Renamed To | Purpose |
-|----------|------------|---------|
-| `M109` | `_M109` | Set extruder temp and wait |
-| `M190` | `_M190` | Set bed temp and wait |
-| `M117` | `_M117` | Display message to both LCD and console |
-| `G28` | `_G28` | Home all axes |
+| Macro | Purpose |
+|----------|----------|
+| `M0` | Alias for Marlin-style "Unconditional stop" |
+| `M205` | Alias for Marlin-style "Set Advanced Settings" |
+| `M226` | Alias for Marlin-style "Wait for Pin State" |
+| `M109` | Add `STATUS_HEATING` support |
+| `M190` | Add `STATUS_HEATING` support |
+| `M117` | Display message to both LCD and console |
 
 > **Note**:
 >
