@@ -29,5 +29,5 @@ Detailed configuration and customization instructions for klipper-nerdygriffin-m
 - **[Shake&Tune Integration](macros/shaketune.md)** - Input shaper analysis wrappers
 
 ### System Setup
-- **[LED Configuration](LED_SETUP.md)** - Status LED system setup and customization
-- **[Usage Guide](USAGE.md)** - Workflow examples and common tasks
+- **[LED Configuration](macros/status_macros.md)** - Status LED system setup and customization
+

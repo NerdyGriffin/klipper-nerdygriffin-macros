@@ -1,5 +1,7 @@
 # Klipper-NerdyGriffin-Macros: Future Consolidation Roadmap
 
+> **Note:** This document is for internal development tracking and planning. End users should refer to the main [README](../README.md) and [README](README.md) guides.
+
 ## Overview
 Analysis of remaining printer-specific configs to identify opportunities for hardware-agnostic consolidation while maintaining printer-specific customization through variables.
 
