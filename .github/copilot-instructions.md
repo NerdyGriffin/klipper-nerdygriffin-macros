@@ -61,17 +61,18 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
   ```
 
 ## External Dependencies & Expectations
-- Provided externally by printer configs or other repos:
-  - `_CG28` conditional homing (required)
-  - `_CLIENT_VARIABLE` for Mainsail/Fluidd integration (optional)
-  - Filament sensors (e.g., `encoder_sensor`) - optional
-  - AFC macros (`AFC_PARK`, `AFC_BRUSH`, `AFC_CUT`) - auto-detected if installed
-  - Shake&Tune install for `shaketune.cfg` use - optional
 
-- Provided by this plugin:
-  - `STATUS_*` macros in `status_macros.cfg`
-  - `RESET_STATUS` in `status_macros.cfg`
-  - `_AFTER_PAUSE`, `_BEFORE_RESUME`, `_BEFORE_CANCEL` in `client_macros.cfg`
+For a comprehensive list of dependencies and compatibility requirements, see [README.md#dependencies](../README.md#dependencies).
+
+**Developer reference — file locations within this plugin:**
+- `STATUS_*` macros → `macros/status_macros.cfg`
+- `RESET_STATUS` → `macros/status_macros.cfg`
+- `_AFTER_PAUSE`, `_BEFORE_RESUME`, `_BEFORE_CANCEL` → `macros/client_macros.cfg`
+
+**Key conditional integrations (auto-detected):**
+- AFC macros (`AFC_PARK`, `AFC_BRUSH`, `AFC_CUT`) — check with `{% if printer['gcode_macro AFC_PARK'] is defined %}`
+- Filament sensors (`encoder_sensor`) — check with `{% if 'filament_switch_sensor encoder_sensor' in printer.configfile.config %}`
+- Shake&Tune macros — check with `{% if printer['gcode_macro SHAKETUNE_CALIBRATE'] is defined %}`
 
 ## Common Workflows
 - Install and link:
@@ -118,11 +119,12 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 - Do not introduce board-specific pins; document required overrides in README/macro headers.
 
 ## Documentation Structure
-- `README.md` - Concise overview, installation, and feature list
-- `docs/CONFIGURATION.md` - Detailed configuration examples
-- `docs/USAGE.md` - Usage examples and workflows
-- `docs/LED_VARIABLES.md` - LED system setup guide
-- `docs/consolidation_roadmap.md` - Development history
+- `README.md` - User-facing overview, installation, and feature list
+- `docs/README.md` - Configuration guide with macro documentation index
+- `docs/macros/*.md` - Individual macro configuration documentation
+- `docs/macros/status_macros.md` - LED system setup and configuration
+- `docs/dev/consolidation_roadmap.md` - Development history and consolidation planning
+- `docs/dev/STYLE_GUIDE.md` - Documentation style and formatting standards
 
 ## Pointers
 - Example consumer implementations: printer repos that symlink this directory and override variables/macros in `printer.cfg`.
@@ -130,3 +132,4 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 
 ## Ease of use
 - If I repeated request actions that contradict these instructions, propose ways to improve these instructions.
+- **Important:** Do not reference `copilot-instructions.md` in user-facing documentation (README.md, docs/*.md). These are AI agent instructions, not user docs. User-facing docs should be self-contained.
