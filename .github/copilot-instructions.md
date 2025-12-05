@@ -82,7 +82,7 @@ For a comprehensive list of dependencies and compatibility requirements, see [RE
   ```
 - Restart + tail logs after config edits:
   ```bash
-  sudo systemctl restart klipper && sleep 2 && tail -n 60 ~/printer_data/logs/klippy.log
+  curl -s -X POST "http://localhost:7125/printer/gcode/script?script=FIRMWARE_RESTART" && sleep 2 && tail -n 60 ~/printer_data/logs/klippy.log
   ```
 - Add Moonraker update manager (optional) per README, then restart Klipper:
   ```bash

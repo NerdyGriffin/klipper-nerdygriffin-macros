@@ -45,7 +45,7 @@ variable_leds: {
 - Mixed format `'1-3,5,7-10'`: Combine ranges and individual indices
 
 **Custom Groups:**
-You can define additional groups beyond logo/nozzle/chamber. Use them with `_SET_LEDS MAP=your_group`.
+You can define additional groups beyond logo/nozzle/chamber. Use them with `_SET_LEDS_BY_NAME LEDS=your_group`.
 
 ### Configuration Steps
 
@@ -118,13 +118,13 @@ variable_leds: {
     }
 ```
 
-Use custom groups with: `_SET_LEDS MAP=accent RED=0.5 GREEN=0 BLUE=1`
+Use custom groups with: `_SET_LEDS_BY_NAME LEDS=accent RED=0.5 GREEN=0 BLUE=1`
 
 ## Internal Macros
 
 These helper macros are called by status macros and should not be called directly:
 
-- `_SET_LEDS MAP=<group>` - Sets color on all devices in the specified group
+- `_SET_LEDS_BY_NAME LEDS=<group>` - Sets color on all devices in the specified group (supports `TRANSMIT=0` to defer sync)
 - `SET_NOZZLE_LEDS_ON` / `SET_CHAMBER_LEDS_ON` - Convenience wrappers for common LED states
 
 > **Note**:
