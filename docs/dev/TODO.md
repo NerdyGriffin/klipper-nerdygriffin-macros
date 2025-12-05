@@ -36,7 +36,6 @@
 
 ## Brainstorming
 
-- [ ] `SET_COMPLETE_SHUTDOWN` default behavior should be `ENABLE=1` so it can be called without parameter to enable post-print shutdown
 - [ ] Potential shared homing helpers (conditional stallguard current adjust)
 - [ ] Consistent status display/message patterns (post LED standardization)
 - [ ] `homing.cfg` partial abstraction (sensorless current + probe sequencing)
