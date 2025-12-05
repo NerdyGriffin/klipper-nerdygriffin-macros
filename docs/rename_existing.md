@@ -9,9 +9,13 @@ The `rename_existing.cfg` safely overrides Klipper built-in commands by renaming
 | `M0` | Alias for Marlin-style "Unconditional stop" |
 | `M205` | Alias for Marlin-style "Set Advanced Settings" |
 | `M226` | Alias for Marlin-style "Wait for Pin State" |
-| `M109` | Add `STATUS_HEATING` support |
-| `M190` | Add `STATUS_HEATING` support |
-| `M117` | Display message to both LCD and console |
+| `M109` | Add support for `STATUS_MACROS` and `SET_DISPLAY_TEXT` |
+| `M190` | Add support for `STATUS_MACROS` and `SET_DISPLAY_TEXT` |
+| `SET_HEATER_TEMPERATURE` | Add support for `STATUS_MACROS` and `SET_DISPLAY_TEXT` |
+| `TURN_OFF_HEATERS` | Add support for `STATUS_MACROS` |
+| `M117` | Override the default M117 command to echo the message to the console. |
+
+** DOCUMENTATION AND CODE NEEDS REVIEW **
 
 > **Note**:
 >

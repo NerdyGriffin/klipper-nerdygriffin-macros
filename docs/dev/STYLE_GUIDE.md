@@ -175,7 +175,7 @@ The `## Examples` section should contain:
 
    ```ini
    [gcode_macro HEAT_SOAK]
-   variable_max_chamber_temp: 58  # V0 chambers struggle above 58°C
+   variable_max_chamber_target: 58  # V0 chambers struggle above 58°C
    ```
 
    ### Advanced Setup with Multiple Sensors
@@ -216,7 +216,7 @@ The `## Examples` section should contain:
 
 ### Inline Code
 - Use backticks for: variable names, macro names, file names, config section names
-  - ✅ `variable_max_chamber_temp`, `HEAT_SOAK`, `printer.cfg`, `[gcode_macro]`
+  - ✅ `variable_max_chamber_target`, `HEAT_SOAK`, `printer.cfg`, `[gcode_macro]`
 
 ## Blockquote Standards
 
@@ -269,7 +269,7 @@ If a config file has many configurable variables, you may include a list:
 ## Configuration
 
 Default variables (override in printer.cfg):
-- `variable_max_chamber_temp: 60` - Maximum chamber temp achievable
+- `variable_max_chamber_target: 60` - Maximum chamber temp achievable
 - `variable_ext_assist_multiplier: 4` - Extruder assist multiplier
 - `variable_chamber_sensor_name: ""` - Explicit sensor name (empty = auto-detect)
 ```

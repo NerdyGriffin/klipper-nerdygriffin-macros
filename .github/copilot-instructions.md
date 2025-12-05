@@ -48,7 +48,7 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 - Override variables locally (do not edit this repo):
   ```ini
   [gcode_macro HEAT_SOAK]
-  variable_max_chamber_temp: 60
+  variable_max_chamber_target: 60
   variable_chamber_sensor_name: "nitehawk-36"
 
   [gcode_macro SETTLE_BELT_TENSION]
@@ -114,7 +114,7 @@ For a comprehensive list of dependencies and compatibility requirements, see [RE
     - Macro names and parameters should be UPPER_SNAKE_CASE (e.g., `LOAD_FILAMENT`).
   - **Variables**
     - Macro variables are defined with the prefix `variable_` (e.g., `variable_x_park`), but referenced without it (e.g., `{x_park}`).
-    - Variable names should be lower_snake_case (e.g., `variable_max_chamber_temp`).
+    - Variable names should be lower_snake_case (e.g., `variable_max_chamber_target`).
     - Variable names may not contain any upper case characters.
 - Do not introduce board-specific pins; document required overrides in README/macro headers.
 
@@ -128,7 +128,7 @@ For a comprehensive list of dependencies and compatibility requirements, see [RE
 
 ## Pointers
 - Example consumer implementations: printer repos that symlink this directory and override variables/macros in `printer.cfg`.
-- This plugin is in active development; breaking changes may occur before v1.0.0.
+- This plugin is in active development; Large scale refactoring is allowed and encouraged to improve maintainability and usability. Do not worry about breaking changes.
 
 ## Ease of use
 - If I repeated request actions that contradict these instructions, propose ways to improve these instructions.

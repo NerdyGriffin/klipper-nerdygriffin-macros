@@ -22,7 +22,7 @@ Override these variables in your `printer.cfg`:
 
 ```ini
 [gcode_macro HEAT_SOAK]
-variable_max_chamber_temp: 58           # Maximum chamber temp achievable via passive heating
+variable_max_chamber_target: 58           # Maximum chamber temp achievable via passive heating
 variable_ext_assist_multiplier: 5       # Extruder assist temp multiplier (chamber_temp × multiplier, capped at 200°C)
 variable_chamber_sensor_name: "chamber" # Explicit sensor name (empty = auto-detect)
 variable_frame_rate: 12                 # LED animation frame rate in Hz
@@ -50,7 +50,7 @@ For V0 printers with measured thermal limits and stronger extruder assist:
 
 ```ini
 [gcode_macro HEAT_SOAK]
-variable_max_chamber_temp: 58           # V0 measured limit
+variable_max_chamber_target: 58           # V0 measured limit
 variable_ext_assist_multiplier: 5       # Stronger extruder assist for V0
 variable_chamber_sensor_name: "chamber" # Explicit sensor name (if available)
 ```

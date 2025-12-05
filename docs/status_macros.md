@@ -20,25 +20,32 @@ Status macros are automatically called by other plugin macros. These macros have
 
 ## Configuration
 
-The `_LED_VARS` macro defines three logical LED groups via dicts:
+The `_LED_VARS` macro defines LED groups via a single nested dict:
 
 ```ini
 [gcode_macro _LED_VARS]
-# Dicts: key = neopixel device name, value = index or comma-string of indices
-variable_chamber_map: {}                    # LEDs for chamber/enclosure feedback
-variable_logo_map: {'toolhead': 1}          # LEDs for status logo (bed light or toolhead pixel)
-variable_nozzle_map: {'toolhead': '2,3'}    # LEDs for nozzle status
+# Nested dict: {'group_name': {'neopixel_name': 'index_spec', ...}, ...}
+variable_leds: {
+        'logo': {'toolhead': 1},
+        'nozzle': {'toolhead': '2-3'},
+        'chamber': {}
+    }
 ```
 
 **LED Groups:**
-- `chamber_map`: Lights up in sequence during `HEAT_SOAK` (red→green progress bar)
-- `logo_map`: Fades during `HEAT_SOAK` and displays status color in `STATUS_*` macros
-- `nozzle_map`: White during printing, status color otherwise
+- `chamber`: Lights up in sequence during `HEAT_SOAK` (red→green progress bar)
+- `logo`: Fades during `HEAT_SOAK` and displays status color in `STATUS_*` macros
+- `nozzle`: White during printing, status color otherwise
 
 **Index Values:**
 - Empty string `''` or `0`: Apply to entire device (no INDEX parameter)
 - Single integer `1`: Apply to specific LED index
 - Comma-separated string `'2,3'`: Apply to multiple indices
+- Range notation `'1-8'`: Apply to indices 1 through 8
+- Mixed format `'1-3,5,7-10'`: Combine ranges and individual indices
+
+**Custom Groups:**
+You can define additional groups beyond logo/nozzle/chamber. Use them with `_SET_LEDS MAP=your_group`.
 
 ### Configuration Steps
 
@@ -64,33 +71,24 @@ For printers with only status indicators (no chamber animation desired):
 
 ```ini
 [gcode_macro _LED_VARS]
-variable_logo_map: {'toolhead': 1}
-variable_nozzle_map: {'toolhead': '2,3'}
+variable_leds: {
+        'logo': {'toolhead': 1},
+        'nozzle': {'toolhead': '2-3'},
+        'chamber': {}
+    }
 ```
-
-**Note:** Only override variables that differ from defaults. Since `variable_chamber_map` defaults to `{}`, it's omitted here.
-
-### Simple Setup: Toolhead LEDs Only (With Chamber Animation)
-
-For single-toolhead printers (V0.3048 or any printer with only toolhead LEDs):
-
-```ini
-[gcode_macro _LED_VARS]
-variable_logo_map: {'toolhead': 1}
-variable_nozzle_map: {'toolhead': '2,3'}
-```
-
-**Note:** This is identical to the minimal setup. Chamber animation uses the `logo_map` for visual feedback on toolhead-only printers.
 
 ### Intermediate Setup: Toolhead + Bed + Chamber Strips
 
-For printers with bed light and chamber LED strips (e.g., V0 with future chamber LEDs):
+For printers with bed light and chamber LED strips:
 
 ```ini
 [gcode_macro _LED_VARS]
-variable_chamber_map: {'chamber_left': '', 'chamber_right': ''}
-variable_logo_map: {'bed_light': '', 'toolhead': 1}
-variable_nozzle_map: {'toolhead': '2,3'}
+variable_leds: {
+        'logo': {'bed_light': '', 'toolhead': 1},
+        'nozzle': {'toolhead': '2-3'},
+        'chamber': {'chamber_left': '', 'chamber_right': ''}
+    }
 ```
 
 ### Advanced Setup: Multi-Segment Chamber Strip
@@ -99,19 +97,35 @@ For chamber strips with individually addressable LEDs (recommended for visual pr
 
 ```ini
 [gcode_macro _LED_VARS]
-variable_chamber_map: {'chamber_strip': '1,2,3,4,5,6,7,8'}
-variable_logo_map: {'toolhead': 1}
-variable_nozzle_map: {'toolhead': '2,3'}
+variable_leds: {
+        'logo': {'toolhead': 1},
+        'nozzle': {'toolhead': '2-3'},
+        'chamber': {'chamber_strip': '1-8'}
+    }
 ```
+
+### Custom Groups
+
+You can add custom LED groups for special purposes:
+
+```ini
+[gcode_macro _LED_VARS]
+variable_leds: {
+        'logo': {'toolhead': 1},
+        'nozzle': {'toolhead': '2-3'},
+        'chamber': {},
+        'accent': {'panel_left': '1-4', 'panel_right': '1-4'}
+    }
+```
+
+Use custom groups with: `_SET_LEDS MAP=accent RED=0.5 GREEN=0 BLUE=1`
 
 ## Internal Macros
 
 These helper macros are called by status macros and should not be called directly:
 
-- `_SET_LOGO_LEDS` - Sets color on all devices in `logo_map`
-- `_SET_NOZZLE_LEDS` - Sets color on all devices in `nozzle_map`
-- `_SET_CHAMBER_LEDS` - Sets color on all devices in `chamber_map`
-- `SET_NOZZLE_LEDS_ON` / `SET_NOZZLE_LEDS_OFF` - Convenience wrappers for nozzle LEDs
+- `_SET_LEDS MAP=<group>` - Sets color on all devices in the specified group
+- `SET_NOZZLE_LEDS_ON` / `SET_CHAMBER_LEDS_ON` - Convenience wrappers for common LED states
 
 > **Note**:
 >

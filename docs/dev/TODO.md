@@ -15,9 +15,12 @@
   - ✅ Fixed COLOR_SCALE to use device_len (works with any chain length)
   - ✅ Single LEDs fade smoothly across entire duration, multi-LED chains show progress bar
   - ✅ All LED zones participate in animation (chamber, logo, nozzle)
-- [ ] Update _LED_VARS to accept a range of indices instead of just comma-separated lists
-  - e.g. `variable_chamber_map: {'chamber_strip': '1-8'}` instead of `variable_chamber_map: {'chamber_strip': '1,2,3,4,5,6,7,8'}`
-  - Priority: High (current syntax works fine, but is tedious for long chains)
+- [x] ~~Update _LED_VARS to accept a range of indices instead of just comma-separated lists~~ **COMPLETED December 2025**
+  - ✅ Supports `'1-8'` range notation
+  - ✅ Supports mixed format `'1-3,5,7-10'`
+  - ✅ Refactored to single nested `variable_leds` dict (supports custom groups)
+  - ✅ Consolidated `_SET_LOGO_LEDS`, `_SET_NOZZLE_LEDS`, `_SET_CHAMBER_LEDS` into unified `_SET_LEDS MAP=<group>`
+  - ✅ Updated status_macros.cfg, heat_soak.cfg, and docs
 - [ ] **Color palettes**: Add `variable_color_*` dicts (e.g., `ready_color`, `heating_color`) for per-printer color tuning
   - Add inline dict examples for color palettes in `status_macros.md` documentation
   - Pattern: `variable_ready_color: {'r': 0.2, 'g': 0.2, 'b': 0.2, 'w': 0.1}`
