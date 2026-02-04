@@ -5,11 +5,10 @@
 ### Documentation Review & Updates
 
 - [ ] **rename_existing.cfg & rename_existing.md**: Review and update documentation to match actual command overrides (M18, M84, etc.)
-- [ ] **homing.cfg documentation**: Create user documentation for sensorless homing helpers and conditional homing utilities
-- [ ] **gcode_features.cfg documentation**: Create user documentation for optional G-code feature enablement
-- [ ] **status_macros variable updates**: Verify and document current `variable_leds` dict structure (vs legacy maps)
-- [ ] **README macro list**: Add undocumented macros (homing.cfg, gcode_features.cfg) to included macros section and documentation table
-
+- [x] **homing.cfg documentation**: Create user documentation for sensorless homing helpers and conditional homing utilities
+- [x] **gcode_features.cfg documentation**: Create user documentation for optional G-code feature enablement
+- [x] **status_macros variable updates**: Verify and document current `variable_leds` dict structure (vs legacy maps)
+- [x] **README macro list**: Add undocumented macros (homing.cfg, gcode_features.cfg) to included macros section and documentation table
 
 ## Next
 
