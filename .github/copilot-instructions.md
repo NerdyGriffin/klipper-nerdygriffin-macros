@@ -22,13 +22,14 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 - `macros/client_macros.cfg`: Pause/Resume/Cancel hooks for Mainsail/Fluidd with optional AFC handling.
 - `macros/heat_soak.cfg`: Chamber preheat via bed+hotend assist, sensor auto-detect, optional LED animations.
 - `macros/auto_pid.cfg`: PID helpers for extruder/bed.
+- `macros/gcode_features.cfg`: Enables advanced G-code features (force_move, pause/resume, firmware retraction, arcs, etc.).
+- `macros/homing.cfg`: Sensorless and conditional homing helpers with edge clearance and current management.
 - `macros/maintenance_macros.cfg`: Nozzle change, belt settling (`SETTLE_BELT_TENSION`).
 - `macros/rename_existing.cfg`: Safe overrides (M109/M190/M117...).
 - `macros/save_config.cfg`: Safe SAVE_CONFIG with delayed variant.
 - `macros/shaketune.cfg`: Shake&Tune wrapper (optional dependency installed elsewhere).
 - `macros/shutdown.cfg`, `macros/tacho_macros.cfg`, `macros/utility_macros.cfg`: Safety, fan preflight, helpers.
 - `install.sh`: Creates symlink, optional Moonraker update_manager entry.
-- Other files will be added over time.
 
 ## Macro Development Patterns
 - Conditional hardware calls: check for macro existence before use, e.g. `{% if printer['gcode_macro AFC_BRUSH'] is defined %} AFC_BRUSH {% endif %}`.
@@ -120,9 +121,9 @@ For a comprehensive list of dependencies and compatibility requirements, see [RE
 
 ## Documentation Structure
 - `README.md` - User-facing overview, installation, and feature list
-- `docs/README.md` - Configuration guide with macro documentation index
-- `docs/macros/*.md` - Individual macro configuration documentation
-- `docs/macros/status_macros.md` - LED system setup and configuration
+- `docs/` - Configuration guide with macro documentation index
+- `docs/auto_pid.md`, `docs/beeper.md`, `docs/client_macros.md`, etc. - Individual macro configuration documentation
+- `docs/status_macros.md` - LED system setup and configuration
 - `docs/dev/consolidation_roadmap.md` - Development history and consolidation planning
 - `docs/dev/STYLE_GUIDE.md` - Documentation style and formatting standards
 
