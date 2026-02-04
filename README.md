@@ -17,7 +17,9 @@ Hardware-agnostic Klipper macros for Voron printers with automatic AFC detection
 - `beeper.cfg` - M300 beeper/tone support
 - `client_macros.cfg` - Mainsail/Fluidd integration with AFC support
 - `filament_management.cfg` - Load/unload/purge operations
+- `gcode_features.cfg` - Enables advanced G-code features (force_move, pause/resume, arcs, etc.)
 - `heat_soak.cfg` - Chamber preheating with sensor auto-detection
+- `homing.cfg` - Sensorless and conditional homing helpers
 - `maintenance_macros.cfg` - Belt settling, nozzle changes
 - `nozzle_wiper.cfg` - Servo-actuated nozzle purge bucket and brush system
 - `print_macros.cfg` - PRINT_START/PRINT_END with AFC, Beacon, and bed mesh support
@@ -104,9 +106,11 @@ gcode:
 
 # LED configuration (required for status_macros.cfg)
 [gcode_macro _LED_VARS]
-variable_chamber_map: {}
-variable_logo_map: {'toolhead': 1}
-variable_nozzle_map: {'toolhead': '2,3'}
+variable_leds: {
+    'logo': {'toolhead': 1},
+    'nozzle': {'toolhead': '2-3'},
+    'chamber': {}
+}
 gcode:
 ```
 
@@ -150,7 +154,9 @@ Dict-based `_LED_VARS` system supports any combination of neopixels across toolh
 | [beeper.cfg](docs/beeper.md) | Hardware-specific pin setup for audio feedback |
 | [client_macros.cfg](docs/client_macros.md) | Mainsail/Fluidd pause/resume/cancel integration |
 | [filament_management.cfg](docs/filament_management.md) | Load, unload, and purge with AFC auto-detect |
+| [gcode_features.cfg](docs/gcode_features.md) | Enables advanced G-code features (force_move, pause/resume, arcs, etc.) |
 | [heat_soak.cfg](docs/heat_soak.md) | Chamber preheating with LED animations |
+| [homing.cfg](docs/homing.md) | Sensorless and conditional homing helpers |
 | [maintenance_macros.cfg](docs/maintenance_macros.md) | Belt tension calibration and nozzle change utilities |
 | [nozzle_wiper.cfg](docs/nozzle_wiper.md) | Servo-based nozzle cleaning with calibration guide |
 | [print_macros.cfg](docs/print_macros.md) | PRINT_START/PRINT_END with hardware detection |
