@@ -4,7 +4,8 @@ The maintenance macros provide utilities for printer maintenance tasks like belt
 
 ## Belt Frequency Reference
 
-Use this table to determine your target belt frequency based on belt span (distance between idler centers):
+Use this table to determine your target belt frequency based on belt span
+(distance from the X/Y idler centers to the front idler centers):
 
 | Belt Span | Target Frequency |
 | --------- | ---------------- |
