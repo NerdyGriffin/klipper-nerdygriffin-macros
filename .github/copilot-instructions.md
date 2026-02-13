@@ -72,7 +72,7 @@ For a comprehensive list of dependencies and compatibility requirements, see [RE
 
 **Key conditional integrations (auto-detected):**
 - AFC macros (`AFC_PARK`, `AFC_BRUSH`, `AFC_CUT`) — check with `{% if printer['gcode_macro AFC_PARK'] is defined %}`
-- Filament sensors (`encoder_sensor`) — check with `{% if 'filament_switch_sensor encoder_sensor' in printer.configfile.config %}`
+- Filament sensors (`encoder_sensor`) — check with `{% if 'filament_motion_sensor encoder_sensor' in printer.configfile.config %}`
 - Shake&Tune macros — check with `{% if printer['gcode_macro SHAKETUNE_CALIBRATE'] is defined %}`
 
 ## Common Workflows
