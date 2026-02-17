@@ -21,8 +21,9 @@ Hardware-agnostic Klipper macros for Voron printers with automatic AFC detection
 - `gcode_features.cfg` - Enables advanced G-code features (force_move, pause/resume, arcs, etc.)
 - `heat_soak.cfg` - Chamber preheating with sensor auto-detection
 - `homing.cfg` - Sensorless and conditional homing helpers
-- `maintenance_macros.cfg` - Nozzle changes and developer diagnostics
+- `maintenance_macros.cfg` - Nozzle cleaning, nozzle changes, and developer diagnostics
 - `nozzle_wiper.cfg` - Servo-actuated nozzle purge bucket and brush system
+- `positioning_macros.cfg` - Toolhead positioning helpers (CENTER, and future FRONT/REAR/TOP)
 - `print_macros.cfg` - PRINT_START/PRINT_END with AFC, Beacon, and bed mesh support
 - `rename_existing.cfg` - Enhanced G-code overrides (M109, M190, M117)
 - `save_config.cfg` - Safe SAVE_CONFIG with print-state detection
@@ -30,7 +31,6 @@ Hardware-agnostic Klipper macros for Voron printers with automatic AFC detection
 - `shutdown.cfg` - Safe shutdown with conditional cooling
 - `status_macros.cfg` - Hardware-agnostic LED status patterns
 - `tacho_macros.cfg` - Part cooling fan preflight checks
-- `utility_macros.cfg` - Utility helpers (CENTER, DEEP_CLEAN_NOZZLE, etc.)
 
 ## Installation
 
@@ -78,6 +78,7 @@ The install script will:
    [include nerdygriffin-macros/heat_soak.cfg]
    [include nerdygriffin-macros/maintenance_macros.cfg]
    [include nerdygriffin-macros/nozzle_wiper.cfg]        # Optional: Requires servo hardware
+   [include nerdygriffin-macros/positioning_macros.cfg]
    [include nerdygriffin-macros/print_macros.cfg]        # Optional: PRINT_START/PRINT_END
    [include nerdygriffin-macros/rename_existing.cfg]
    [include nerdygriffin-macros/save_config.cfg]
@@ -85,7 +86,6 @@ The install script will:
    [include nerdygriffin-macros/shutdown.cfg]
    [include nerdygriffin-macros/status_macros.cfg]
    [include nerdygriffin-macros/tacho_macros.cfg]
-   [include nerdygriffin-macros/utility_macros.cfg]
    ```
 
 4. **Restart Klipper:**
@@ -158,7 +158,7 @@ Dict-based `_LED_VARS` system supports any combination of neopixels across toolh
 | [gcode_features.cfg](docs/gcode_features.md) | Enables advanced G-code features (force_move, pause/resume, arcs, etc.) |
 | [heat_soak.cfg](docs/heat_soak.md) | Chamber preheating with LED animations |
 | [homing.cfg](docs/homing.md) | Sensorless and conditional homing helpers |
-| [maintenance_macros.cfg](docs/maintenance_macros.md) | Nozzle change utilities and developer diagnostics |
+| [maintenance_macros.cfg](docs/maintenance_macros.md) | Nozzle cleaning, nozzle changes, and developer diagnostics |
 | [nozzle_wiper.cfg](docs/nozzle_wiper.md) | Servo-based nozzle cleaning with calibration guide |
 | [print_macros.cfg](docs/print_macros.md) | PRINT_START/PRINT_END with hardware detection |
 | [rename_existing.cfg](docs/rename_existing.md) | Safe G-code command overrides |
@@ -167,7 +167,7 @@ Dict-based `_LED_VARS` system supports any combination of neopixels across toolh
 | [shutdown.cfg](docs/shutdown.md) | Safe shutdown and host reboot operations |
 | [status_macros.cfg](docs/status_macros.md) | LED system setup and customization |
 | [tacho_macros.cfg](docs/tacho_macros.md) | Fan tachometer monitoring and pre-flight checks |
-| [utility_macros.cfg](docs/utility_macros.md) | Common helper functions and utilities |
+| [positioning_macros.cfg](docs/positioning_macros.md) | Toolhead positioning helpers |
 
 ## Development
 
