@@ -16,10 +16,14 @@ These sections are enabled automatically when you include `gcode_features.cfg`:
 ### Macros
 
 ```gcode
-UNSAFE_LOWER_BED    # Lower the bed 10mm without homing (uses SET_KINEMATIC_POSITION)
+UNSAFE_LOWER_BED [DISTANCE=10]    # Lower the bed without homing (uses SET_KINEMATIC_POSITION)
 ```
 
-- `UNSAFE_LOWER_BED` — Emergency recovery macro. Bypasses homing by faking Z=0 with `SET_KINEMATIC_POSITION`, then lowers the bed 10mm and disables motors. Use when the printer is in an unknown state and you need to clear the nozzle from the bed.
+- `UNSAFE_LOWER_BED` — Emergency recovery macro. Bypasses homing by faking Z=0 with `SET_KINEMATIC_POSITION`, then lowers the bed by `DISTANCE` mm and disables motors. Use when the printer is in an unknown state and you need to clear the nozzle from the bed.
+
+| parameters | default value | description |
+|-----------:|---------------|-------------|
+| DISTANCE | 10 | Distance to lower the bed (mm) |
 
 ## Configuration
 
