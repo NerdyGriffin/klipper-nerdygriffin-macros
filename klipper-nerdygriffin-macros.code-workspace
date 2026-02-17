@@ -8,6 +8,10 @@
       "path": "/home/pi/klipper-nerdygriffin-macros"
     },
     {
+      "name": "V0-3048: klippain_shaketune",
+      "path": "/home/pi/klippain_shaketune"
+    },
+    {
       "name": "V0-3048: config",
       "path": "/home/pi/printer_data/config"
     },
