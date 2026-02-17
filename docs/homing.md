@@ -37,11 +37,12 @@ TEST_SENSORLESS_HOME_Y TEST_SGTHRS=255  # Test sensorless Y homing sensitivity
 
 ## Configuration
 
-Override homing current in your `printer.cfg`:
+Override homing variables in your `printer.cfg`:
 
 ```ini
 [gcode_macro _HOME_VARS]
-variable_home_current: 0.7  # Set sensorless homing current (default: 0.7A)
+variable_home_current: 0.7   # Sensorless homing current (default: 0.7A)
+variable_home_accel: 3000    # Acceleration during homing moves (default: 3000 mm/s²)
 ```
 
 ## Examples
