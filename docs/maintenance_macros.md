@@ -14,14 +14,17 @@ NOZZLE_CHANGE_POSITION   # Park toolhead at front-center for nozzle swap
 
 ## Internal Macros
 
+- `_BELT_TENSION_VARS` — Shared variable storage for all belt tension macros. Override here in `printer.cfg` instead of in individual macros.
+- `_BELT_TENSION_INIT` — Validates `y_calibrated` and pre-computes target frequencies. Called automatically at the start of `SETTLE_BELT_TENSION` and `SHAKETUNE_BELT_TENSION`.
+- `_BELT_TENSION_DISPLAY` — Displays the computed frequency range via `M117`. Called automatically at the end of `SETTLE_BELT_TENSION`.
 - `_DEBUG_PRINT_STATE` — Prints current toolhead position, homing state, and coordinate mode to the console. Accepts an optional `MSG` parameter for labeling output.
 
 ## Configuration
 
-Override belt parameters for `SETTLE_BELT_TENSION` in your `printer.cfg`:
+Override belt parameters for `SETTLE_BELT_TENSION` and `SHAKETUNE_BELT_TENSION` in your `printer.cfg`. Both macros share a single set of variables via `_BELT_TENSION_VARS`:
 
 ```ini
-[gcode_macro SETTLE_BELT_TENSION]
+[gcode_macro _BELT_TENSION_VARS]
 variable_belt_span_length: 150      # Distance between X/Y idler centers and front idler (mm)
 variable_y_calibrated: 120          # Y position where vibrating belt span = belt_span_length (must be within axis limits)
 variable_belt_mass_per_meter: 0.00817  # GT2 6mm belt nominal mass (kg/m)
@@ -29,6 +32,8 @@ variable_min_tension: 8.90          # Minimum belt tension (N)
 variable_rec_tension: 11.12         # Recommended belt tension (N)
 variable_max_tension: 13.34         # Maximum belt tension (N)
 ```
+
+> **Note**: If you previously overrode variables in `[gcode_macro SETTLE_BELT_TENSION]` or `[gcode_macro SHAKETUNE_BELT_TENSION]`, move those overrides to `[gcode_macro _BELT_TENSION_VARS]` in your `printer.cfg`.
 
 ### Calibration Steps
 
@@ -50,9 +55,10 @@ The macro displays a target frequency range calculated from your belt parameters
 $$f = \frac{1}{2L} \sqrt{\frac{T}{m}}$$
 
 Where:
+
 - **f** = frequency (Hz)
 - **L** = belt span (m)
 - **T** = tension (N)
 - **m** = mass per meter (kg/m)
 
-See [shaketune.md](shaketune.md) for the related `SHAKETUNE_EXCITATE_BELTS` macro which shares the same belt span configuration.
+See [shaketune.md](shaketune.md) for the related `SHAKETUNE_BELT_TENSION` macro which shares the same belt span configuration.
