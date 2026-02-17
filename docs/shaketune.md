@@ -36,4 +36,4 @@ variable_rec_tension: 11.12             # Target tension (N) for frequency calcu
 
 `SHAKETUNE_BELT_TENSION` validates that `y_calibrated` is within your printer's Y axis limits. If out of bounds, the macro errors with guidance to correct the variable. **Do not clamp this value**—accuracy of belt frequency measurement depends on the exact calibrated position matching your physical belt span.
 
-See [maintenance_macros.md](maintenance_macros.md) for belt span calibration steps and the frequency formula.
+See [belt_tension.md](belt_tension.md) for belt span calibration steps and the frequency formula.

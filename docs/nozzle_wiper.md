@@ -1,6 +1,6 @@
 # Nozzle Wiper (nozzle_wiper.cfg)
 
-The `nozzle_wiper.cfg` provides servo-actuated nozzle cleaning with a purge bucket and brush. All hardware values are configurable via printer-specific overrides.
+The `nozzle_wiper.cfg` provides enhanced support for Chirpy's [Nozzle Wiper v2](https://github.com/chirpy2605/voron/tree/main/V0/NozzleWiper), a servo-actuated nozzle cleaning with a purge bucket and brush. All hardware values are configurable via printer-specific overrides.
 
 ## Usage
 

@@ -51,3 +51,12 @@ These macros are called automatically and should not be called directly:
 
 - `_CONDITIONAL_RETRACT` - Retracts filament if the extruder can extrude (temperature is sufficient)
 - `_CONDITIONAL_UNRETRACT` - Unretracts filament if needed (after purge or load)
+
+### Delayed G-code Macros
+
+- `ENABLE_ENCODER_SENSOR` - Enables the filament encoder sensor for motion detection
+- `DISABLE_ENCODER_SENSOR` - Disables encoder sensor (runs 1 second after startup to prevent false triggers)
+
+> **Note**:
+>
+> These macros are automatically called by `client_macros.cfg` and `print_macros.cfg` at appropriate times. You typically don't need to call them directly unless implementing custom print workflows.

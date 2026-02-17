@@ -15,12 +15,13 @@ Hardware-agnostic Klipper macros for Voron printers with automatic AFC detection
 
 - `auto_pid.cfg` - Automated PID tuning
 - `beeper.cfg` - M300 beeper/tone support
+- `belt_tension.cfg` - Belt tension calibration and frequency measurement
 - `client_macros.cfg` - Mainsail/Fluidd integration with AFC support
-- `filament_management.cfg` - Load/unload/purge operations
+- `filament_management.cfg` - Load/unload/purge operations with encoder sensor management
 - `gcode_features.cfg` - Enables advanced G-code features (force_move, pause/resume, arcs, etc.)
 - `heat_soak.cfg` - Chamber preheating with sensor auto-detection
 - `homing.cfg` - Sensorless and conditional homing helpers
-- `maintenance_macros.cfg` - Belt settling, nozzle changes
+- `maintenance_macros.cfg` - Nozzle changes and developer diagnostics
 - `nozzle_wiper.cfg` - Servo-actuated nozzle purge bucket and brush system
 - `print_macros.cfg` - PRINT_START/PRINT_END with AFC, Beacon, and bed mesh support
 - `rename_existing.cfg` - Enhanced G-code overrides (M109, M190, M117)
@@ -71,6 +72,7 @@ The install script will:
    ```ini
    [include nerdygriffin-macros/auto_pid.cfg]
    [include nerdygriffin-macros/beeper.cfg]              # Optional: Requires pin configuration
+   [include nerdygriffin-macros/belt_tension.cfg]
    [include nerdygriffin-macros/client_macros.cfg]
    [include nerdygriffin-macros/filament_management.cfg]
    [include nerdygriffin-macros/heat_soak.cfg]
@@ -150,12 +152,13 @@ Dict-based `_LED_VARS` system supports any combination of neopixels across toolh
 |-------|-------------|
 | [auto_pid.cfg](docs/auto_pid.md) | Extruder and bed heater PID tuning |
 | [beeper.cfg](docs/beeper.md) | Hardware-specific pin setup for audio feedback |
+| [belt_tension.cfg](docs/belt_tension.md) | Belt tension calibration and frequency measurement |
 | [client_macros.cfg](docs/client_macros.md) | Mainsail/Fluidd pause/resume/cancel integration |
 | [filament_management.cfg](docs/filament_management.md) | Load, unload, and purge with AFC auto-detect |
 | [gcode_features.cfg](docs/gcode_features.md) | Enables advanced G-code features (force_move, pause/resume, arcs, etc.) |
 | [heat_soak.cfg](docs/heat_soak.md) | Chamber preheating with LED animations |
 | [homing.cfg](docs/homing.md) | Sensorless and conditional homing helpers |
-| [maintenance_macros.cfg](docs/maintenance_macros.md) | Belt tension calibration and nozzle change utilities |
+| [maintenance_macros.cfg](docs/maintenance_macros.md) | Nozzle change utilities and developer diagnostics |
 | [nozzle_wiper.cfg](docs/nozzle_wiper.md) | Servo-based nozzle cleaning with calibration guide |
 | [print_macros.cfg](docs/print_macros.md) | PRINT_START/PRINT_END with hardware detection |
 | [rename_existing.cfg](docs/rename_existing.md) | Safe G-code command overrides |

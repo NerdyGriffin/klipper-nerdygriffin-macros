@@ -25,14 +25,3 @@ These macros are called automatically by other macros and should not be called d
 > **Note**:
 >
 > `_CONDITIONAL_RETRACT` and `_CONDITIONAL_UNRETRACT` are defined in `filament_management.cfg`, not `utility_macros.cfg`. They are listed here because `utility_macros.cfg` macros call them when available.
-
-### Delayed G-code Macros
-
-The following delayed G-code macros manage the encoder sensor state:
-
-- `ENABLE_ENCODER_SENSOR` - Enables the filament encoder sensor for motion detection
-- `DISABLE_ENCODER_SENSOR` - Disables encoder sensor (runs 1 second after startup to prevent false triggers)
-
-> **Note**:
->
-> These macros are automatically called by `filament_management.cfg`, `client_macros.cfg`, and `print_macros.cfg` at appropriate times. You typically don't need to call them directly unless implementing custom print workflows.
