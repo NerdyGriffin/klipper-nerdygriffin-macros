@@ -60,6 +60,7 @@ variable_wipe_qty_max: 128     # Maximum wipes before stopping
 variable_scrub_temp_min: 150   # Stop wiping when cooled to this temp (°C)
 variable_prep_spd_xy: 30000    # Travel speed (mm/min)
 variable_wipe_spd_xy: 30000    # Wiping speed (mm/min)
+variable_wipe_accel: 1500      # Acceleration during wiping (mm/s²); lower = less vibration
 ```
 
 ### Optional: Purge Parameters
