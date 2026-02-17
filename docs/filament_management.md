@@ -44,3 +44,10 @@ variable_unload_distance: 70    # Adjust for your hotend (default: 65mm)
 > **Note**:
 >
 > Only override variables that differ from defaults. See the macro definitions in `filament_management.cfg` for all available options and default values.
+
+## Internal Macros
+
+These macros are called automatically and should not be called directly:
+
+- `_CONDITIONAL_RETRACT` - Retracts filament if the extruder can extrude (temperature is sufficient)
+- `_CONDITIONAL_UNRETRACT` - Unretracts filament if needed (after purge or load)

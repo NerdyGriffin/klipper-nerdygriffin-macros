@@ -22,7 +22,9 @@ The macro steps down temperature in 20°C increments, cleaning at each step unti
 
 These macros are called automatically by other macros and should not be called directly:
 
-- `_CONDITIONAL_UNRETRACT` - Unretracts filament if needed (after purge or load)
+> **Note**:
+>
+> `_CONDITIONAL_RETRACT` and `_CONDITIONAL_UNRETRACT` are defined in `filament_management.cfg`, not `utility_macros.cfg`. They are listed here because `utility_macros.cfg` macros call them when available.
 
 ### Delayed G-code Macros
 

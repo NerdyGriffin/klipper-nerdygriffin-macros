@@ -130,6 +130,16 @@ These helper macros are called by status macros and should not be called directl
 - `_SET_LEDS_BY_NAME LEDS=<group>` - Sets color on all devices in the specified group (supports `TRANSMIT=0` to defer sync)
 - `SET_NOZZLE_LEDS_ON` / `SET_CHAMBER_LEDS_ON` - Convenience wrappers for common LED states
 
+### Delayed G-code Macros
+
+- `clear_display` - Clears the display message after a short delay
+- `notify_bed_cooled` - Watches bed temperature and sets `STATUS_READY` once it cools below idle threshold
+- `notify_bed_heated` - Watches bed temperature and sets `STATUS_HEATING` once it reaches target, then queues `notify_bed_cooled`
+
+### Test Macros
+
+- `TEST_STATUS_MACROS` - Cycles through all status macros in sequence to verify LED and display behavior
+
 > **Note**:
 >
 > All helper macros safely skip missing devices. Empty dicts result in no-op (no errors).
