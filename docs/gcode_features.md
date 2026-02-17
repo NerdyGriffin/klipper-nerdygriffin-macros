@@ -13,7 +13,13 @@ These sections are enabled automatically when you include `gcode_features.cfg`:
 - `RESPOND` (M118) for console messages
 - `EXCLUDE_OBJECT` for object exclusion during print
 
-No user-facing macros are defined; these features extend Klipper's built-in G-code support.
+### Macros
+
+```gcode
+UNSAFE_LOWER_BED    # Lower the bed 10mm without homing (uses SET_KINEMATIC_POSITION)
+```
+
+- `UNSAFE_LOWER_BED` — Emergency recovery macro. Bypasses homing by faking Z=0 with `SET_KINEMATIC_POSITION`, then lowers the bed 10mm and disables motors. Use when the printer is in an unknown state and you need to clear the nozzle from the bed.
 
 ## Configuration
 

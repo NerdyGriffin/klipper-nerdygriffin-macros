@@ -7,7 +7,6 @@ The `utility_macros.cfg` provides helper macros for common operations like deep 
 ```gcode
 DEEP_CLEAN_NOZZLE [TEMP=260]     # Deep clean with temperature stepping
 CENTER                           # Move toolhead to bed center
-UNSAFE_LOWER_BED                 # Emergency: lower bed 10mm without homing
 ```
 
 ### DEEP_CLEAN_NOZZLE Parameters
