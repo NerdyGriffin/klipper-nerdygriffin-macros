@@ -65,9 +65,9 @@ variable_colors: {
 
 ## Brainstorming
 
-- [ ] Potential shared homing helpers (conditional stallguard current adjust)
+- [x] Potential shared homing helpers (conditional stallguard current adjust)
 - [ ] Consistent status display/message patterns (post LED standardization)
-- [ ] `homing.cfg` partial abstraction (sensorless current + probe sequencing)
+- [x] `homing.cfg` partial abstraction (sensorless current + probe sequencing)
 - [ ] Look for additional opportunities to reduce duplicate code by using abstractions or helper macros
 - [ ] Monitor and optimize Klipper startup time with plugin includes
   - Measure baseline startup time on both printers
