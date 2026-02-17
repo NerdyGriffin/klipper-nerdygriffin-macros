@@ -129,20 +129,18 @@ Dict-based `_LED_VARS` system supports any combination of neopixels across toolh
 ## Dependencies
 
 **Provided by this plugin:**
-- `STATUS_*` macros
-- `RESET_STATUS`
-- `_AFTER_PAUSE`, `_BEFORE_RESUME`, `_BEFORE_CANCEL`
+- `STATUS_*` macros, `RESET_STATUS` — LED status indicators (`status_macros.cfg`)
+- `_CG28` — Conditional homing (`homing.cfg`)
+- `_AFTER_PAUSE`, `_BEFORE_RESUME`, `_BEFORE_CANCEL` — Client hooks (`client_macros.cfg`)
 
-**Expected from your config:**
-- `_CG28` - Conditional homing macro
-- `SET_DISPLAY_TEXT` - LCD messages (provided by Mainsail/Klipper)
-- `_CLIENT_VARIABLE` - Client variables (optional, see configuration)
-- `encoder_sensor` - Filament sensor (optional)
+**Required:**
+- `SET_DISPLAY_TEXT` — LCD display messages; provided by Klipper natively or [Mainsail config](https://github.com/mainsail-crew/mainsail-config)
 
-**Common sources:**
-- [Mainsail config](https://github.com/mainsail-crew/mainsail-config)
-- [KAMP](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging)
-- [Shake&Tune](https://github.com/Frix-x/klippain-shaketune)
+**Optional — used if present:**
+- `_CLIENT_VARIABLE` — Parking coordinates and speeds; provided by [Mainsail config](https://github.com/mainsail-crew/mainsail-config)
+- `encoder_sensor` — Filament motion sensor (hardware config entry)
+- [Shake&Tune](https://github.com/Frix-x/klippain-shaketune) — Required for `shaketune.cfg`
+- [KAMP](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging) — Used by `print_macros.cfg` if available
 
 **Minimum Klipper version:** v0.13.0+
 

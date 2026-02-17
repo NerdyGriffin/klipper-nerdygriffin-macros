@@ -4,7 +4,7 @@
 
 ### Documentation Review & Updates
 
-- [ ] **rename_existing.cfg & rename_existing.md**: Review and update documentation to match actual command overrides (M18, M84, etc.)
+- [x] **rename_existing.cfg & rename_existing.md**: Review and update documentation to match actual command overrides (M18, M84, etc.)
 - [x] **homing.cfg documentation**: Create user documentation for sensorless homing helpers and conditional homing utilities
 - [x] **gcode_features.cfg documentation**: Create user documentation for optional G-code feature enablement
 - [x] **status_macros variable updates**: Verify and document current `variable_leds` dict structure (vs legacy maps)
@@ -61,7 +61,7 @@ variable_colors: {
 
 ### Documentation & Code Quality
 
-- [ ] Revisit Dependencies section in README - consider Required/Optional/Provided labels for clarity
+- [x] Revisit Dependencies section in README - consider Required/Optional/Provided labels for clarity
 
 ## Brainstorming
 
