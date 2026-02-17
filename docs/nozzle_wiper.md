@@ -8,6 +8,8 @@ The `nozzle_wiper.cfg` provides servo-actuated nozzle cleaning with a purge buck
 CLEAN_NOZZLE            # Full routine: deploy → purge → wipe → retract
 NW_PURGE                # Purge filament only (no wipe)
 NW_WIPE                 # Wipe nozzle only (no purge)
+NW_DEPLOY               # Deploy servo arm only (extend to cleaning position)
+NW_RETRACT              # Retract servo arm only (stow after cleaning)
 NW_TEST_CLEAN_NOZZLE    # Test macro: heats to 240°C, homes, then cleans (for calibration)
 ```
 

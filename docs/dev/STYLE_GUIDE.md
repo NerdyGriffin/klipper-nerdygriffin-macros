@@ -237,8 +237,8 @@ Use blockquotes for important notes:
 Link to other documentation using relative paths:
 
 ```markdown
-[See status_macros.md for complete LED configuration](./macros/status_macros.md)
-[Check heat_soak.md for chamber sensor setup](./macros/heat_soak.md)
+[See status_macros.md for complete LED configuration](../status_macros.md)
+[Check heat_soak.md for chamber sensor setup](../heat_soak.md)
 ```
 
 ## Common Patterns

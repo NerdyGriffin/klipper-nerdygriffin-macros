@@ -5,15 +5,18 @@ The status macros use a hardware-agnostic dict-based LED configuration system (`
 ## Usage
 
 ```gcode
-STATUS_HEATING      # Red/orange LEDs, "Heating..." message
-STATUS_HOMING       # Cyan LEDs, "Homing..." message
-STATUS_LEVELING     # Purple LEDs, "Leveling..." message
-STATUS_MESHING      # Lime LEDs, "Meshing..." message
-STATUS_CLEANING     # Blue LEDs, "Cleaning..." message
-STATUS_PRINTING     # Blue logo, white nozzle, white chamber
-STATUS_READY        # Dim white LEDs
-STATUS_OFF          # All LEDs off
-RESET_STATUS        # Auto-select PRINTING or READY based on printer state
+STATUS_HEATING          # Red/orange LEDs, "Heating..." message
+STATUS_HOMING           # Cyan LEDs, "Homing..." message
+STATUS_LEVELING         # Purple LEDs, "Leveling..." message
+STATUS_MESHING          # Lime LEDs, "Meshing..." message
+STATUS_CLEANING         # Blue LEDs, "Cleaning..." message
+STATUS_BUSY             # Yellow LEDs, "Busy..." message
+STATUS_CALIBRATING_Z    # Pink/purple LEDs, "Calibrating Z..." message
+STATUS_PRINTING         # Blue logo, white nozzle, white chamber
+STATUS_READY            # Dim white LEDs
+STATUS_OFF              # All LEDs off
+STATUS_PARTY            # Cyan logo/chamber, white nozzle, "Party!"
+RESET_STATUS            # Auto-select PRINTING or READY based on printer state
 ```
 
 Status macros are automatically called by other plugin macros. These macros have no parameters.
