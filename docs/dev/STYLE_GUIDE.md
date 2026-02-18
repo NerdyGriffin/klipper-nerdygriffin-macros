@@ -140,8 +140,8 @@ The `## Configuration` section should contain:
 
    ```ini
    [gcode_macro _TOOLHEAD_PARK_VARS]
-   variable_load_x: 60.0    # Custom X position for load/unload
-   variable_load_y: 10.0    # Custom Y position for load/unload
+   variable_custom_load_x: 60.0    # Custom X position for load/unload
+   variable_custom_load_y: 10.0    # Custom Y position for load/unload
    ```
 
    To customize individual macro behavior:
