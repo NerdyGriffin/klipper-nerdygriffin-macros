@@ -41,6 +41,7 @@ Each documentation file documents a config file (`.cfg`) that may contain multip
 ```
 
 **Note:** Sections are optional based on the file's contents:
+
 - Omit `### [MACRO_NAME] Parameters` if no macros accept user-facing parameters
 - Omit `## Internal Macros` if file has no helper/internal macros
 - Omit `## Configuration` if macros have no configurable variables
@@ -59,6 +60,7 @@ Each documentation file documents a config file (`.cfg`) that may contain multip
 The `## Usage` section should contain:
 
 1. **Example gcode calls** in a gcode code block showing typical usage of all user-facing macros
+
    ```gcode
    MACRO_NAME PARAM1=value PARAM2=value
    ANOTHER_MACRO                          # If file has multiple macros
@@ -74,13 +76,14 @@ The `## Usage` section should contain:
    - If a macro has no parameters, omit its parameter subsection entirely
 
 3. **Parameter table example**:
+
    ```markdown
    ### HEAT_SOAK Parameters
 
-   | parameters | default value | description |
-   |-----------:|---------------|-------------|
-   | CHAMBER | None | Target chamber temperature in °C. If not specified, the macro calculates a target based on bed temperature. |
-   | DURATION | 0 | Soak duration in minutes (0 = wait until chamber reaches target) |
+   | parameters | default value | description                                                                                                 |
+   | ---------: | ------------- | ----------------------------------------------------------------------------------------------------------- |
+   |    CHAMBER | None          | Target chamber temperature in °C. If not specified, the macro calculates a target based on bed temperature. |
+   |   DURATION | 0             | Soak duration in minutes (0 = wait until chamber reaches target)                                            |
    ```
 
 ## Internal Macros Section
@@ -129,7 +132,8 @@ The `## Configuration` section should contain:
    - Use backticks for variable names
 
 4. **Configuration format**:
-   ```markdown
+
+   ````markdown
    ## Configuration
 
    To customize shared settings for all filament macros:
@@ -148,9 +152,10 @@ The `## Configuration` section should contain:
    ```
 
    Default variables (override in printer.cfg):
+
    - `variable_name1: default1` - Explanation of what this controls
    - `variable_name2: default2` - Another explanation
-   ```
+   ````
 
 ## Examples Section
 
@@ -168,7 +173,8 @@ The `## Examples` section should contain:
    - Show how the macro behaves when optional hardware is present vs. absent
 
 3. **Example format**:
-   ```markdown
+
+   ````markdown
    ### For V0 (Small Chamber)
 
    For Voron V0 with limited chamber heating, reduce the max target:
@@ -185,7 +191,7 @@ The `## Examples` section should contain:
    variable_sensor_primary: "chamber"
    variable_sensor_backup: "nitehawk-36"
    ```
-   ```
+   ````
 
 ## Code Block Standards
 
@@ -203,6 +209,7 @@ The `## Examples` section should contain:
 ## Capitalization Rules
 
 ### Parameter Table Descriptions
+
 - **ALWAYS start with a capital letter** (first letter of description)
 - Examples:
   - ✅ "Target bed temperature in °C"
@@ -211,10 +218,12 @@ The `## Examples` section should contain:
   - ❌ "heater name to calibrate (extruder or heater_bed)"
 
 ### Section Headings
+
 - Use title case for `## Usage`, `## Examples`, `## Configuration`
 - Use descriptive names for subsections: `### Simple Setup`, `### Advanced Setup`, `### For V0 (Ender 3)`
 
 ### Inline Code
+
 - Use backticks for: variable names, macro names, file names, config section names
   - ✅ `variable_max_chamber_target`, `HEAT_SOAK`, `printer.cfg`, `[gcode_macro]`
 
@@ -244,10 +253,12 @@ Link to other documentation using relative paths:
 ## Common Patterns
 
 ### Conditional Hardware
+
 When documenting hardware-agnostic macros that auto-detect features:
 
 ```markdown
 The macro automatically detects:
+
 1. AFC (Automated Filament Control) - if available
 2. CLEAN_NOZZLE macro - if available
 3. Beacon probe - if available
@@ -256,6 +267,7 @@ It gracefully handles missing features without errors.
 ```
 
 ### Variables vs Parameters
+
 - **Parameters**: Values passed to a macro when called (e.g., `CHAMBER=50` in `HEAT_SOAK CHAMBER=50`)
 - **Variables**: Configurable values defined in `[gcode_macro]` sections in printer.cfg
 - **Shared Variables**: Variables in a dedicated config macro (e.g., `_TOOLHEAD_PARK_VARS`) that affect multiple user-facing macros
@@ -263,12 +275,14 @@ It gracefully handles missing features without errors.
 Document parameters in parameter tables under `## Usage`, and document variables in `## Configuration`.
 
 ### Default Variables List
+
 If a config file has many configurable variables, you may include a list:
 
 ```markdown
 ## Configuration
 
 Default variables (override in printer.cfg):
+
 - `variable_max_chamber_target: 60` - Maximum chamber temp achievable
 - `variable_ext_assist_multiplier: 4` - Extruder assist multiplier
 - `variable_chamber_sensor_name: ""` - Explicit sensor name (empty = auto-detect)
@@ -279,9 +293,9 @@ Default variables (override in printer.cfg):
 Use left-aligned text for readability:
 
 ```markdown
-| parameters | default value | description |
-|-----------:|---------------|-------------|
-| PARAM1     | value1        | Description here |
+| parameters | default value | description      |
+| ---------: | ------------- | ---------------- |
+|     PARAM1 | value1        | Description here |
 ```
 
 - Column 1: `----------:` (right-align)
@@ -307,6 +321,7 @@ Use left-aligned text for readability:
 ## Questions?
 
 When documenting a new config file, ask:
+
 1. Which macros are user-facing vs. internal helpers?
 2. What parameters does each user-facing macro accept?
 3. What variables can the user override in printer.cfg?
