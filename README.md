@@ -186,7 +186,8 @@ Dict-based `_LED_VARS` system supports any combination of neopixels across toolh
 | Document                                                          | Description                        |
 | ----------------------------------------------------------------- | ---------------------------------- |
 | [dev/consolidation_roadmap.md](docs/dev/consolidation_roadmap.md) | Development history and planning   |
-| [dev/STYLE_GUIDE.md](docs/dev/STYLE_GUIDE.md)                     | Documentation formatting standards |
+| [dev/MARKDOWN_STYLE_GUIDE.md](docs/dev/MARKDOWN_STYLE_GUIDE.md)   | Documentation (Markdown) formatting standards |
+| [dev/MACRO_STYLE_GUIDE.md](docs/dev/MACRO_STYLE_GUIDE.md)         | Klipper macro `.cfg` file structure standards |
 | [dev/TODO.md](docs/dev/TODO.md)                                   | Development task tracking          |
 
 ## Contributing

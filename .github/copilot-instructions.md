@@ -125,7 +125,8 @@ For a comprehensive list of dependencies and compatibility requirements, see [RE
 - `docs/auto_pid.md`, `docs/beeper.md`, `docs/client.md`, etc. - Individual macro configuration documentation
 - `docs/status_macros.md` - LED system setup and configuration
 - `docs/dev/consolidation_roadmap.md` - Development history and consolidation planning
-- `docs/dev/STYLE_GUIDE.md` - Documentation style and formatting standards
+- `docs/dev/MARKDOWN_STYLE_GUIDE.md` - Documentation (Markdown) style and formatting standards
+- `docs/dev/MACRO_STYLE_GUIDE.md` - Klipper macro `.cfg` file structure and ordering standards
 
 ## Pointers
 - Example consumer implementations: printer repos that symlink this directory and override variables/macros in `printer.cfg`.
