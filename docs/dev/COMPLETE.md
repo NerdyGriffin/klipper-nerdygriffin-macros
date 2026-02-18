@@ -5,7 +5,7 @@
 - [x] Consolidate shared macros and configs between VT1548 and V03048 into a custom plugin that can be updated via moonraker
   - Goal: reduce duplication and ensure consistency between both printers
   - Deliverable: plugin that can be symlinked into each printer's config (like KAMP)
-  - Status tracking and detailed planning: see [`docs/dev/consolidation_roadmap.md`](consolidation_roadmap.md)
+  - Status tracking and detailed planning: completed — roadmap removed after completion
 
 ### HEAT_SOAK LED Parametrization
 

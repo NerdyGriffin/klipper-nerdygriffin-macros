@@ -22,11 +22,11 @@ Override in your `printer.cfg` to match your hotend:
 
 ```ini
 [gcode_macro LOAD_FILAMENT]
-variable_load_distance: 50      # Adjust for your hotend (default: 60mm)
-variable_purge_distance: 150    # Increase purge amount (default: 100mm)
+variable_load_distance: 60      # Adjust for your hotend (default: 50mm)
+variable_purge_distance: 50     # Increase purge amount (default: 25mm)
 
 [gcode_macro UNLOAD_FILAMENT]
-variable_unload_distance: 70    # Adjust for your hotend (default: 65mm)
+variable_unload_distance: 70    # Adjust for your hotend (default: 50mm)
 ```
 
 ### Parking positions

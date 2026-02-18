@@ -28,7 +28,7 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 - `macros/rename_existing.cfg`: Safe overrides (M109/M190/M117...).
 - `macros/save_config.cfg`: Safe SAVE_CONFIG with delayed variant.
 - `macros/shaketune.cfg`: Shake&Tune wrapper (optional dependency installed elsewhere).
-- `macros/shutdown.cfg`, `macros/tacho_macros.cfg`, `macros/utility_macros.cfg`: Safety, fan preflight, helpers.
+- `macros/shutdown.cfg`, `macros/tacho_macros.cfg`, `macros/positioning_macros.cfg`: Safety, fan preflight, helpers.
 - `install.sh`: Creates symlink, optional Moonraker update_manager entry.
 
 ## Macro Development Patterns
@@ -124,7 +124,6 @@ For a comprehensive list of dependencies and compatibility requirements, see [RE
 - `docs/` - Configuration guide with macro documentation index
 - `docs/auto_pid.md`, `docs/beeper.md`, `docs/client.md`, etc. - Individual macro configuration documentation
 - `docs/status_macros.md` - LED system setup and configuration
-- `docs/dev/consolidation_roadmap.md` - Development history and consolidation planning
 - `docs/dev/MARKDOWN_STYLE_GUIDE.md` - Documentation (Markdown) style and formatting standards
 - `docs/dev/MACRO_STYLE_GUIDE.md` - Klipper macro `.cfg` file structure and ordering standards
 

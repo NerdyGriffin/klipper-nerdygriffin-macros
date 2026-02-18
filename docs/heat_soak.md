@@ -14,7 +14,7 @@ M191 S50                               # Marlin-style chamber wait (uses HEAT_SO
 | parameters | default value | description |
 |-----------:|---------------|-------------|
 | CHAMBER | None | Target chamber temperature in °C. If not specified, calculates target based on bed temperature. |
-| DURATION | 0 | Soak duration in minutes (0 = wait until chamber reaches target) |
+| DURATION | 5 | Soak duration in minutes (0 = wait until chamber reaches target) |
 
 ## Configuration
 
