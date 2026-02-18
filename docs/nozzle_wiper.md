@@ -5,13 +5,17 @@ The `nozzle_wiper.cfg` provides enhanced support for Chirpy's [Nozzle Wiper v2](
 ## Usage
 
 ```gcode
-CLEAN_NOZZLE            # Full routine: deploy → purge → wipe → retract
+NW_CLEAN_NOZZLE         # Full routine: deploy → purge → wipe → retract
 NW_PURGE                # Purge filament only (no wipe)
 NW_WIPE                 # Wipe nozzle only (no purge)
 NW_DEPLOY               # Deploy servo arm only (extend to cleaning position)
 NW_RETRACT              # Retract servo arm only (stow after cleaning)
 NW_TEST_CLEAN_NOZZLE    # Test macro: heats to 240°C, homes, then cleans (for calibration)
 ```
+
+> **Note**:
+>
+> `CLEAN_NOZZLE` is a compatibility alias that delegates to `NW_CLEAN_NOZZLE`. It exists so that `PRINT_START` (and other systems) can call `CLEAN_NOZZLE` as a generic entry point — AFC systems can shadow it with `AFC_BRUSH`, while non-AFC printers with `nozzle_wiper.cfg` get the full wiper routine automatically.
 
 > **Warning**:
 >
@@ -60,7 +64,7 @@ variable_wipe_qty_max: 128     # Maximum wipes before stopping
 variable_scrub_temp_min: 150   # Stop wiping when cooled to this temp (°C)
 variable_prep_spd_xy: 30000    # Travel speed (mm/min)
 variable_wipe_spd_xy: 30000    # Wiping speed (mm/min)
-variable_wipe_accel: 1500      # Acceleration during wiping (mm/s²); lower = less vibration
+variable_wipe_accel: 3000      # Acceleration during wiping (mm/s²); lower = less vibration
 ```
 
 ### Optional: Purge Parameters
