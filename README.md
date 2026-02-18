@@ -29,6 +29,7 @@ Hardware-agnostic Klipper macros for Voron printers with automatic AFC detection
 - `save_config.cfg` - Safe SAVE_CONFIG with print-state detection
 - `shaketune.cfg` - Shake&Tune wrapper macros
 - `shutdown.cfg` - Safe shutdown with conditional cooling
+- `squiggly_purge.cfg` - Squiggly/serpentine line purge pattern
 - `status_macros.cfg` - Hardware-agnostic LED status patterns
 - `tacho_macros.cfg` - Part cooling fan preflight checks
 
@@ -183,11 +184,11 @@ Dict-based `_LED_VARS` system supports any combination of neopixels across toolh
 
 ## Development
 
-| Document                                                          | Description                        |
-| ----------------------------------------------------------------- | ---------------------------------- |
-| [dev/MARKDOWN_STYLE_GUIDE.md](docs/dev/MARKDOWN_STYLE_GUIDE.md)   | Documentation (Markdown) formatting standards |
-| [dev/MACRO_STYLE_GUIDE.md](docs/dev/MACRO_STYLE_GUIDE.md)         | Klipper macro `.cfg` file structure standards |
-| [dev/TODO.md](docs/dev/TODO.md)                                   | Development task tracking          |
+| Document                                                        | Description                                   |
+| --------------------------------------------------------------- | --------------------------------------------- |
+| [dev/MARKDOWN_STYLE_GUIDE.md](docs/dev/MARKDOWN_STYLE_GUIDE.md) | Documentation (Markdown) formatting standards |
+| [dev/MACRO_STYLE_GUIDE.md](docs/dev/MACRO_STYLE_GUIDE.md)       | Klipper macro `.cfg` file structure standards |
+| [dev/TODO.md](docs/dev/TODO.md)                                 | Development task tracking                     |
 
 ## Contributing
 
@@ -206,6 +207,11 @@ Inspired by:
 - [AFC-Klipper-Add-On](https://github.com/ArmoredTurtle/AFC-Klipper-Add-On)
 - [Voron Design](https://github.com/VoronDesign)
 - [Mainsail](https://github.com/mainsail-crew/mainsail)
+
+Adapted from:
+
+- [Chirpy's Nozzle Wiper v2](https://github.com/chirpy2605/voron/tree/main/V0/NozzleWiper) — `nozzle_wiper.cfg`
+- [mjonuschat's Squiggly Purge](https://github.com/mjonuschat/voron-mods/blob/main/Squiggly%20Purge/Macro/squiggly_purge.cfg) — `squiggly_purge.cfg`
 
 ## Support
 
