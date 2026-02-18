@@ -9,13 +9,13 @@ Convenient wrappers for the [Shake&Tune](https://github.com/Frix-x/klippain-shak
 ## Usage
 
 ```gcode
-SHAKETUNE_BELTS              # Belt comparison analysis (cold)
+SHAKETUNE_BELTS_RESPONSES              # Belt comparison analysis (cold)
 SHAKETUNE_COLD               # Full calibration suite (belts, shaper, vibrations) cold
 SHAKETUNE_HOT                # Full calibration suite preheated (bed 100°C, chamber 50°C)
 SHAKETUNE_BELT_TENSION     # Excite belts at calculated resonance frequency for tension measurement
 ```
 
-- `SHAKETUNE_BELTS` — Runs `COMPARE_BELTS_RESPONSES` with a cold printer.
+- `SHAKETUNE_BELTS_RESPONSES` — Runs `COMPARE_BELTS_RESPONSES` with a cold printer.
 - `SHAKETUNE_COLD` — Runs belt comparison, `AXES_SHAPER_CALIBRATION`, and `CREATE_VIBRATIONS_PROFILE` cold.
 - `SHAKETUNE_HOT` — Same as cold but preheats (bed 100°C, chamber 50°C via `HEAT_SOAK`) first.
 - `SHAKETUNE_BELT_TENSION` — Calculates target belt resonance frequency from calibrated belt span parameters, then runs `EXCITATE_AXIS_AT_FREQ` at that frequency. Requires `y_calibrated` to be set correctly.
