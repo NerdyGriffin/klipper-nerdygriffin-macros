@@ -65,6 +65,8 @@ variable_colors: {
 
 ## Brainstorming
 
+- [ ] Setup automatic Prettier formatting for Markdown files to maintain consistent style in documentation
+  - [ ] Github actions workflow to run linting/formatting on push to remote and pull requests
 - [x] Potential shared homing helpers (conditional stallguard current adjust)
 - [ ] Consistent status display/message patterns (post LED standardization)
 - [x] `homing.cfg` partial abstraction (sensorless current + probe sequencing)
