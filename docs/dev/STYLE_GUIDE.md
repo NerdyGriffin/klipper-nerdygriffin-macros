@@ -135,7 +135,7 @@ The `## Configuration` section should contain:
    To customize shared settings for all filament macros:
 
    ```ini
-   [gcode_macro _FILAMENT_PARK_PARAMS]
+   [gcode_macro _TOOLHEAD_PARK_VARS]
    variable_load_x: 60.0    # Custom X position for load/unload
    variable_load_y: 10.0    # Custom Y position for load/unload
    ```
@@ -148,8 +148,8 @@ The `## Configuration` section should contain:
    ```
 
    Default variables (override in printer.cfg):
-   - `variable_param1: default1` - Explanation of what this controls
-   - `variable_param2: default2` - Another explanation
+   - `variable_name1: default1` - Explanation of what this controls
+   - `variable_name2: default2` - Another explanation
    ```
 
 ## Examples Section
@@ -258,7 +258,7 @@ It gracefully handles missing features without errors.
 ### Variables vs Parameters
 - **Parameters**: Values passed to a macro when called (e.g., `CHAMBER=50` in `HEAT_SOAK CHAMBER=50`)
 - **Variables**: Configurable values defined in `[gcode_macro]` sections in printer.cfg
-- **Shared Variables**: Variables in a dedicated config macro (e.g., `_FILAMENT_PARK_PARAMS`) that affect multiple user-facing macros
+- **Shared Variables**: Variables in a dedicated config macro (e.g., `_TOOLHEAD_PARK_VARS`) that affect multiple user-facing macros
 
 Document parameters in parameter tables under `## Usage`, and document variables in `## Configuration`.
 

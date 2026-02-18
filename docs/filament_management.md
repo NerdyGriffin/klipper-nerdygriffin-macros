@@ -21,7 +21,7 @@ These macros automatically detect AFC hardware and use appropriate parking posit
 To customize shared parking positions for all filament macros:
 
 ```ini
-[gcode_macro _FILAMENT_PARK_PARAMS]
+[gcode_macro _TOOLHEAD_PARK_VARS]
 variable_load_x: 60.0    # X position for load/unload (None = auto: bed center)
 variable_load_y: 10.0    # Y position for load/unload (None = auto: front + 10mm)
 variable_purge_x: 10.0   # X position for purge (None = auto: 10mm)
