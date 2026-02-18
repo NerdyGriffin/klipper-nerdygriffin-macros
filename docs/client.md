@@ -1,4 +1,4 @@
-# Client Macros (client_macros.cfg)
+# Client Macros (client.cfg)
 
 The client macros provide integration with Mainsail/Fluidd pause/resume/cancel operations, automatically handling filament sensors and optional AFC (Automated Filament Control) features.
 
@@ -15,6 +15,7 @@ variable_user_cancel_macro: "_BEFORE_CANCEL"  # Hook to plugin macro
 ```
 
 The hook macros automatically handle:
+
 - Filament sensor management (enabling/disabling as needed)
 - Optional AFC (Automated Filament Control) integration
 - Safe state transitions during pause/resume/cancel operations

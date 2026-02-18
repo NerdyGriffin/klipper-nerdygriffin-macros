@@ -16,7 +16,7 @@ Hardware-agnostic Klipper macros for Voron printers with automatic AFC detection
 - `auto_pid.cfg` - Automated PID tuning
 - `beeper.cfg` - M300 beeper/tone support
 - `belt_tension.cfg` - Belt tension calibration and frequency measurement
-- `client_macros.cfg` - Mainsail/Fluidd integration with AFC support
+- `client.cfg` - Mainsail/Fluidd integration with AFC support
 - `filament_management.cfg` - Load/unload/purge operations with encoder sensor management
 - `gcode_features.cfg` - Enables advanced G-code features (force_move, pause/resume, arcs, etc.)
 - `heat_soak.cfg` - Chamber preheating with sensor auto-detection
@@ -44,6 +44,7 @@ cd klipper-nerdygriffin-macros
 ```
 
 The install script will:
+
 - Create symlink in your config directory
 - Optionally configure Moonraker's update_manager
 - Provide include statements for your `printer.cfg`
@@ -51,6 +52,7 @@ The install script will:
 ### Manual Installation
 
 1. **Clone and create symlink:**
+
    ```bash
    cd ~
    git clone https://github.com/NerdyGriffin/klipper-nerdygriffin-macros.git
@@ -58,6 +60,7 @@ The install script will:
    ```
 
 2. **Add to moonraker.conf:**
+
    ```ini
    [update_manager klipper-nerdygriffin-macros]
    type: git_repo
@@ -69,11 +72,12 @@ The install script will:
    ```
 
 3. **Include in printer.cfg:**
+
    ```ini
    [include nerdygriffin-macros/auto_pid.cfg]
    [include nerdygriffin-macros/beeper.cfg]              # Optional: Requires pin configuration
    [include nerdygriffin-macros/belt_tension.cfg]
-   [include nerdygriffin-macros/client_macros.cfg]
+   [include nerdygriffin-macros/client.cfg]
    [include nerdygriffin-macros/filament_management.cfg]
    [include nerdygriffin-macros/heat_soak.cfg]
    [include nerdygriffin-macros/maintenance_macros.cfg]
@@ -98,6 +102,7 @@ The install script will:
 Most macros work out-of-the-box with sensible defaults. Per-printer customization is done via variable overrides in `printer.cfg`.
 
 **Quick Start - Minimal Configuration:**
+
 ```ini
 # Client macro integration (required for pause/resume)
 [gcode_macro _CLIENT_VARIABLE]
@@ -119,26 +124,33 @@ gcode:
 ## Hardware Compatibility
 
 ### AFC (Armored Filament Changer)
+
 Automatically detects and uses AFC macros when available:
+
 - `AFC_PARK`, `AFC_BRUSH`, `AFC_CUT`
 
 ### Voron V0, V2, Trident, etc.
+
 All macros calculate positions dynamically based on configured bed size and axis limits.
 
 ### LED Hardware
+
 Dict-based `_LED_VARS` system supports any combination of neopixels across toolhead, logo, chamber, and bed zones.
 
 ## Dependencies
 
 **Provided by this plugin:**
+
 - `STATUS_*` macros, `RESET_STATUS` — LED status indicators (`status_macros.cfg`)
 - `_CG28` — Conditional homing (`homing.cfg`)
-- `_AFTER_PAUSE`, `_BEFORE_RESUME`, `_BEFORE_CANCEL` — Client hooks (`client_macros.cfg`)
+- `_AFTER_PAUSE`, `_BEFORE_RESUME`, `_BEFORE_CANCEL` — Client hooks (`client.cfg`)
 
 **Required:**
+
 - `SET_DISPLAY_TEXT` — LCD display messages; provided by Klipper natively or [Mainsail config](https://github.com/mainsail-crew/mainsail-config)
 
 **Optional — used if present:**
+
 - `_CLIENT_VARIABLE` — Parking coordinates and speeds; provided by [Mainsail config](https://github.com/mainsail-crew/mainsail-config)
 - `encoder_sensor` — Filament motion sensor (hardware config entry)
 - [Shake&Tune](https://github.com/Frix-x/klippain-shaketune) — Required for `shaketune.cfg`
@@ -148,34 +160,34 @@ Dict-based `_LED_VARS` system supports any combination of neopixels across toolh
 
 ## Documentation
 
-| Macro File | Description |
-|-------|-------------|
-| [auto_pid.cfg](docs/auto_pid.md) | Extruder and bed heater PID tuning |
-| [beeper.cfg](docs/beeper.md) | Hardware-specific pin setup for audio feedback |
-| [belt_tension.cfg](docs/belt_tension.md) | Belt tension calibration and frequency measurement |
-| [client_macros.cfg](docs/client_macros.md) | Mainsail/Fluidd pause/resume/cancel integration |
-| [filament_management.cfg](docs/filament_management.md) | Load, unload, and purge with AFC auto-detect |
-| [gcode_features.cfg](docs/gcode_features.md) | Enables advanced G-code features (force_move, pause/resume, arcs, etc.) |
-| [heat_soak.cfg](docs/heat_soak.md) | Chamber preheating with LED animations |
-| [homing.cfg](docs/homing.md) | Sensorless and conditional homing helpers |
-| [maintenance_macros.cfg](docs/maintenance_macros.md) | Nozzle cleaning, nozzle changes, and developer diagnostics |
-| [nozzle_wiper.cfg](docs/nozzle_wiper.md) | Servo-based nozzle cleaning with calibration guide |
-| [print_macros.cfg](docs/print_macros.md) | PRINT_START/PRINT_END with hardware detection |
-| [rename_existing.cfg](docs/rename_existing.md) | Safe G-code command overrides |
-| [save_config.cfg](docs/save_config.md) | Configuration persistence and delayed saves |
-| [shaketune.cfg](docs/shaketune.md) | Input shaper analysis wrappers |
-| [shutdown.cfg](docs/shutdown.md) | Safe shutdown and host reboot operations |
-| [status_macros.cfg](docs/status_macros.md) | LED system setup and customization |
-| [tacho_macros.cfg](docs/tacho_macros.md) | Fan tachometer monitoring and pre-flight checks |
-| [positioning_macros.cfg](docs/positioning_macros.md) | Toolhead positioning helpers |
+| Macro File                                             | Description                                                             |
+| ------------------------------------------------------ | ----------------------------------------------------------------------- |
+| [auto_pid.cfg](docs/auto_pid.md)                       | Extruder and bed heater PID tuning                                      |
+| [beeper.cfg](docs/beeper.md)                           | Hardware-specific pin setup for audio feedback                          |
+| [belt_tension.cfg](docs/belt_tension.md)               | Belt tension calibration and frequency measurement                      |
+| [client.cfg](docs/client.md)                           | Mainsail/Fluidd pause/resume/cancel integration                         |
+| [filament_management.cfg](docs/filament_management.md) | Load, unload, and purge with AFC auto-detect                            |
+| [gcode_features.cfg](docs/gcode_features.md)           | Enables advanced G-code features (force_move, pause/resume, arcs, etc.) |
+| [heat_soak.cfg](docs/heat_soak.md)                     | Chamber preheating with LED animations                                  |
+| [homing.cfg](docs/homing.md)                           | Sensorless and conditional homing helpers                               |
+| [maintenance_macros.cfg](docs/maintenance_macros.md)   | Nozzle cleaning, nozzle changes, and developer diagnostics              |
+| [nozzle_wiper.cfg](docs/nozzle_wiper.md)               | Servo-based nozzle cleaning with calibration guide                      |
+| [print_macros.cfg](docs/print_macros.md)               | PRINT_START/PRINT_END with hardware detection                           |
+| [rename_existing.cfg](docs/rename_existing.md)         | Safe G-code command overrides                                           |
+| [save_config.cfg](docs/save_config.md)                 | Configuration persistence and delayed saves                             |
+| [shaketune.cfg](docs/shaketune.md)                     | Input shaper analysis wrappers                                          |
+| [shutdown.cfg](docs/shutdown.md)                       | Safe shutdown and host reboot operations                                |
+| [status_macros.cfg](docs/status_macros.md)             | LED system setup and customization                                      |
+| [tacho_macros.cfg](docs/tacho_macros.md)               | Fan tachometer monitoring and pre-flight checks                         |
+| [positioning_macros.cfg](docs/positioning_macros.md)   | Toolhead positioning helpers                                            |
 
 ## Development
 
-| Document | Description |
-|----------|-------------|
-| [dev/consolidation_roadmap.md](docs/dev/consolidation_roadmap.md) | Development history and planning |
-| [dev/STYLE_GUIDE.md](docs/dev/STYLE_GUIDE.md) | Documentation formatting standards |
-| [dev/TODO.md](docs/dev/TODO.md) | Development task tracking |
+| Document                                                          | Description                        |
+| ----------------------------------------------------------------- | ---------------------------------- |
+| [dev/consolidation_roadmap.md](docs/dev/consolidation_roadmap.md) | Development history and planning   |
+| [dev/STYLE_GUIDE.md](docs/dev/STYLE_GUIDE.md)                     | Documentation formatting standards |
+| [dev/TODO.md](docs/dev/TODO.md)                                   | Development task tracking          |
 
 ## Contributing
 
@@ -190,6 +202,7 @@ GNU General Public License v3.0 - See [LICENSE](LICENSE)
 Created by [NerdyGriffin](https://github.com/NerdyGriffin)
 
 Inspired by:
+
 - [AFC-Klipper-Add-On](https://github.com/ArmoredTurtle/AFC-Klipper-Add-On)
 - [Voron Design](https://github.com/VoronDesign)
 - [Mainsail](https://github.com/mainsail-crew/mainsail)

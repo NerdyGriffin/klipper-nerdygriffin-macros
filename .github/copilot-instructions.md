@@ -19,7 +19,7 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 
 ## Key Files & Groups
 - `macros/filament_management.cfg`: LOAD/UNLOAD/PURGE with AFC auto-detect and safe parking.
-- `macros/client_macros.cfg`: Pause/Resume/Cancel hooks for Mainsail/Fluidd with optional AFC handling.
+- `macros/client.cfg`: Pause/Resume/Cancel hooks for Mainsail/Fluidd with optional AFC handling.
 - `macros/heat_soak.cfg`: Chamber preheat via bed+hotend assist, sensor auto-detect, optional LED animations.
 - `macros/auto_pid.cfg`: PID helpers for extruder/bed.
 - `macros/gcode_features.cfg`: Enables advanced G-code features (force_move, pause/resume, firmware retraction, arcs, etc.).
@@ -44,7 +44,7 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
   ```ini
   [include nerdygriffin-macros/filament_management.cfg]
   [include nerdygriffin-macros/heat_soak.cfg]
-  [include nerdygriffin-macros/client_macros.cfg]
+  [include nerdygriffin-macros/client.cfg]
   ```
 - Override variables locally (do not edit this repo):
   ```ini
@@ -68,7 +68,7 @@ For a comprehensive list of dependencies and compatibility requirements, see [RE
 **Developer reference — file locations within this plugin:**
 - `STATUS_*` macros → `macros/status_macros.cfg`
 - `RESET_STATUS` → `macros/status_macros.cfg`
-- `_AFTER_PAUSE`, `_BEFORE_RESUME`, `_BEFORE_CANCEL` → `macros/client_macros.cfg`
+- `_AFTER_PAUSE`, `_BEFORE_RESUME`, `_BEFORE_CANCEL` → `macros/client.cfg`
 
 **Key conditional integrations (auto-detected):**
 - AFC macros (`AFC_PARK`, `AFC_BRUSH`, `AFC_CUT`) — check with `{% if printer['gcode_macro AFC_PARK'] is defined %}`
@@ -122,7 +122,7 @@ For a comprehensive list of dependencies and compatibility requirements, see [RE
 ## Documentation Structure
 - `README.md` - User-facing overview, installation, and feature list
 - `docs/` - Configuration guide with macro documentation index
-- `docs/auto_pid.md`, `docs/beeper.md`, `docs/client_macros.md`, etc. - Individual macro configuration documentation
+- `docs/auto_pid.md`, `docs/beeper.md`, `docs/client.md`, etc. - Individual macro configuration documentation
 - `docs/status_macros.md` - LED system setup and configuration
 - `docs/dev/consolidation_roadmap.md` - Development history and consolidation planning
 - `docs/dev/STYLE_GUIDE.md` - Documentation style and formatting standards

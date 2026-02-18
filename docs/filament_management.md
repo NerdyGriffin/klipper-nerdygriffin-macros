@@ -59,4 +59,4 @@ These macros are called automatically and should not be called directly:
 
 > **Note**:
 >
-> These macros are automatically called by `client_macros.cfg` and `print_macros.cfg` at appropriate times. You typically don't need to call them directly unless implementing custom print workflows.
+> These macros are automatically called by `client.cfg` and `print_macros.cfg` at appropriate times. You typically don't need to call them directly unless implementing custom print workflows.
