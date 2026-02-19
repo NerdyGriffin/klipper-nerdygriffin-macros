@@ -62,8 +62,10 @@ After mesh generation, the toolhead is parked before the final nozzle heat:
 
 After the nozzle reaches print temperature:
 
-- `LINE_PURGE` runs unconditionally (KAMP adaptive purge line)
-- `VORON_PURGE` is available as an alternative but is commented out — edit the macro to switch
+- Purge macro is selected based on available space in front of the print:
+  - `SQUIGGLY_PURGE` is used when exclude_object data is available and `yMinSpec > purge_margin + 5.0` (KAMP margin + squiggly wave amplitude)
+  - `LINE_PURGE` is used as fallback when the print is too close to the front edge, exclude_object data is absent, or `SQUIGGLY_PURGE` is not defined
+- The threshold uses `_KAMP_Settings.purge_margin` (default 20mm) + the squiggly wave amplitude (5mm) = 25mm default
 - `G11` (firmware unretract) always runs after purge
 - **Beacon systems**: thermal z offset is applied via `SET_GCODE_OFFSET Z_ADJUST`
 - **Non-AFC, non-Beacon**: `_CONDITIONAL_UNRETRACT` + a small `_CLIENT_EXTRUDE` prime
