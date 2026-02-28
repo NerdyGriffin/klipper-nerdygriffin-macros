@@ -48,23 +48,30 @@ variable_z: 60    # Safe Z height for cleaning operations
 
 ### Optional: Brush Geometry
 
-Override brush dimensions and wiping behavior:
+Override brush dimensions and cleaning performance via the shared `_NW_BRUSH_VARS` macro:
+
+```ini
+[gcode_macro _NW_BRUSH_VARS]
+variable_brush_loc          : 10,38     # Position of the center of the brush (X, Y)
+variable_brush_clean_speed  : 30000     # Speed of cleaning moves (mm/min)
+variable_brush_clean_accel  : 3000      # Acceleration during cleaning (mm/s²)
+variable_brush_width        : 35        # Total width in mm (Y direction)
+variable_brush_depth        : 7         # Total depth in mm (X direction)
+variable_brush_segments     : 20        # Wipe segments per pass (higher = smoother)
+```
+
+### Optional: Wipe Behavior
+
+Override wipe cycle behavior:
 
 ```ini
 [gcode_macro NW_WIPE]
-variable_brush_start: 65       # Y position where brush begins
-variable_brush_length: 45      # Length of brush in Y direction
-variable_brush_front: 11       # X position of brush front edge
-variable_brush_depth: 6        # Depth of brush in X direction
-variable_brush_segments: 20    # Number of wipe segments (higher = smoother)
-
-variable_enable_hotcold: True  # Wipe while cooling to minimize ooze
-variable_wipe_qty_min: 4       # Minimum wipes before checking temperature
-variable_wipe_qty_max: 128     # Maximum wipes before stopping
-variable_scrub_temp_min: 150   # Stop wiping when cooled to this temp (°C)
-variable_prep_spd_xy: 30000    # Travel speed (mm/min)
-variable_wipe_spd_xy: 30000    # Wiping speed (mm/min)
-variable_wipe_accel: 3000      # Acceleration during wiping (mm/s²); lower = less vibration
+variable_enable_hotcold: True   # Wipe while cooling to minimize ooze
+variable_wipe_qty_min: 4        # Minimum wipes before checking temperature
+variable_wipe_qty_max: 128      # Maximum wipes before stopping
+variable_scrub_temp_min: 150    # Stop wiping when cooled to this temp (°C)
+variable_prep_spd_xy: 30000     # Travel speed (mm/min)
+variable_prep_spd_z: 3000       # Z travel speed (mm/min)
 ```
 
 ### Optional: Purge Parameters
