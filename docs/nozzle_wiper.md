@@ -57,7 +57,8 @@ variable_brush_clean_speed  : 30000     # Speed of cleaning moves (mm/min)
 variable_brush_clean_accel  : 3000      # Acceleration during cleaning (mm/s²)
 variable_brush_width        : 35        # Total width in mm (Y direction)
 variable_brush_depth        : 7         # Total depth in mm (X direction)
-variable_brush_segments     : 20        # Wipe segments per pass (higher = smoother)
+variable_y_brush            : True      # Brush along Y axis then X (False = X only)
+variable_brush_count        : 4         # Number of wipe passes
 ```
 
 ### Optional: Wipe Behavior
