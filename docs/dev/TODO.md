@@ -49,6 +49,9 @@ variable_colors: {
 
 ### Code Quality
 
+- [ ] Update the nozzle_wiper to conditionally use AFC_BRUSH, with a fallback a simplified version of the brush sequence if AFC_BRUSH is not defined. Both versions should wrap the brush in the cooldown logic. The \_NW_BRUSH_VARS should be only used if AFC_BRUSH is not defined, with the same `-1` or `1000` or other defaults the block the macro from running the if the variables are not configured by the user. See `~/github/chirpy2605/voron/V0/NozzleWiper/nozzlewiper.cfg ` and `/mnt/vt-1548/printer_data/config/AFC/` for the existing implementations. [This is the top priority item]
+  - `macros/nozzle_wiper.cfg` should be behave like `~/github/chirpy2605/voron/V0/NozzleWiper/nozzlewiper.cfg` if `AFC_BRUSH` is not defined, and like `/mnt/vt-1548/printer_data/config/AFC/nozzle_wiper.cfg` if `AFC_BRUSH` is defined, but keep the brush_loc, bursh_depth, and brush_width variables for users who want to use the simplified version of the brush sequence with the existing variables.
+
 - [ ] **Parking velocity**: Resolve `TODO` in `_TOOLHEAD_PARK_LOAD_UNLOAD` — choose an appropriate default velocity for parking moves (currently takes `max` of `recover_velocity` and `toolhead.max_velocity`, which may be too fast)
 - [ ] **Consistent status display/message patterns** (post LED standardization)
 - [ ] **Look for additional opportunities to reduce duplicate code** by using abstractions or helper macros
