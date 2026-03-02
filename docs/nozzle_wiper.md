@@ -67,11 +67,8 @@ Override wipe cycle behavior:
 ```ini
 [gcode_macro NW_WIPE]
 variable_enable_hotcold: True   # Wipe while cooling to minimize ooze
-variable_wipe_qty_min: 4        # Minimum wipes before checking temperature
 variable_wipe_qty_max: 128      # Maximum wipes before stopping
 variable_scrub_temp_min: 150    # Stop wiping when cooled to this temp (°C)
-variable_prep_spd_xy: 30000     # Travel speed (mm/min)
-variable_prep_spd_z: 3000       # Z travel speed (mm/min)
 ```
 
 ### Optional: Purge Parameters
