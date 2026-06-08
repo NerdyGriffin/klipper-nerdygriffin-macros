@@ -7,19 +7,19 @@ modular step layout adapted from [NerdyGriffin/git-hooks](https://github.com/Ner
 ## Setup
 
 The hook is a hard dependency on `markdownlint-cli2`, which requires Node.js.
-Install both, then install the hook:
+On a fresh host, run both bootstrap scripts:
 
 ```bash
-# 1. Node.js (skip if already present) — e.g. via nvm or your package manager
-# 2. markdownlint-cli2 on PATH
-npm install -g markdownlint-cli2
+# 1. Install the Node toolchain (nvm -> Node LTS -> markdownlint-cli2), no sudo
+dev/install-node-tools.sh
 
-# 3. Wire .git/hooks/pre-commit to the tracked runner
+# 2. Wire .git/hooks/pre-commit to the tracked runner
 dev/install-git-hooks.sh
 ```
 
-Re-run `dev/install-git-hooks.sh` after cloning on a new machine. It is
-idempotent and safe to re-run after pulling updates.
+Both scripts are idempotent and safe to re-run after cloning on a new machine
+or pulling updates. If you already manage Node yourself, you can skip step 1 and
+just ensure `markdownlint-cli2` is on PATH (`npm install -g markdownlint-cli2`).
 
 > **Note**:
 >

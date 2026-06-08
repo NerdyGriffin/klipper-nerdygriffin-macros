@@ -36,5 +36,6 @@ echo "        -> .git-hooks/pre-commit"
 if ! command -v markdownlint-cli2 >/dev/null 2>&1; then
     echo
     echo "NOTE: markdownlint-cli2 is not on PATH. The hook will abort commits until" >&2
-    echo "      it is installed:  npm install -g markdownlint-cli2" >&2
+    echo "      the Node toolchain is installed. Bootstrap it (nvm + Node + tool) with:" >&2
+    echo "      dev/install-node-tools.sh" >&2
 fi
