@@ -33,9 +33,16 @@ chmod +x "$target"
 echo "Installed: $target"
 echo "        -> .git-hooks/pre-commit"
 
+# Resolve an nvm-managed markdownlint-cli2 the same way the hook runner does,
+# so this check reflects what the hook will actually see at commit time.
+if ! command -v markdownlint-cli2 >/dev/null 2>&1; then
+    nvm_bin=$(ls -d "$HOME"/.nvm/versions/node/*/bin 2>/dev/null | sort -V | tail -n 1)
+    [ -n "$nvm_bin" ] && PATH="$nvm_bin:$PATH"
+fi
+
 if ! command -v markdownlint-cli2 >/dev/null 2>&1; then
     echo
     echo "NOTE: markdownlint-cli2 is not on PATH. The hook will abort commits until" >&2
     echo "      the Node toolchain is installed. Bootstrap it (nvm + Node + tool) with:" >&2
-    echo "      dev/install-node-tools.sh" >&2
+    echo "      dev/install-node-tools.sh   (or dev/setup.sh to do everything)" >&2
 fi
