@@ -10,10 +10,10 @@ Sections within a `.cfg` file appear in this strict top-to-bottom order:
 
 1. [File header comment](#1-file-header-comment)
 2. [Non-macro config sections](#2-non-macro-config-sections) (if any)
-3. [Variable-storage macros](#3-variable-storage-macros-_vars--_settings) (`_*_VARS`)
+3. [Variable-storage macros](#3-variable-storage-macros-__vars--__settings) (`_*_VARS`)
 4. [Public macros](#4-public-macros)
 5. [Secondary / compatibility macros](#5-secondary--compatibility-macros)
-6. [`[delayed_gcode ...]` sections](#6-delayed_gcode-sections)
+6. [`[delayed_gcode ...]` sections](#6-delayed_gcode--sections)
 7. [Internal helper macros](#7-internal-helper-macros)
 
 Within each group, macros are sorted **alphabetically** by name.
@@ -31,10 +31,56 @@ Every `.cfg` file begins with a comment block immediately before the first secti
 # Part of klipper-nerdygriffin-macros
 ```
 
-- 3–6 lines; no author, version, or changelog metadata
+- 3–6 lines of description/scope; no author, version, or changelog metadata
 - Optional additional line: `# References: <url>` — only when the file is
   substantially derived from external work (e.g. Beacon docs, Ellis guide, Mainsail
   upstream)
+
+### Dependency Notes (Required)
+
+After the description lines, the header **must** declare cross-file dependencies as
+`# -` bullet lines so a user can tell, without reading the code, which other files
+must be included. Distinguish the two kinds of coupling:
+
+- **Required** — the macro calls another file's macro/variable *unguarded*, so it
+  errors at runtime if that file is absent. Declare one line per required in-repo file:
+
+  ```ini
+  # - Requires [include status_macros.cfg] in printer.cfg
+  ```
+
+- **Optional** — the usage is gated by `{% if printer['gcode_macro X'] is defined %}`
+  (or a `printer.configfile.settings` check), so the file degrades gracefully to a
+  fallback when the dependency is absent. Phrase these as enhancements, not requirements:
+
+  ```ini
+  # - Optional: integrates with nozzle_wiper.cfg (CLEAN_NOZZLE) if included
+  # - Optional: detects AFC, Beacon, and KAMP if present
+  ```
+
+Rules:
+
+- One `# - Requires …` line per **required** in-repo file (omit the section if there
+  are none — e.g. `beeper.cfg`, `squiggly_purge.cfg`).
+- Group optional in-repo files and external systems (AFC, Beacon, KAMP, Shake&Tune)
+  under `# - Optional: …` lines.
+- "Required" means *errors when the macro runs*, not at config load — Klipper renders
+  macro bodies at call time, so a missing dependency surfaces as `Unknown command`.
+- Native Klipper commands (`TURN_OFF_HEATERS`, `M117`, `QUAD_GANTRY_LEVEL`, …) are
+  **not** dependencies on `rename_existing.cfg`; that file only wraps the built-ins.
+- Keep this in sync with [DEPENDENCIES.md](../DEPENDENCIES.md), which holds the full
+  dependency graph and required/optional table.
+
+Complete example (`heat_soak.cfg`):
+
+```ini
+# Hardware-agnostic HEAT_SOAK macro
+# Part of klipper-nerdygriffin-macros
+# - Requires [include status_macros.cfg] in printer.cfg
+# - Requires [include homing.cfg] and [include positioning_macros.cfg]
+# - Auto-detects chamber temperature sensor
+# - Optional panel LED animation gated by variable
+```
 
 ---
 
@@ -99,7 +145,7 @@ User-callable macros: `UPPER_CASE` names, no leading underscore.
 
 When the file also contains internal helpers, precede this group with a section banner:
 
-```
+```text
 #####################################################################
 #   [Descriptive Section Label]
 #####################################################################
@@ -156,7 +202,7 @@ the delayed_gcode name.
 
 Use a section banner when mixed with other groups:
 
-```
+```text
 #####################################################################
 #   Filament Sensor Management
 #####################################################################
@@ -178,7 +224,7 @@ gcode:
 Underscore-prefixed macros not meant to be called directly. Always placed last.
 Preceded by a section banner:
 
-```
+```text
 #####################################################################
 #   Helper Macros (Internal Use)
 #####################################################################
@@ -187,7 +233,7 @@ Preceded by a section banner:
 Sorted **alphabetically** within this group. Additional sub-group banners are allowed
 when a logical cluster benefits from visual separation:
 
-```
+```text
 #####################################################################
 #   Retraction Helpers
 #####################################################################
@@ -197,7 +243,7 @@ when a logical cluster benefits from visual separation:
 
 ## Section Banner Format
 
-```
+```text
 #####################################################################
 #   Label Text Here
 #####################################################################
@@ -259,7 +305,8 @@ variable_purge_distance: 100   # mm of filament to purge after loading
 
 ## Checklist for New `.cfg` Files
 
-- [ ] File header: 3–6 comment lines, no author/version/changelog
+- [ ] File header: 3–6 description lines, no author/version/changelog
+- [ ] Header declares dependencies: `# - Requires [include X.cfg] …` per required in-repo file, and `# - Optional: …` for guarded/external integrations
 - [ ] Non-macro config sections (if any) appear before all macros, sorted alphabetically
 - [ ] `_*_VARS` macros appear first, without a banner, sorted alphabetically
 - [ ] Public macros next, with section banner if internal helpers also present

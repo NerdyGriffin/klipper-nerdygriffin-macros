@@ -6,10 +6,14 @@ This guide standardizes documentation format across all macro documentation file
 
 Each documentation file documents a config file (`.cfg`) that may contain multiple related macros. Use this structure:
 
-```
+```text
 # [Feature Name] ([config_file.cfg])
 
 [One-sentence description of what the config file provides]
+
+## Dependencies (only if the file depends on other files)
+
+[Required vs. optional cross-file dependencies — mirrors the .cfg header notes]
 
 ## Usage
 
@@ -42,6 +46,7 @@ Each documentation file documents a config file (`.cfg`) that may contain multip
 
 **Note:** Sections are optional based on the file's contents:
 
+- Omit `## Dependencies` if the file is standalone (no in-repo or external dependencies)
 - Omit `### [MACRO_NAME] Parameters` if no macros accept user-facing parameters
 - Omit `## Internal Macros` if file has no helper/internal macros
 - Omit `## Configuration` if macros have no configurable variables
@@ -54,6 +59,35 @@ Each documentation file documents a config file (`.cfg`) that may contain multip
   - Example: `# Heat Soak Configuration (heat_soak.cfg)`
   - The feature name should describe the overall purpose, not a single macro
 - **Brief intro paragraph** immediately after heading (1-2 sentences describing what the file provides)
+
+## Dependencies Section
+
+If the config file depends on other files, include a `## Dependencies` section
+immediately after the intro paragraph. It mirrors the `# - Requires …` / `# - Optional: …`
+notes in the `.cfg` header (see [MACRO_STYLE_GUIDE.md](MACRO_STYLE_GUIDE.md#dependency-notes-required))
+and exists so a user knows what to `[include]` before relying on this file.
+
+Use two labelled lists to keep the **required** vs. **optional** distinction explicit:
+
+```markdown
+## Dependencies
+
+**Required** (this file errors at runtime if these are not included):
+
+- [`status_macros.cfg`](status_macros.md) — `STATUS_*` / `RESET_STATUS`
+- [`homing.cfg`](homing.md) — `_CG28`
+
+**Optional** (auto-detected; falls back gracefully if absent):
+
+- [`nozzle_wiper.cfg`](nozzle_wiper.md) — uses `CLEAN_NOZZLE` if defined
+- AFC, Beacon, KAMP — external systems detected via `is defined` guards
+```
+
+> **Note**:
+>
+> "Required" means the macro fails when **invoked** (Klipper renders macro bodies at
+> call time), not at config load. See [DEPENDENCIES.md](../DEPENDENCIES.md) for the
+> full dependency graph and the complete required/optional table.
 
 ## Usage Section
 
@@ -306,6 +340,7 @@ Use left-aligned text for readability:
 
 - [ ] File heading includes config filename in parentheses
 - [ ] Brief 1-2 sentence intro describing what the config file provides
+- [ ] `## Dependencies` section (if not standalone) splitting **Required** vs **Optional** cross-file dependencies
 - [ ] `## Usage` section with gcode examples for all user-facing macros
 - [ ] Parameter subsections for each macro that accepts parameters
 - [ ] `## Internal Macros` section if file has helper or delayed_gcode macros

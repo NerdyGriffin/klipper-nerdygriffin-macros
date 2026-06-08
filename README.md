@@ -94,6 +94,7 @@ The install script will:
    ```
 
 4. **Restart Klipper:**
+
    ```bash
    sudo systemctl restart klipper
    ```
@@ -130,7 +131,7 @@ Automatically detects and uses AFC macros when available:
 
 - `AFC_PARK`, `AFC_BRUSH`, `AFC_CUT`
 
-### Voron V0, V2, Trident, etc.
+### Voron V0, V2, Trident, etc
 
 All macros calculate positions dynamically based on configured bed size and axis limits.
 
@@ -158,6 +159,9 @@ Dict-based `_LED_VARS` system supports any combination of neopixels across toolh
 - [KAMP](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging) — Used by `print_macros.cfg` if available
 
 **Minimum Klipper version:** v0.13.0+
+
+See [docs/DEPENDENCIES.md](docs/DEPENDENCIES.md) for the full cross-file dependency
+graph and the required-vs-optional breakdown of which macro files depend on each other.
 
 ## Documentation
 
@@ -188,6 +192,7 @@ Dict-based `_LED_VARS` system supports any combination of neopixels across toolh
 | --------------------------------------------------------------- | --------------------------------------------- |
 | [dev/MARKDOWN_STYLE_GUIDE.md](docs/dev/MARKDOWN_STYLE_GUIDE.md) | Documentation (Markdown) formatting standards |
 | [dev/MACRO_STYLE_GUIDE.md](docs/dev/MACRO_STYLE_GUIDE.md)       | Klipper macro `.cfg` file structure standards |
+| [dev/GIT_HOOKS.md](docs/dev/GIT_HOOKS.md)                       | Markdown lint pre-commit hook setup           |
 | [dev/TODO.md](docs/dev/TODO.md)                                 | Development task tracking                     |
 
 ## Contributing
