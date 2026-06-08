@@ -14,7 +14,7 @@ GET_COMPLETE_SAVE_CONFIG            # Check if post-print save is enabled
 ### SET_COMPLETE_SAVE_CONFIG Parameters
 
 | parameters | default value | description |
-|-----------:|---------------|-------------|
+| ---: | --- | --- |
 | ENABLE | 1 | Set to 1 to enable post-print save, 0 to disable |
 
 ## Behavior
@@ -27,6 +27,7 @@ GET_COMPLETE_SAVE_CONFIG            # Check if post-print save is enabled
 ## Automatic Cleanup
 
 Before saving, `SAVE_CONFIG` automatically:
+
 - Removes the "default" beacon model (if it exists in runtime or config)
 - Removes the "default" bed mesh profile (if it exists)
 - Clears the active bed mesh

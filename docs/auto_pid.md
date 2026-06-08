@@ -12,7 +12,7 @@ AUTO_PID_CALIBRATE HEATER=heater_bed TARGET=100  # Calibrate bed at 100°C
 ### AUTO_PID_CALIBRATE Parameters
 
 | parameters | default value | description |
-|-----------:|---------------|-------------|
+| ---: | --- | --- |
 | HEATER | extruder | Heater name to calibrate (`extruder` or `heater_bed`) |
 | TARGET | 250 | Target temperature in °C for the calibration test |
 

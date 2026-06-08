@@ -5,7 +5,7 @@ The `rename_existing.cfg` safely overrides Klipper built-in commands by renaming
 ## Affected Commands
 
 | Macro | Purpose |
-|----------|----------|
+| --- | --- |
 | `M0` | Alias for Marlin-style "Unconditional stop" |
 | `M18` | Turn off motors and set `STATUS_OFF` |
 | `M84` | Turn off motors and set `STATUS_OFF` (alias for `M18`) |

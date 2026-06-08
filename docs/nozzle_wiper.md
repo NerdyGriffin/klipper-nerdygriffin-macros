@@ -16,7 +16,7 @@ NW_TEST_CLEAN_NOZZLE    # Test macro: heats to 240°C, homes, then cleans (for c
 > **Note**:
 >
 > `CLEAN_NOZZLE` is a compatibility alias that delegates to `NW_CLEAN_NOZZLE`. It exists so that `PRINT_START` (and other systems) can call `CLEAN_NOZZLE` as a generic entry point — AFC systems can shadow it with `AFC_BRUSH`, while non-AFC printers with `nozzle_wiper.cfg` get the full wiper routine automatically.
-
+<!-- -->
 > **Warning**:
 >
 > **Bucket positions MUST be calibrated before use.** The macro intentionally sets bucket positions to `-1000` by default to force calibration. You must override these values in your `printer.cfg` before the macro will function correctly.

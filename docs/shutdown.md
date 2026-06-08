@@ -15,7 +15,7 @@ GET_COMPLETE_SHUTDOWN             # Check if post-print shutdown is enabled
 ### SET_COMPLETE_SHUTDOWN Parameters
 
 | parameters | default value | description |
-|-----------:|---------------|-------------|
+| ---: | --- | --- |
 | ENABLE | 1 | Set to 1 to enable post-print shutdown, 0 to disable |
 
 ## Behavior

@@ -12,7 +12,7 @@ NOZZLE_CHANGE_POSITION           # Park toolhead at front-center for nozzle swap
 ### DEEP_CLEAN_NOZZLE Parameters
 
 | parameters | default value | description |
-|-----------:|---------------|-------------|
+| ---: | --- | --- |
 | TEMP | max_temp - 20°C | Starting temperature for cleaning cycle |
 
 - `DEEP_CLEAN_NOZZLE` — Steps down temperature in 20°C increments, cleaning at each step until reaching 160°C. Uses `AFC_BRUSH` if available, otherwise falls back to `CLEAN_NOZZLE`.

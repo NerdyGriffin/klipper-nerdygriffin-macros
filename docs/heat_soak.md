@@ -12,7 +12,7 @@ M191 S50                               # Marlin-style chamber wait (uses HEAT_SO
 ### HEAT_SOAK Parameters
 
 | parameters | default value | description |
-|-----------:|---------------|-------------|
+| ---: | --- | --- |
 | CHAMBER | None | Target chamber temperature in °C. If not specified, calculates target based on bed temperature. |
 | DURATION | 5 | Soak duration in minutes (0 = wait until chamber reaches target) |
 
@@ -31,6 +31,7 @@ variable_frame_rate: 12                 # LED animation frame rate in Hz
 ### Chamber Sensor Auto-Detection
 
 The macro searches for chamber sensors in this order:
+
 1. Explicit `chamber_sensor_name` (if provided)
 2. `temperature_sensor chamber`
 3. `temperature_sensor nitehawk-36` (toolhead proxy)
@@ -38,6 +39,7 @@ The macro searches for chamber sensors in this order:
 ### LED Animation
 
 The `HEAT_SOAK` macro uses the `_LED_VARS` dict-based system (see [status_macros.md](status_macros.md)):
+
 - `chamber_map`: Animates chamber/enclosure LEDs with red→green progress bar
 - `logo_map`: Fades logo/bed light from red→green alongside chamber animation
 - Safe by design: missing devices are automatically skipped

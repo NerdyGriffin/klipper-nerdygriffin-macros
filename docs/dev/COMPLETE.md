@@ -1,13 +1,13 @@
 # COMPLETED TASKS - klipper-nerdygriffin-macros
 
-### Consolidation Project
+## Consolidation Project
 
 - [x] Consolidate shared macros and configs between VT1548 and V03048 into a custom plugin that can be updated via moonraker
   - Goal: reduce duplication and ensure consistency between both printers
   - Deliverable: plugin that can be symlinked into each printer's config (like KAMP)
   - Status tracking and detailed planning: completed — roadmap removed after completion
 
-### HEAT_SOAK LED Parametrization
+## HEAT_SOAK LED Parametrization
 
 - [x] ~~Make LED names configurable via variables instead of hardcoded~~ **COMPLETED January 2025**
   - ✅ Unified chamber_map, logo_map, and nozzle_map into single animation loop
@@ -22,7 +22,7 @@
   - ✅ Consolidated `_SET_LOGO_LEDS`, `_SET_NOZZLE_LEDS`, `_SET_CHAMBER_LEDS` into unified `_SET_LEDS MAP=<group>`
   - ✅ Updated status_macros.cfg, heat_soak.cfg, and docs
 
-### Filament Management
+## Filament Management
 
 - [x] Remove temperature parameter from LOAD/UNLOAD filament macros
   - Context: latest mainsail/KlipperScreen/AFC versions bypass this or require extruder above min_print_temp before macro runs

@@ -12,7 +12,7 @@ PRINT_END
 ### PRINT_START Parameters
 
 | parameters | default value | description |
-|-----------:|---------------|-------------|
+| ---: | --- | --- |
 | BED | 60 | Target bed temperature in °C |
 | EXTRUDER | 200 | Target extruder temperature in °C |
 | CHAMBER | None | Target chamber temperature in °C (optional, auto-calculated from bed temp if omitted) |
@@ -111,5 +111,6 @@ After print end, two delayed gcodes are armed:
 ## Configuration
 
 These macros use status LEDs and heat soak features. See:
+
 - [status_macros.md](status_macros.md) - LED configuration
 - [heat_soak.md](heat_soak.md) - Chamber preheating options

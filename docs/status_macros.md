@@ -36,11 +36,13 @@ variable_leds: {
 ```
 
 **LED Groups:**
+
 - `chamber`: Lights up in sequence during `HEAT_SOAK` (red→green progress bar)
 - `logo`: Fades during `HEAT_SOAK` and displays status color in `STATUS_*` macros
 - `nozzle`: White during printing, status color otherwise
 
 **Index Values:**
+
 - Empty string `''` or `0`: Apply to entire device (no INDEX parameter)
 - Single integer `1`: Apply to specific LED index
 - Comma-separated string `'2,3'`: Apply to multiple indices
@@ -53,6 +55,7 @@ You can define additional groups beyond logo/nozzle/chamber. Use them with `_SET
 ### Configuration Steps
 
 1. **Include `status_macros.cfg`** in your `printer.cfg`:
+
    ```ini
    [include nerdygriffin-macros/status_macros.cfg]
    ```
@@ -60,6 +63,7 @@ You can define additional groups beyond logo/nozzle/chamber. Use them with `_SET
 2. **Override `_LED_VARS`** in your `printer.cfg` to match your LED hardware
 
 3. **Verify** with test macros:
+
    ```gcode
    STATUS_HEATING
    STATUS_PRINTING

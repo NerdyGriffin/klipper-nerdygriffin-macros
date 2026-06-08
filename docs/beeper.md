@@ -14,7 +14,7 @@ pin: YOUR_PIN_HERE    # Required: set your board's beeper pin
 ### Common Pins by Board
 
 | Board | Pin Examples |
-|:------|--------------|
+| :--- | --- |
 | Raspberry Pi GPIO | gpio23, gpio24, gpio25 |
 | BTT Octopus | PE5 |
 | BTT SKR Pico | gpio23 |
