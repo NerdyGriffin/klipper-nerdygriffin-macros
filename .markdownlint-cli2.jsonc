@@ -1,0 +1,23 @@
+{
+  // Respect .gitignore files so generated / scratch Markdown (Copilot exports,
+  // temp session dumps, and other ignored content) is never linted — only
+  // tracked, authored docs are checked.
+  "gitignore": true,
+
+  // markdownlint rule configuration.
+  "config": {
+    "default": true,
+    "MD013": {
+      "code_blocks": false,
+      "line_length": 320,
+      "tables": false
+    },
+    "MD024": {
+      "siblings_only": true
+    },
+    "MD029": {
+      "style": "ordered"
+    },
+    "MD033": false
+  }
+}

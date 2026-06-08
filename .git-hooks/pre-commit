@@ -1,0 +1,49 @@
+#!/bin/sh
+# Pre-commit runner for klipper-nerdygriffin-macros.
+# Part of klipper-nerdygriffin-macros
+#
+# Sources the shared helpers and step modules from .git-hooks/, runs each
+# step's _init check, then applies the per-file steps to the staged files.
+# A POSIX-sh stand-in for NerdyGriffin/git-hooks' PowerShell templater
+# (Build-PreCommit.ps1) — this host has no pwsh.
+#
+# Install with: dev/install-git-hooks.sh
+#   (writes a .git/hooks/pre-commit stub that execs this runner).
+
+# Resolve the .git-hooks directory regardless of the invoking CWD.
+repo_root=$(git rev-parse --show-toplevel) || exit 1
+hooks_dir="$repo_root/.git-hooks"
+
+# nvm installs Node per-user. Non-interactive hook invocations (editor git GUIs,
+# automation) may not have nvm's bin on PATH, even when it works in your shell.
+# If the tooling isn't already visible, add the newest nvm-managed Node bin dir.
+if ! command -v markdownlint-cli2 >/dev/null 2>&1; then
+    nvm_bin=$(ls -d "$HOME"/.nvm/versions/node/*/bin 2>/dev/null | sort -V | tail -n 1)
+    [ -n "$nvm_bin" ] && PATH="$nvm_bin:$PATH" && export PATH
+fi
+
+. "$hooks_dir/common.sh"
+. "$hooks_dir/step-lint-markdown.sh"
+
+# --- init checks: abort before touching files if a tool dependency is missing.
+step_lint_markdown_init || exit 1
+
+# --- per-file loop over staged (Added/Copied/Modified) files.
+files=$(git diff --cached --name-only --diff-filter=ACM)
+[ -n "$files" ] || exit 0
+
+rc=0
+old_ifs=$IFS
+IFS='
+'
+for file in $files; do
+    IFS=$old_ifs
+    [ -f "$file" ] || continue
+    is_binary "$file" && continue
+    step_lint_markdown "$file" || rc=1
+    IFS='
+'
+done
+IFS=$old_ifs
+
+exit $rc
