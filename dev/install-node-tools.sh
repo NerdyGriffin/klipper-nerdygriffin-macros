@@ -6,15 +6,26 @@
 # Idempotent — safe to re-run; exits early if markdownlint-cli2 is already
 # available. This is a developer tool; it is intentionally NOT wired into the
 # user-facing root install.sh.
-set -euo pipefail
+#
+# Note: nvm's nvm.sh is not `set -u`-safe (it references unset vars such as
+# PROVIDED_VERSION), which aborts the first run right after Node is installed.
+# So this script avoids `set -u` and relaxes errexit around every nvm call.
+set -eo pipefail
 
 NVM_VERSION="v0.40.1"               # pinned nvm installer release
 export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
 
-load_nvm() { [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; }
+# Load nvm with errexit off — nvm.sh and its functions are not -e/-u safe.
+load_nvm() {
+    if [ -s "$NVM_DIR/nvm.sh" ]; then
+        set +e
+        \. "$NVM_DIR/nvm.sh"
+        set -e
+    fi
+}
 
 # If nvm is already present, load it so the checks below see node/npm/tools.
-load_nvm || true
+load_nvm
 
 if command -v markdownlint-cli2 >/dev/null 2>&1; then
     echo "markdownlint-cli2 already installed: $(command -v markdownlint-cli2)"
@@ -36,11 +47,13 @@ else
     echo "==> nvm already present at $NVM_DIR"
 fi
 
-# 2. Node LTS (skip if a node is already usable)
+# 2. Node LTS (skip if a node is already usable). nvm calls run with errexit
+#    off; `nvm install` activates the new version in this shell on its own.
 if ! command -v node >/dev/null 2>&1; then
     echo "==> Installing Node (latest LTS) ..."
+    set +e
     nvm install --lts
-    nvm use --lts >/dev/null
+    set -e
 fi
 echo "    node $(node --version)  /  npm $(npm --version)"
 
