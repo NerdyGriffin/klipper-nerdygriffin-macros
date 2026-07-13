@@ -15,6 +15,13 @@
     "MD024": {
       "siblings_only": true
     },
+    // GitHub Copilot .prompt.md files legitimately start with YAML frontmatter
+    // (agent/model/description) instead of an H1 title. Treat any frontmatter key
+    // as satisfying MD041's first-line-heading rule. Docs have no frontmatter, so
+    // they still require an H1 first line.
+    "MD041": {
+      "front_matter_title": "^\\s*[A-Za-z][\\w-]*\\s*:"
+    },
     "MD029": {
       "style": "ordered"
     },
