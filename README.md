@@ -175,6 +175,7 @@ graph and the required-vs-optional breakdown of which macro files depend on each
 | [gcode_features.cfg](docs/gcode_features.md)           | Enables advanced G-code features (force_move, pause/resume, arcs, etc.) |
 | [heat_soak.cfg](docs/heat_soak.md)                     | Chamber preheating with LED animations                                  |
 | [homing.cfg](docs/homing.md)                           | Sensorless and conditional homing helpers                               |
+| [idle_timeout.cfg](docs/idle_timeout.md)               | Idle cooldown, parking, and paused-print handling                       |
 | [maintenance_macros.cfg](docs/maintenance_macros.md)   | Nozzle cleaning, nozzle changes, and developer diagnostics              |
 | [nozzle_wiper.cfg](docs/nozzle_wiper.md)               | Servo-based nozzle cleaning with calibration guide                      |
 | [print_macros.cfg](docs/print_macros.md)               | PRINT_START/PRINT_END with hardware detection                           |
