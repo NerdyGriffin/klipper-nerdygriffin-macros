@@ -160,4 +160,7 @@ For a comprehensive list of dependencies and compatibility requirements, see [RE
 ## Ease of use
 
 - If I repeated request actions that contradict these instructions, propose ways to improve these instructions.
-- **Important:** Do not reference `copilot-instructions.md` in user-facing documentation (README.md, docs/*.md). These are AI agent instructions, not user docs. User-facing docs should be self-contained.
+- **Important:** This file (`AGENTS.md`) is the vendor-neutral source of truth for AI-agent guidance —
+  surfaced to Claude Code via `CLAUDE.md` (`@AGENTS.md` import) and to GitHub Copilot via the
+  `.github/copilot-instructions.md` symlink. Edit `AGENTS.md`, not the pointers. Do not reference it
+  from user-facing docs (README.md, docs/*.md); those must be self-contained.
