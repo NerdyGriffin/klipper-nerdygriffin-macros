@@ -10,7 +10,13 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 
 - Edit macros locally at `/home/pi/klipper-nerdygriffin-macros`
 - Sync changes to VT-1548 using `dev/sync_macros_repo.sh` (git pull over SSH)
-- VT-1548 config is NFS-mounted at `/mnt/vt-1548/printer_data/config` (writable for cross-printer dev)
+- Each host NFS-mounts the *other* printer's config for cross-printer dev: `/mnt/vt-1548/...` when working
+  from V0-3048, `/mnt/v0-3048/...` when working from VT-1548 (both writable)
+
+⚠️ **`dev/` may contain host-local scripts that must not be published.** This repo is public, and a clone
+may hold untracked helpers (mount/sync/verify wrappers) guarded only by a nested `dev/.gitignore` that is
+itself untracked. **Never run `git add -A` or `git add dev/` here** — stage files by explicit path, and
+check `git status --porcelain dev/` before committing.
 
 ## Architecture & Intent
 
@@ -21,13 +27,20 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 
 ## Key Files & Groups
 
+- `macros/print_macros.cfg`: `PRINT_START` / `PRINT_END` — the print lifecycle.
+- `macros/status_macros.cfg`: `STATUS_*` / `RESET_STATUS` LED states; zone config in `_LED_VARS`.
 - `macros/filament_management.cfg`: LOAD/UNLOAD/PURGE with AFC auto-detect and safe parking.
 - `macros/client.cfg`: Pause/Resume/Cancel hooks for Mainsail/Fluidd with optional AFC handling.
 - `macros/heat_soak.cfg`: Chamber preheat via bed+hotend assist, sensor auto-detect, optional LED animations.
-- `macros/auto_pid.cfg`: PID helpers for extruder/bed.
-- `macros/gcode_features.cfg`: Enables advanced G-code features (force_move, pause/resume, firmware retraction, arcs, etc.).
 - `macros/homing.cfg`: Sensorless and conditional homing helpers with edge clearance and current management.
-- `macros/maintenance_macros.cfg`: Nozzle change, belt settling (`SETTLE_BELT_TENSION`).
+- `macros/idle_timeout.cfg`: `[idle_timeout]` behavior (sensor teardown, AFC-aware).
+- `macros/auto_pid.cfg`: PID helpers for extruder/bed.
+- `macros/belt_tension.cfg`: `SETTLE_BELT_TENSION` + `_BELT_TENSION_VARS`.
+- `macros/maintenance_macros.cfg`: `DEEP_CLEAN_NOZZLE`, `NOZZLE_CHANGE_POSITION`, `_DEBUG_PRINT_STATE`.
+- `macros/nozzle_wiper.cfg`: `NW_CLEAN_NOZZLE`, deploy/retract; needs a local `[servo ...]` and `NW_BUCKET_POS` override.
+- `macros/squiggly_purge.cfg`: `SQUIGGLY_PURGE` prime-line alternative.
+- `macros/beeper.cfg`: `M300` and chimes; needs a local `[pwm_cycle_time beeper]` pin override.
+- `macros/gcode_features.cfg`: Enables advanced G-code features (force_move, pause/resume, firmware retraction, arcs, etc.).
 - `macros/rename_existing.cfg`: Safe overrides (M109/M190/M117...).
 - `macros/save_config.cfg`: Safe SAVE_CONFIG with delayed variant.
 - `macros/shaketune.cfg`: Shake&Tune wrapper (optional dependency installed elsewhere).
@@ -73,7 +86,7 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 
 ## External Dependencies & Expectations
 
-For a comprehensive list of dependencies and compatibility requirements, see [README.md#dependencies](../README.md#dependencies).
+For a comprehensive list of dependencies and compatibility requirements, see [README.md#dependencies](README.md#dependencies).
 
 **Developer reference — file locations within this plugin:**
 
