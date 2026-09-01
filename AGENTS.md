@@ -66,22 +66,24 @@ check `git status --porcelain dev/` before committing.
   [include nerdygriffin-macros/client.cfg]
   ```
 
-- Override variables locally (do not edit this repo):
+- Override variables locally (do not edit this repo). Re-declare the macro that *owns* the variable —
+  note `y_calibrated` lives on `_BELT_TENSION_VARS`, not on `SETTLE_BELT_TENSION`. Values below are
+  illustrative only; every one is printer-specific:
 
   ```ini
   [gcode_macro HEAT_SOAK]
-  variable_max_chamber_target: 60
+  variable_max_chamber_target: 60        # ceiling your chamber can actually reach
   variable_chamber_sensor_name: "nitehawk-36"
 
-  [gcode_macro SETTLE_BELT_TENSION]
-  variable_y_calibrated: 116
+  [gcode_macro _BELT_TENSION_VARS]
+  variable_y_calibrated: 120             # Y where belt span == belt_span_length
   ```
 
-- Hardware pin overrides (after include):
+- Hardware pin overrides (after include) — pin names are board-specific:
 
   ```ini
   [pwm_cycle_time beeper]
-  pin: PE5
+  pin: <your board's beeper pin>
   ```
 
 ## External Dependencies & Expectations
