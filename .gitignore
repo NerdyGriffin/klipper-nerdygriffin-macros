@@ -13,3 +13,9 @@ Thumbs.db
 *.bak
 *.backup
 *_backup_*
+
+# Host-local dev environment (see dev/.env.example)
+dev/.env
+
+# Local AI session notes
+dev/copilot/

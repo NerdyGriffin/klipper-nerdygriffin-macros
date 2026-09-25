@@ -9,14 +9,14 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 **Cross-printer sync:**
 
 - Edit macros locally at `/home/pi/klipper-nerdygriffin-macros`
-- Sync changes to VT-1548 using `dev/sync_macros_repo.sh` (git pull over SSH)
-- Each host NFS-mounts the *other* printer's config for cross-printer dev: `/mnt/vt-1548/...` when working
-  from V0-3048, `/mnt/v0-3048/...` when working from VT-1548 (both writable)
+- Sync changes to the other host using `dev/sync_macros_repo.sh` (git pull over SSH)
+- Each host NFS-mounts the *other* printer's config for cross-printer dev at
+  `/mnt/<peer-hostname>/printer_data/config` (writable)
 
-⚠️ **`dev/` may contain host-local scripts that must not be published.** This repo is public, and a clone
-may hold untracked helpers (mount/sync/verify wrappers) guarded only by a nested `dev/.gitignore` that is
-itself untracked. **Never run `git add -A` or `git add dev/` here** — stage files by explicit path, and
-check `git status --porcelain dev/` before committing.
+**`dev/` is tracked.** Host-specific values (peer hostname, SSH target, addresses) live only in
+`dev/.env`, which is git-ignored; see `dev/.env.example` and `dev/README.md`. `dev/copilot/` is
+ignored scratch space. This repo is public: never put a hostname, IP, or FQDN in a tracked file, and
+stage files by explicit path rather than `git add -A`.
 
 ## Architecture & Intent
 

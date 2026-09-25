@@ -1,20 +1,16 @@
 #!/usr/bin/env bash
+# Git-pull the macros repo locally and on the peer host over SSH.
+# Part of klipper-nerdygriffin-macros
+#
+# Usage: sync_macros_repo.sh [branch]
 set -euo pipefail
 
-# Sync macros repo on both hosts (local + VT-1548 via SSH)
-# - Pulls latest changes in:
-#   - Local:  /home/pi/klipper-nerdygriffin-macros
-#   - Remote: /home/pi/klipper-nerdygriffin-macros (over SSH)
-# - Optional: pass a branch name (default: current branch)
-# - Requires that SSH host alias "vt-1548" is reachable
+# shellcheck source=dev/env.sh
+. "$(dirname "$(readlink -f "$0")")/env.sh"
 
 BRANCH_ARG=${1:-}
 
-echo "[sync_printer_repo] Host: $(hostname)"
-
-LOCAL_PATH="/home/pi/klipper-nerdygriffin-macros"
-REMOTE_HOST="vt-1548"
-REMOTE_PATH="/home/pi/klipper-nerdygriffin-macros"
+echo "[sync_macros_repo] Host: $LOCAL_HOST  Peer: $PEER_SSH"
 
 pull_repo() {
   local target=$1
@@ -22,34 +18,30 @@ pull_repo() {
   if [[ -n "$BRANCH_ARG" ]]; then
     git -C "$target" fetch --all
     git -C "$target" checkout "$BRANCH_ARG" || true
-    git -C "$target" pull --ff-only || git -C "$target" pull --rebase || true
-  else
-    git -C "$target" pull --ff-only || git -C "$target" pull --rebase || true
   fi
+  git -C "$target" pull --ff-only || git -C "$target" pull --rebase || true
   git -C "$target" status --short --branch || true
 }
 
-# Local pull
-if [[ -d "$LOCAL_PATH/.git" ]]; then
-  pull_repo "$LOCAL_PATH"
+if [[ -d "$MACROS_DIR/.git" ]]; then
+  pull_repo "$MACROS_DIR"
 else
-  echo "WARN: Local macros repo not found at $LOCAL_PATH"
+  echo "WARN: Local macros repo not found at $MACROS_DIR"
 fi
 
-# Remote pull via SSH
-echo "--- Pulling on remote: $REMOTE_HOST:$REMOTE_PATH"
-ssh "$REMOTE_HOST" 'bash -s' << EOF
+echo "--- Pulling on peer: $PEER_SSH:$PEER_MACROS_DIR"
+if ! ssh "$PEER_SSH" 'bash -s' <<REMOTE
 set -euo pipefail
 BRANCH_ARG="$BRANCH_ARG"
 $(declare -f pull_repo)
-if [[ -d "$REMOTE_PATH/.git" ]]; then
-  pull_repo "$REMOTE_PATH"
+if [[ -d "$PEER_MACROS_DIR/.git" ]]; then
+  pull_repo "$PEER_MACROS_DIR"
 else
-  echo "WARN: Remote macros repo not found at $REMOTE_PATH"
+  echo "WARN: Peer macros repo not found at $PEER_MACROS_DIR"
 fi
-EOF
-if [[ $? -ne 0 ]]; then
-  echo "ERROR: SSH to $REMOTE_HOST failed. Ensure host alias resolves and SSH keys are configured."
+REMOTE
+then
+  echo "ERROR: SSH to $PEER_SSH failed. Check PEER_SSH in dev/.env, host keys, and SSH keys."
 fi
 
 printf "\n[Done]\n"
