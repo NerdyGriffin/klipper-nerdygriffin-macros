@@ -58,6 +58,8 @@ variable_colors: {
 - [ ] **Parking velocity**: Resolve `TODO` in `_TOOLHEAD_PARK_LOAD_UNLOAD` — choose an appropriate default velocity for parking moves (currently takes `max` of `recover_velocity` and `toolhead.max_velocity`, which may be too fast)
 - [ ] **Consistent status display/message patterns** (post LED standardization)
 - [ ] **Look for additional opportunities to reduce duplicate code** by using abstractions or helper macros
+- [ ] **Chamber sensor helper**: Explore extracting the chamber sensor selection/detection/fallback logic (currently duplicated in `HEAT_SOAK` and `notify_bed_cooled` in `status_macros.cfg`) to a shared helper.
+  - Deferred: the refactor should also cover the Nevermore sensors and possibly the `NEVERMORE_TEMPERATURE_WAIT` command.
 
 ### Infrastructure
 
