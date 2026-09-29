@@ -60,6 +60,8 @@ variable_colors: {
 - [ ] **Look for additional opportunities to reduce duplicate code** by using abstractions or helper macros
 - [ ] **Chamber sensor helper**: Explore extracting the chamber sensor selection/detection/fallback logic (currently duplicated in `HEAT_SOAK` and `notify_bed_cooled` in `status_macros.cfg`) to a shared helper.
   - Deferred: the refactor should also cover the Nevermore sensors and possibly the `NEVERMORE_TEMPERATURE_WAIT` command.
+  - Consider storing the user variable as `variable_chamber_sensor: "temperature_sensor chamber"` in the style of `variable_runout_sensor    : "filament_switch_sensor extruder_tool_start"`.
+    - Evaluate whether this approach simplifies the code or requires more complex logic, compared to the current logic that stores the user variable as `variable_chamber_sensor_name` and uses `chamber_sensor_name` to construct the `chamber_sensor` string.
 
 ### Infrastructure
 
