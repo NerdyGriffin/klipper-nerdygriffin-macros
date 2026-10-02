@@ -29,6 +29,33 @@ variable_purge_distance: 50     # Increase purge amount (default: 25mm)
 variable_unload_distance: 96.8  # Adjust for your hotend (default: 100mm)
 ```
 
+### Auto-load on insert
+
+`_AUTO_LOAD_FILAMENT` is a minimal stand-in for AFC's auto-load on printers without a
+multi-material unit. Call it from the `insert_gcode` of a toolhead filament sensor:
+
+```ini
+[filament_switch_sensor extruder_tool_start]
+switch_pin: ^nhk:gpio3
+insert_gcode:
+    _AUTO_LOAD_FILAMENT
+```
+
+When the extruder is at or above `min_extrude_temp` it feeds `load_distance`, purges
+`purge_distance`, and confirms against `end_sensor` if that sensor exists. When the
+extruder is cold it only posts a message. It does nothing while a print is running, or
+when AFC is installed. Klipper itself only fires `insert_gcode` while the printer is
+idle or paused.
+
+```ini
+[gcode_macro _AUTO_LOAD_FILAMENT]
+variable_load_distance: 60      # Toolhead sensor to nozzle tip (default: 50mm)
+variable_purge_distance: 10     # (default: 10mm)
+variable_load_speed: 30         # mm/s (default: 30)
+variable_purge_speed: 5         # mm/s (default: 5)
+variable_end_sensor: "filament_switch_sensor extruder_tool_end"  # "" to skip confirmation
+```
+
 ### Parking positions
 
 Park position priority (highest to lowest):
@@ -74,6 +101,11 @@ These macros are called automatically and should not be invoked directly:
 
 - `_CONDITIONAL_RETRACT` — Retracts filament if the extruder can extrude (temperature is sufficient)
 - `_CONDITIONAL_UNRETRACT` — Unretracts filament if a retract was previously recorded
+
+### Auto-load helpers
+
+- `_AUTO_LOAD_FILAMENT` — Feeds inserted filament to the nozzle when the extruder is hot; intended for a toolhead sensor's `insert_gcode`
+- `_AUTO_LOAD_FILAMENT_CHECK` — Reads the end sensor after the feed finishes and reports success or failure
 
 ### Delayed G-code Macros
 
