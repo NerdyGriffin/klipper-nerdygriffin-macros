@@ -9,31 +9,33 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 **Cross-printer sync:**
 
 - Edit macros locally at `/home/pi/klipper-nerdygriffin-macros`
-- Sync changes to the other host using `dev/sync_macros_repo.sh` (git pull over SSH)
+- Sync changes to the other host using `dev/sync_macros_repo.sh` (git pull over SSH); see `dev/README.md` for the full script table
 - Each host NFS-mounts the *other* printer's config for cross-printer dev at
   `/mnt/<peer-hostname>/printer_data/config` (writable)
 
 **`dev/` is tracked.** Host-specific values (peer hostname, SSH target, addresses) live only in
 `dev/.env`, which is git-ignored; see `dev/.env.example` and `dev/README.md`. `dev/copilot/` is
-ignored scratch space. This repo is public: never put a hostname, IP, or FQDN in a tracked file, and
-stage files by explicit path rather than `git add -A`.
+ignored scratch space. `.github/prompts/` holds tracked Copilot prompt files; `.github/tmp/` and `.claude/`
+are git-ignored, host-local scratch. This repo is public: never put a hostname, IP, or FQDN in a tracked
+file (the tracked `klipper-nerdygriffin-macros.code-workspace` and `docs/dev/TODO.md` are known
+exceptions), and stage files by explicit path rather than `git add -A`.
 
 ## Architecture & Intent
 
 - Core macros live in `macros/*.cfg` and avoid printer-specific pins/geometry.
-- Intended usage: create a symlink in printer configs (e.g., `ln -sf ~/klipper-nerdygriffin-macros/macros ~/printer_data/config/nerdygriffin-macros`) and include files from `printer.cfg`.
+- Intended usage: create a symlink in printer configs (e.g., `ln -sfv ~/klipper-nerdygriffin-macros/macros ~/printer_data/config/nerdygriffin-macros`) and include files from `printer.cfg`.
 - Consumers override behavior by redefining macro variables or small wrapper macros in their own configs (never edit the symlinked directory in a printer repo).
-- External systems often referenced but not provided here: `STATUS_*` LED macros, `_CG28` conditional homing, `_CLIENT_VARIABLE`, filament sensors, AFC macros.
+- External systems often referenced but not provided here: Mainsail/Fluidd `PAUSE`/`RESUME`/`CANCEL_PRINT` and `_CLIENT_VARIABLE` (`client.cfg` only overlays the user hook keys), filament sensors, AFC, KAMP, Shake&Tune, Beacon.
 
 ## Key Files & Groups
 
-- `macros/print_macros.cfg`: `PRINT_START` / `PRINT_END` — the print lifecycle.
-- `macros/status_macros.cfg`: `STATUS_*` / `RESET_STATUS` LED states; zone config in `_LED_VARS`.
-- `macros/filament_management.cfg`: LOAD/UNLOAD/PURGE with AFC auto-detect and safe parking.
-- `macros/client.cfg`: Pause/Resume/Cancel hooks for Mainsail/Fluidd with optional AFC handling.
+- `macros/print_macros.cfg`: `PRINT_START` / `PRINT_END` — the print lifecycle. `PRINT_START` starts with `CLEAR_PAUSE` to clear stale pause state.
+- `macros/status_macros.cfg`: `STATUS_*` / `RESET_STATUS` LED states; zone config in `_LED_VARS`; `_SET_LEDS_BY_NAME` helper; `notify_bed_cooled`/`notify_bed_heated` delayed_gcodes.
+- `macros/filament_management.cfg`: LOAD/UNLOAD/PURGE with AFC auto-detect and safe parking; `_AUTO_LOAD_FILAMENT` (toolhead-sensor `insert_gcode`), `_PAUSE_IF_PRINTING` (sensor `runout_gcode`), `ENABLE_`/`DISABLE_ENCODER_SENSOR` delayed_gcodes.
+- `macros/client.cfg`: Pause/Resume/Cancel hooks for Mainsail/Fluidd with optional AFC handling; `[delayed_gcode NOZZLE_STANDBY_COOLDOWN]` prolonged-pause hotend standby (armed by `_AFTER_PAUSE`, cancelled by `_BEFORE_RESUME`/`_BEFORE_CANCEL`).
 - `macros/heat_soak.cfg`: Chamber preheat via bed+hotend assist, sensor auto-detect, optional LED animations.
 - `macros/homing.cfg`: Sensorless and conditional homing helpers with edge clearance and current management.
-- `macros/idle_timeout.cfg`: `[idle_timeout]` behavior (sensor teardown, AFC-aware).
+- `macros/idle_timeout.cfg`: `[idle_timeout]` behavior (sensor teardown, AFC-aware); also cancels `NOZZLE_STANDBY_COOLDOWN`.
 - `macros/auto_pid.cfg`: PID helpers for extruder/bed.
 - `macros/belt_tension.cfg`: `SETTLE_BELT_TENSION` + `_BELT_TENSION_VARS`.
 - `macros/maintenance_macros.cfg`: `DEEP_CLEAN_NOZZLE`, `NOZZLE_CHANGE_POSITION`, `_DEBUG_PRINT_STATE`.
@@ -44,7 +46,7 @@ stage files by explicit path rather than `git add -A`.
 - `macros/rename_existing.cfg`: Safe overrides (M109/M190/M117...).
 - `macros/save_config.cfg`: Safe SAVE_CONFIG with delayed variant.
 - `macros/shaketune.cfg`: Shake&Tune wrapper (optional dependency installed elsewhere).
-- `macros/shutdown.cfg`, `macros/tacho_macros.cfg`, `macros/positioning_macros.cfg`: Safety, fan preflight, helpers.
+- `macros/shutdown.cfg` (`SHUTDOWN`/`REBOOT`, `SAFE_SHUTDOWN`), `macros/tacho_macros.cfg` (`PCF_CHECK`/`PREFLIGHT_CHECK` fan preflight), `macros/positioning_macros.cfg` (`CENTER`).
 - `install.sh`: Creates symlink, optional Moonraker update_manager entry.
 
 ## Macro Development Patterns
@@ -55,6 +57,9 @@ stage files by explicit path rather than `git add -A`.
 - Status signaling: call `STATUS_*`/`RESET_STATUS` around long-running or critical ops.
 - Delayed actions: use `[delayed_gcode ...]` with `UPDATE_DELAYED_GCODE` to schedule/cancel.
 - Printer overrides: expose behavior via `variable_*` and document typical overrides in macro headers.
+- Never call bare `PAUSE` from a sensor `runout_gcode`; use `_PAUSE_IF_PRINTING` (`macros/filament_management.cfg`).
+- Every macro file header declares its dependencies as `# - Requires [include x.cfg]` / `# - Optional: ...` lines per `docs/dev/MACRO_STYLE_GUIDE.md`.
+- Run `dev/setup.sh` once per host to install the markdownlint pre-commit hook (config in `.markdownlint-cli2.jsonc`).
 
 ## Integration & Overrides (Examples)
 
@@ -72,11 +77,11 @@ stage files by explicit path rather than `git add -A`.
 
   ```ini
   [gcode_macro HEAT_SOAK]
-  variable_max_chamber_target: 60        # ceiling your chamber can actually reach
-  variable_chamber_sensor_name: "nitehawk-36"
+  variable_max_chamber_target: 45        # ceiling your chamber can actually reach (default in heat_soak.cfg header)
+  variable_chamber_sensor_name: ""       # empty = auto-detect `chamber`, then `nitehawk-36`
 
   [gcode_macro _BELT_TENSION_VARS]
-  variable_y_calibrated: 120             # Y where belt span == belt_span_length
+  variable_y_calibrated: 110             # Y where belt span == belt_span_length (default in belt_tension.cfg header)
   ```
 
 - Hardware pin overrides (after include) — pin names are board-specific:
@@ -94,13 +99,14 @@ For a comprehensive list of dependencies and compatibility requirements, see [RE
 
 - `STATUS_*` macros → `macros/status_macros.cfg`
 - `RESET_STATUS` → `macros/status_macros.cfg`
-- `_AFTER_PAUSE`, `_BEFORE_RESUME`, `_BEFORE_CANCEL` → `macros/client.cfg`
+- `_AFTER_PAUSE`, `_BEFORE_RESUME`, `_BEFORE_CANCEL`, `[delayed_gcode NOZZLE_STANDBY_COOLDOWN]` → `macros/client.cfg`
+  - delayed_gcode objects have no `get_status`, so `NOZZLE_STANDBY_COOLDOWN` cannot be probed with `is defined`; guard on `{% if printer['gcode_macro _AFTER_PAUSE'] is defined %}` instead (see `macros/idle_timeout.cfg`).
 
 **Key conditional integrations (auto-detected):**
 
 - AFC macros (`AFC_PARK`, `AFC_BRUSH`, `AFC_CUT`) — check with `{% if printer['gcode_macro AFC_PARK'] is defined %}`
-- Filament sensors (`encoder_sensor`) — check with `{% if 'filament_motion_sensor encoder_sensor' in printer.configfile.settings %}`
-- Shake&Tune macros — check with `{% if printer['gcode_macro SHAKETUNE_CALIBRATE'] is defined %}`
+- Filament sensors (`encoder_sensor`) — check with `{% if 'filament_motion_sensor encoder_sensor' in printer.configfile.settings %}` (not yet applied — every `SET_FILAMENT_SENSOR SENSOR=encoder_sensor` call is currently unguarded; tracked in `docs/dev/TODO.md`)
+- Shake&Tune — check with `{% if 'shaketune' in printer %}` (`macros/shaketune.cfg` defines `[shaketune]`)
 
 ## Common Workflows
 
@@ -117,10 +123,10 @@ For a comprehensive list of dependencies and compatibility requirements, see [RE
   curl -s -X POST "http://localhost:7125/printer/gcode/script?script=FIRMWARE_RESTART" && sleep 2 && tail -n 60 ~/printer_data/logs/klippy.log
   ```
 
-- Add Moonraker update manager (optional) per README, then restart Klipper:
+- Moonraker update manager (optional): `./install.sh` offers to append the repo-root `moonraker.conf` snippet to `~/printer_data/config/moonraker.conf`; then restart Moonraker:
 
   ```bash
-  sudo systemctl restart klipper
+  sudo systemctl restart moonraker
   ```
 
 - Test a macro from console or HTTP:
@@ -161,9 +167,12 @@ For a comprehensive list of dependencies and compatibility requirements, see [RE
 ## Documentation Structure
 
 - `README.md` - User-facing overview, installation, and feature list
-- `docs/` - Configuration guide with macro documentation index
+- `docs/` - One page per macro file; the index is the Documentation table in `README.md`
 - `docs/auto_pid.md`, `docs/beeper.md`, `docs/client.md`, etc. - Individual macro configuration documentation
 - `docs/status_macros.md` - LED system setup and configuration
+- `docs/DEPENDENCIES.md` - Cross-file macro dependency map
+- `docs/dev/GIT_HOOKS.md` - Pre-commit hook (markdownlint) setup and behavior
+- `docs/dev/TODO.md`, `docs/dev/COMPLETE.md` - Open and completed development tasks
 - `docs/dev/MARKDOWN_STYLE_GUIDE.md` - Documentation (Markdown) style and formatting standards
 - `docs/dev/MACRO_STYLE_GUIDE.md` - Klipper macro `.cfg` file structure and ordering standards
 
