@@ -58,6 +58,10 @@ variable_colors: {
 - [ ] **Parking velocity**: Resolve `TODO` in `_TOOLHEAD_PARK_LOAD_UNLOAD` — choose an appropriate default velocity for parking moves (currently takes `max` of `recover_velocity` and `toolhead.max_velocity`, which may be too fast)
 - [ ] **Consistent status display/message patterns** (post LED standardization)
 - [ ] **Look for additional opportunities to reduce duplicate code** by using abstractions or helper macros
+- [ ] **Guard `encoder_sensor` calls**: `AGENTS.md` prescribes `{% if 'filament_motion_sensor encoder_sensor' in printer.configfile.settings %}`, but no macro uses it.
+  - Every `SET_FILAMENT_SENSOR SENSOR=encoder_sensor` is unguarded (`client.cfg`, `idle_timeout.cfg`, `print_macros.cfg`, `filament_management.cfg`), and `_FILAMENT_OPERATION_INIT` reads `printer["filament_motion_sensor encoder_sensor"].enabled` unconditionally, so the sensor is effectively required.
+  - Apply the guard, or a `_SENSOR_VARS`-style name variable (cf. `runout_sensor`), so printers without an encoder can include these files.
+  - Found by the 2026-10-07 `AGENTS.md` audit. The guard has only ever existed as a guideline (added to the instructions in `f613f47`, never in `macros/`).
 - [ ] **Chamber sensor helper**: Explore extracting the chamber sensor selection/detection/fallback logic (currently duplicated in `HEAT_SOAK` and `notify_bed_cooled` in `status_macros.cfg`) to a shared helper.
   - Deferred: the refactor should also cover the Nevermore sensors and possibly the `NEVERMORE_TEMPERATURE_WAIT` command.
   - Consider storing the user variable as `variable_chamber_sensor: "temperature_sensor chamber"` in the style of `variable_runout_sensor    : "filament_switch_sensor extruder_tool_start"`.
