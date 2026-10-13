@@ -32,7 +32,7 @@ exceptions), and stage files by explicit path rather than `git add -A`.
 - `macros/print_macros.cfg`: `PRINT_START` / `PRINT_END` — the print lifecycle. `PRINT_START` starts with `CLEAR_PAUSE` to clear stale pause state.
 - `macros/status_macros.cfg`: `STATUS_*` / `RESET_STATUS` LED states; zone config in `_LED_VARS`; `_SET_LEDS_BY_NAME` helper; `notify_bed_cooled`/`notify_bed_heated` delayed_gcodes.
 - `macros/filament_management.cfg`: LOAD/UNLOAD/PURGE with AFC auto-detect and safe parking; `_AUTO_LOAD_FILAMENT` (toolhead-sensor `insert_gcode`), `_PAUSE_IF_PRINTING` (sensor `runout_gcode`), `ENABLE_`/`DISABLE_ENCODER_SENSOR` delayed_gcodes.
-- `macros/client.cfg`: Pause/Resume/Cancel hooks for Mainsail/Fluidd with optional AFC handling; `[delayed_gcode NOZZLE_STANDBY_COOLDOWN]` prolonged-pause hotend standby (armed by `_AFTER_PAUSE`, cancelled by `_BEFORE_RESUME`/`_BEFORE_CANCEL`).
+- `macros/client.cfg`: Pause/Resume/Cancel hooks for Mainsail/Fluidd with optional AFC handling; `[delayed_gcode NOZZLE_STANDBY_COOLDOWN]` prolonged-pause hotend standby (armed by `_AFTER_PAUSE` only during a print, cancelled by `_BEFORE_RESUME`/`_BEFORE_CANCEL`); an idle-time PAUSE is cleared instead.
 - `macros/heat_soak.cfg`: Chamber preheat via bed+hotend assist, sensor auto-detect, optional LED animations.
 - `macros/homing.cfg`: Sensorless and conditional homing helpers with edge clearance and current management.
 - `macros/idle_timeout.cfg`: `[idle_timeout]` behavior (sensor teardown, AFC-aware); also cancels `NOZZLE_STANDBY_COOLDOWN`.
