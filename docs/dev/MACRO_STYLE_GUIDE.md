@@ -77,9 +77,10 @@ Complete example (`heat_soak.cfg`):
 # Hardware-agnostic HEAT_SOAK macro
 # Part of klipper-nerdygriffin-macros
 # - Requires [include status_macros.cfg] in printer.cfg
-# - Requires [include homing.cfg] and [include positioning_macros.cfg]
-# - Auto-detects chamber temperature sensor
+# - Auto-detects chamber temperature sensor (explicit name > Nevermore > chamber > nitehawk-36)
+# - Optional: Nevermore controller ([nevermore]) used as chamber sensor and NEVERMORE_TEMPERATURE_WAIT if present
 # - Optional panel LED animation gated by variable
+# - Supports per-printer overrides via [gcode_macro HEAT_SOAK] variables in printer.cfg
 ```
 
 ---

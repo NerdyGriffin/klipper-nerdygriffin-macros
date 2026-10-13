@@ -64,6 +64,7 @@ variable_colors: {
   - Found by the 2026-10-07 `AGENTS.md` audit. The guard has only ever existed as a guideline (added to the instructions in `f613f47`, never in `macros/`).
 - [ ] **Chamber sensor helper**: Explore extracting the chamber sensor selection/detection/fallback logic (currently duplicated in `HEAT_SOAK` and `notify_bed_cooled` in `status_macros.cfg`) to a shared helper.
   - Deferred: the refactor should also cover the Nevermore sensors and possibly the `NEVERMORE_TEMPERATURE_WAIT` command.
+  - Partially addressed: both copies now resolve a `[nevermore]` controller inline (`use_nevermore` flag, intake > exhaust > 0) and `HEAT_SOAK` waits with `NEVERMORE_TEMPERATURE_WAIT`. Helper extraction is still open; the duplicated block is now ~20 lines, which strengthens the case.
   - Consider storing the user variable as `variable_chamber_sensor: "temperature_sensor chamber"` in the style of `variable_runout_sensor    : "filament_switch_sensor extruder_tool_start"`.
     - Evaluate whether this approach simplifies the code or requires more complex logic, compared to the current logic that stores the user variable as `variable_chamber_sensor_name` and uses `chamber_sensor_name` to construct the `chamber_sensor` string.
 

@@ -19,7 +19,7 @@ Hardware-agnostic Klipper macros for Voron printers with automatic AFC detection
 - `client.cfg` - Mainsail/Fluidd integration with AFC support
 - `filament_management.cfg` - Load/unload/purge operations with encoder sensor management
 - `gcode_features.cfg` - Enables advanced G-code features (force_move, pause/resume, arcs, etc.)
-- `heat_soak.cfg` - Chamber preheating with sensor auto-detection
+- `heat_soak.cfg` - Chamber preheating with chamber sensor / Nevermore auto-detection
 - `homing.cfg` - Sensorless and conditional homing helpers
 - `maintenance_macros.cfg` - Nozzle cleaning, nozzle changes, and developer diagnostics
 - `nozzle_wiper.cfg` - Servo-actuated nozzle purge bucket and brush system
@@ -173,7 +173,7 @@ graph and the required-vs-optional breakdown of which macro files depend on each
 | [client.cfg](docs/client.md)                           | Mainsail/Fluidd pause/resume/cancel integration                         |
 | [filament_management.cfg](docs/filament_management.md) | Load, unload, and purge with AFC auto-detect                            |
 | [gcode_features.cfg](docs/gcode_features.md)           | Enables advanced G-code features (force_move, pause/resume, arcs, etc.) |
-| [heat_soak.cfg](docs/heat_soak.md)                     | Chamber preheating with LED animations                                  |
+| [heat_soak.cfg](docs/heat_soak.md)                     | Chamber preheating with LED animations and sensor/Nevermore auto-detect |
 | [homing.cfg](docs/homing.md)                           | Sensorless and conditional homing helpers                               |
 | [idle_timeout.cfg](docs/idle_timeout.md)               | Idle cooldown, parking, and paused-print handling                       |
 | [maintenance_macros.cfg](docs/maintenance_macros.md)   | Nozzle cleaning, nozzle changes, and developer diagnostics              |

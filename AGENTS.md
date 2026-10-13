@@ -78,7 +78,7 @@ exceptions), and stage files by explicit path rather than `git add -A`.
   ```ini
   [gcode_macro HEAT_SOAK]
   variable_max_chamber_target: 45        # ceiling your chamber can actually reach (default in heat_soak.cfg header)
-  variable_chamber_sensor_name: ""       # empty = auto-detect `chamber`, then `nitehawk-36`
+  variable_chamber_sensor_name: ""       # empty = auto-detect Nevermore, then `chamber`, then `nitehawk-36`
 
   [gcode_macro _BELT_TENSION_VARS]
   variable_y_calibrated: 110             # Y where belt span == belt_span_length (default in belt_tension.cfg header)
