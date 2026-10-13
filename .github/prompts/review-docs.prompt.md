@@ -4,14 +4,17 @@ model: Auto (copilot)
 description: 'Perform a review of all documentation'
 ---
 
-Perform a review of the documentation and provide a TODO list of issues and potential improvements.
+Review the user-facing documentation in every repository in this workspace for claims the current configs, macros, and scripts contradict, for references that no longer resolve, and for departures from the style guide in `docs/dev/MARKDOWN_STYLE_GUIDE.md` (macros repo).
 
-- Scope: All repositories in this workspace
-- Avoid referring to files that are not tracked in version control, not included in the documentation index, or outside the current workspace.
-  - If documentation references such files, flag the reference and suggest either adding the file to tracking or removing the reference.
-- Ask for clarifications if any part of the documentation is ambiguous.
-- Do not suggest changes to implement features or functionality; focus solely on documentation quality and clarity.
+- The code is the ground truth; the docs describe it. A finding cites the repo line that contradicts the doc. Never propose editing code to match the docs.
+- Flag references to files that are untracked, outside the workspace, or missing from the documentation index, and suggest either tracking the file or removing the reference.
+- When two passages disagree, use `git blame` / `git log` to establish which is newer and quote both. If history does not settle it, ask me rather than guess.
+- Anything you cannot verify against the repo is a question for me, not a finding.
+- Focus on documentation accuracy and clarity; do not suggest implementing features or functionality.
 
-Return the TODO list in a Markdown format in the chat, grouped by priority and issue type. Use numbered lists for easy reference. Do not create or edit TODO list files unless explicitly instructed.
+Report in chat: lead with the two or three findings that matter most, then one line per verified finding (`file:line`, what is
+wrong, the contradicting evidence or style-guide rule, the proposed edit), then a separate list of open questions. Leave out
+personal style preferences the style guide does not cover and content that is redundant but correct. Fewer well-grounded
+findings beat a long list. Do not create or edit TODO list files unless explicitly instructed.
 
-If we iterate on this prompt, repeat any TODO items from prior runs until resolved.
+Carry forward any unresolved TODO items from earlier runs in this conversation.
