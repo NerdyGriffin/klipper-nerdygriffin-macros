@@ -41,18 +41,18 @@ insert_gcode:
     _AUTO_LOAD_FILAMENT
 ```
 
-When the extruder is at or above `min_extrude_temp` it feeds `load_distance`, purges
-`purge_distance`, and confirms against `end_sensor` if that sensor exists. When the
-extruder is cold it only posts a message. It does nothing while a print is running, or
-when AFC is installed. Klipper itself only fires `insert_gcode` while the printer is
-idle or paused.
+When the extruder is at or above `min_extrude_temp` it feeds `load_distance` at
+`load_speed` with the toolhead acceleration temporarily capped to `load_accel`, then
+confirms against `end_sensor` if that sensor exists. The defaults match AFC's standalone
+auto-load. When the extruder is cold it only posts a message. It does nothing while a
+print is running, or when AFC is installed. Klipper itself only fires `insert_gcode`
+while the printer is idle or paused.
 
 ```ini
 [gcode_macro _AUTO_LOAD_FILAMENT]
-variable_load_distance: 60      # Toolhead sensor to nozzle tip (default: 50mm)
-variable_purge_distance: 10     # (default: 10mm)
-variable_load_speed: 30         # mm/s (default: 30)
-variable_purge_speed: 5         # mm/s (default: 5)
+variable_load_distance: 72      # Toolhead sensor to nozzle tip (default: 72mm)
+variable_load_speed: 25         # mm/s (default: 25)
+variable_load_accel: 5          # mm/s^2 (default: 5)
 variable_end_sensor: "filament_switch_sensor extruder_tool_end"  # "" to skip confirmation
 ```
 
