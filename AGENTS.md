@@ -12,6 +12,8 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 - Sync changes to the other host using `dev/sync_macros_repo.sh` (git pull over SSH); see `dev/README.md` for the full script table
 - Each host NFS-mounts the *other* printer's config for cross-printer dev at
   `/mnt/<peer-hostname>/printer_data/config` (writable)
+- Claude Code auto-memory (`~/.claude/projects/<slug>/memory/`) is replicated between the hosts by
+  `dev/sync_claude_memory.sh` (git, cron + session hooks); history lives in `~/.claude/memory-sync/`
 
 **`dev/` is tracked.** Host-specific values (peer hostname, SSH target, addresses) live only in
 `dev/.env`, which is git-ignored; see `dev/.env.example` and `dev/README.md`. `dev/copilot/` is

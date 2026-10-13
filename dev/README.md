@@ -27,6 +27,7 @@ See [.env.example](.env.example) for every setting and its default.
 | `verify_printers.sh`    | Check local paths, the peer mount, and write access to it                  |
 | `sync_macros_repo.sh`   | `git pull` the macros repo locally and on the peer over SSH                |
 | `sync_all.sh`           | Mount, sync macros (optionally a branch), then verify                      |
+| `sync_claude_memory.sh` | Replicate the Claude Code auto-memory dir between hosts (git, cron, hooks) |
 | `setup.sh`              | Developer toolchain: Node, markdownlint, and the git pre-commit hook       |
 
 ## NFS setup
@@ -61,6 +62,37 @@ dev/sync_all.sh                      # mount, sync, verify
 
 Edit shared macros only in the local clone, never through the peer's NFS mount. Edit the peer's
 printer config through the mount as needed.
+
+## Claude memory sync
+
+`sync_claude_memory.sh` keeps `~/.claude/projects/<slug>/memory/` (Claude Code's per-project
+auto-memory: one fact per `.md` file plus the `MEMORY.md` index) identical on both hosts. Both
+printers open the same config path, so the slug matches and a fact learned on one printer is
+available on the other.
+
+How it works:
+
+- Each memory directory gets a detached git dir at `~/.claude/memory-sync/<slug>.git`. Nothing but
+  memory files lives in the memory directory itself.
+- Every run commits local changes, then fetches and merges the peer's repo over SSH
+  (`ssh://$PEER_SSH/...`). Nobody pushes; the peer merges on its own run, so both hosts converge
+  within two cycles. An unreachable peer is logged and skipped.
+- `MEMORY.md` merges by line union, so index lines added on both hosts both survive. Any other file
+  edited on both hosts between runs resolves in the peer's favour; the local version stays in git
+  history (`git --git-dir ~/.claude/memory-sync/<slug>.git log -p -- <file>` recovers it).
+- Log: `~/.claude/memory-sync/sync.log`.
+
+Setup, once per host:
+
+```bash
+dev/sync_claude_memory.sh                 # first run: initialise, commit, merge peer
+dev/sync_claude_memory.sh --install-cron  # every 5 minutes
+dev/sync_claude_memory.sh --status        # HEAD, pending changes, recent log, cron line
+```
+
+Add `SessionStart` and `SessionEnd` hooks in `~/.claude/settings.json` that run
+`dev/sync_claude_memory.sh --quiet` (with a 30 s timeout) so a session pulls on open and pushes on
+close; cron remains the safety net.
 
 ## Safety notes
 
