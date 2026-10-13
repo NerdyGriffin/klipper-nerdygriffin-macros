@@ -43,7 +43,7 @@ exceptions), and stage files by explicit path rather than `git add -A`.
 - `macros/squiggly_purge.cfg`: `SQUIGGLY_PURGE` prime-line alternative.
 - `macros/beeper.cfg`: `M300` and chimes; needs a local `[pwm_cycle_time beeper]` pin override.
 - `macros/gcode_features.cfg`: Enables advanced G-code features (force_move, pause/resume, firmware retraction, arcs, etc.).
-- `macros/rename_existing.cfg`: Safe overrides (M109/M190/M117...).
+- `macros/rename_existing.cfg`: Safe overrides (M109/M190/M117...); `SET_DISPLAY_TEXT` wrapper cancels any pending `clear_display` before setting text (needs `[display_status]`).
 - `macros/save_config.cfg`: Safe SAVE_CONFIG with delayed variant.
 - `macros/shaketune.cfg`: Shake&Tune wrapper (optional dependency installed elsewhere).
 - `macros/shutdown.cfg` (`SHUTDOWN`/`REBOOT`, `SAFE_SHUTDOWN`), `macros/tacho_macros.cfg` (`PCF_CHECK`/`PREFLIGHT_CHECK` fan preflight), `macros/positioning_macros.cfg` (`CENTER`).

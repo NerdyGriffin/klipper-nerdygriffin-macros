@@ -16,6 +16,7 @@ The `rename_existing.cfg` safely overrides Klipper built-in commands by renaming
 | `SET_HEATER_TEMPERATURE` | Add support for `STATUS_MACROS` and `SET_DISPLAY_TEXT` |
 | `TURN_OFF_HEATERS` | Add support for `STATUS_MACROS` |
 | `M117` | Override the default M117 command to echo the message to the console. |
+| `SET_DISPLAY_TEXT` | Cancels any pending `clear_display` timer before setting the text, so a message armed for clearing earlier cannot wipe a newer one. Requires `[display_status]` (provided by `mainsail.cfg`/`fluidd.cfg`). |
 
 > **Note**:
 >
