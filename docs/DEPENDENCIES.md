@@ -32,7 +32,7 @@ Almost every file requires at least one of these, so include all three on any se
 Fully standalone (no in-repo dependencies, safe to include or omit on their own):
 [`beeper.cfg`](beeper.md), [`squiggly_purge.cfg`](squiggly_purge.md),
 [`tacho_macros.cfg`](tacho_macros.md), [`gcode_features.cfg`](gcode_features.md),
-[`save_config.cfg`](save_config.md).
+[`save_config.cfg`](save_config.md), [`revo.cfg`](revo.md).
 
 ## Dependency graph
 
@@ -87,6 +87,9 @@ graph TD
   print_macros -.-> squiggly_purge
   print_macros -.-> nozzle_wiper
   print_macros -.-> filament_management
+  print_macros -.-> revo
+  filament_management -.-> revo
+  nozzle_wiper -.-> revo
 ```
 
 > **Note**:
@@ -108,16 +111,17 @@ entirely on dashed/optional edges and are therefore safe.
 | [beeper.cfg](beeper.md)                           | —                                                   | —                                                                         | —                                                                                                           |
 | [belt_tension.cfg](belt_tension.md)               | homing                                              | —                                                                         | QUAD_GANTRY_LEVEL                                                                                           |
 | [client.cfg](client.md)                           | beeper                                              | print_macros                                                              | AFC                                                                                                         |
-| [filament_management.cfg](filament_management.md) | homing, status_macros, beeper                       | nozzle_wiper                                                              | **Mainsail/Fluidd client `_CLIENT_EXTRUDE`/`_CLIENT_RETRACT` — required (unguarded)**; AFC                  |
+| [filament_management.cfg](filament_management.md) | homing, status_macros, beeper                       | nozzle_wiper, revo                                                        | **Mainsail/Fluidd client `_CLIENT_EXTRUDE`/`_CLIENT_RETRACT` — required (unguarded)**; AFC                  |
 | [gcode_features.cfg](gcode_features.md)           | —                                                   | —                                                                         | —                                                                                                           |
 | [heat_soak.cfg](heat_soak.md)                     | homing, positioning_macros, status_macros           | —                                                                         | Nevermore (`[nevermore]`, `NEVERMORE_TEMPERATURE_WAIT`)                                                     |
 | [homing.cfg](homing.md)                           | status_macros                                       | nozzle_wiper                                                              | —                                                                                                           |
 | [idle_timeout.cfg](idle_timeout.md)               | status_macros                                       | client                                                                    | AFC                                                                                                         |
 | [maintenance_macros.cfg](maintenance_macros.md)   | homing, beeper                                      | nozzle_wiper                                                              | AFC                                                                                                         |
-| [nozzle_wiper.cfg](nozzle_wiper.md)               | —                                                   | status_macros, filament_management                                        | KAMP                                                                                                        |
+| [nozzle_wiper.cfg](nozzle_wiper.md)               | —                                                   | status_macros, filament_management, revo                                  | KAMP                                                                                                        |
 | [positioning_macros.cfg](positioning_macros.md)   | homing                                              | —                                                                         | —                                                                                                           |
-| [print_macros.cfg](print_macros.md)               | beeper, heat_soak, status_macros                    | squiggly_purge, nozzle_wiper, filament_management                         | **KAMP `LINE_PURGE` — required purge fallback (unguarded)**; Mainsail/Fluidd `_CLIENT_EXTRUDE`; Beacon; AFC |
+| [print_macros.cfg](print_macros.md)               | beeper, heat_soak, status_macros                    | squiggly_purge, nozzle_wiper, filament_management, revo                   | **KAMP `LINE_PURGE` — required purge fallback (unguarded)**; Mainsail/Fluidd `_CLIENT_EXTRUDE`; Beacon; AFC |
 | [rename_existing.cfg](rename_existing.md)         | status_macros                                       | —                                                                         | wraps native G-code (safe)                                                                                  |
+| [revo.cfg](revo.md)                               | —                                                   | —                                                                         | **Mainsail/Fluidd client `_CLIENT_EXTRUDE`/`_CLIENT_RETRACT` — required (unguarded)**; KAMP                 |
 | [save_config.cfg](save_config.md)                 | —                                                   | —                                                                         | —                                                                                                           |
 | [shaketune.cfg](shaketune.md)                     | positioning_macros, beeper, belt_tension, heat_soak | —                                                                         | **Shake&Tune — required (unguarded)**                                                                       |
 | [shutdown.cfg](shutdown.md)                       | status_macros, beeper                               | —                                                                         | —                                                                                                           |
@@ -135,10 +139,10 @@ requirements of the files that use those code paths:
 | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Klipper core (`QUAD_GANTRY_LEVEL`, `BED_MESH_*`, `SMART_PARK`)       | print_macros, belt_tension, status_macros                                          | Optional (guarded)                                                                                                                                              |
 | Mainsail `_CLIENT_VARIABLE`                                          | filament_management, client                                                        | Optional (guarded)                                                                                                                                              |
-| Mainsail/Fluidd client config (`mainsail.cfg` / `fluidd.cfg`)        | filament_management.cfg, print_macros.cfg                                          | **Effectively required** — `_CLIENT_EXTRUDE`/`_CLIENT_RETRACT` are called unguarded; standard on any Mainsail/Fluidd install (also provides `_CLIENT_VARIABLE`) |
+| Mainsail/Fluidd client config (`mainsail.cfg` / `fluidd.cfg`)        | filament_management.cfg, print_macros.cfg, revo.cfg                                | **Effectively required** — `_CLIENT_EXTRUDE`/`_CLIENT_RETRACT` are called unguarded; standard on any Mainsail/Fluidd install (also provides `_CLIENT_VARIABLE`) |
 | AFC (Armored Filament Changer)                                       | print_macros, filament_management, client, idle_timeout, maintenance, nozzle_wiper | Optional (guarded)                                                                                                                                              |
 | Beacon probe                                                         | print_macros, save_config                                                          | Optional (guarded)                                                                                                                                              |
-| [KAMP](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging) | print_macros.cfg, nozzle_wiper.cfg                                                 | **`LINE_PURGE` purge fallback is unguarded** (required if that branch runs); `_KAMP_Settings` reads are guarded                                                 |
+| [KAMP](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging) | print_macros.cfg, nozzle_wiper.cfg, revo.cfg                                       | **`LINE_PURGE` purge fallback is unguarded** (required if that branch runs); `_KAMP_Settings` reads are guarded                                                 |
 | [Shake&Tune](https://github.com/Frix-x/klippain-shaketune)           | shaketune.cfg                                                                      | **Required** for that file (unguarded)                                                                                                                          |
 
 > **Warning**:
@@ -146,8 +150,9 @@ requirements of the files that use those code paths:
 > Two external couplings are stronger than "optional" because they are called without
 > an `is defined` guard:
 >
-> - `filament_management.cfg`'s `_CONDITIONAL_RETRACT`/`_CONDITIONAL_UNRETRACT` (and a
->   prime step in `print_macros.cfg`) call `_CLIENT_EXTRUDE`/`_CLIENT_RETRACT` from the
+> - `filament_management.cfg`'s load/unload/purge macros, `revo.cfg`'s
+>   `_CONDITIONAL_RETRACT`/`_CONDITIONAL_UNRETRACT` and a prime step in
+>   `print_macros.cfg` call `_CLIENT_EXTRUDE`/`_CLIENT_RETRACT` from the
 >   **Mainsail/Fluidd client config** (`mainsail.cfg` / `fluidd.cfg`). These ship with
 >   any Mainsail/Fluidd install, so this is rarely a problem in practice — but the file
 >   does require that client config to be included.

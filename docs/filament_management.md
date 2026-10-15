@@ -99,8 +99,7 @@ These macros are called automatically and should not be invoked directly:
 
 ### Retraction helpers
 
-- `_CONDITIONAL_RETRACT` — Retracts filament if the extruder can extrude (temperature is sufficient)
-- `_CONDITIONAL_UNRETRACT` — Unretracts filament if a retract was previously recorded
+- `_CONDITIONAL_RETRACT` / `_CONDITIONAL_UNRETRACT` live in [revo.cfg](revo.md); the load, unload and purge macros only update their `needs_unretract` state when that file is included
 
 ### Auto-load helpers
 

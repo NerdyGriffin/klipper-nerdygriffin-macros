@@ -68,7 +68,7 @@ After the nozzle reaches print temperature:
 - The threshold uses `_KAMP_Settings.purge_margin` (default 20mm) + the squiggly wave amplitude (5mm) = 25mm default
 - `G11` (firmware unretract) always runs after purge
 - **Beacon systems**: thermal z offset is applied via `SET_GCODE_OFFSET Z_ADJUST`
-- **Non-AFC, non-Beacon**: `_CONDITIONAL_UNRETRACT` + a small `_CLIENT_EXTRUDE` prime
+- **Non-AFC, non-Beacon**: `_CONDITIONAL_UNRETRACT` (only when [revo.cfg](revo.md) is included), then a small `_CLIENT_EXTRUDE` prime after the purge
 
 ### Encoder sensor
 
@@ -82,7 +82,7 @@ The filament encoder sensor is enabled at the very end of `PRINT_START` (after a
 
 - `G10` (firmware retract) runs immediately after the anti-stringing move
 - **AFC systems**: `AFC_PARK` handles the final park position (over silicone pad)
-- **Non-AFC**: toolhead moves to rear corner, then `_CONDITIONAL_RETRACT` + `G11` (firmware retract/unretract cycle to clear pressure)
+- **Non-AFC**: toolhead moves to rear corner, then `_CONDITIONAL_RETRACT` + `G11` when [revo.cfg](revo.md) is included; otherwise the filament is left with only the `G10` retract and the next `PRINT_START` `G11` restores it
 
 ### Beacon thermal offset
 

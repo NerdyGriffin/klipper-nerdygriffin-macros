@@ -86,6 +86,7 @@ The install script will:
    [include nerdygriffin-macros/positioning_macros.cfg]
    [include nerdygriffin-macros/print_macros.cfg]        # Optional: PRINT_START/PRINT_END
    [include nerdygriffin-macros/rename_existing.cfg]
+   [include nerdygriffin-macros/revo.cfg]                # Optional: E3D Revo only, large retract for cold nozzle swaps
    [include nerdygriffin-macros/save_config.cfg]
    [include nerdygriffin-macros/shaketune.cfg]           # Optional: Requires Shake&Tune
    [include nerdygriffin-macros/shutdown.cfg]
@@ -180,6 +181,7 @@ graph and the required-vs-optional breakdown of which macro files depend on each
 | [nozzle_wiper.cfg](docs/nozzle_wiper.md)               | Servo-based nozzle cleaning with calibration guide                      |
 | [print_macros.cfg](docs/print_macros.md)               | PRINT_START/PRINT_END with hardware detection                           |
 | [rename_existing.cfg](docs/rename_existing.md)         | Safe G-code command overrides                                           |
+| [revo.cfg](docs/revo.md)                               | E3D Revo large end-of-print retract for cold nozzle swaps (opt-in)      |
 | [save_config.cfg](docs/save_config.md)                 | Configuration persistence and delayed saves                             |
 | [shaketune.cfg](docs/shaketune.md)                     | Input shaper analysis wrappers                                          |
 | [shutdown.cfg](docs/shutdown.md)                       | Safe shutdown and host reboot operations                                |
