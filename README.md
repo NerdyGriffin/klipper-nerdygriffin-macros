@@ -22,6 +22,7 @@ Hardware-agnostic Klipper macros for Voron printers with automatic AFC detection
 - `heat_soak.cfg` - Chamber preheating with chamber sensor / Nevermore auto-detection
 - `homing.cfg` - Sensorless and conditional homing helpers
 - `maintenance_macros.cfg` - Nozzle cleaning, nozzle changes, and developer diagnostics
+- `nevermore.cfg` - Nevermore vent servo policy driven by chamber target and VOC index
 - `nozzle_wiper.cfg` - Servo-actuated nozzle purge bucket and brush system
 - `positioning_macros.cfg` - Toolhead positioning helpers (CENTER, and future FRONT/REAR/TOP)
 - `print_macros.cfg` - PRINT_START/PRINT_END with AFC, Beacon, and bed mesh support
@@ -82,6 +83,7 @@ The install script will:
    [include nerdygriffin-macros/filament_management.cfg]
    [include nerdygriffin-macros/heat_soak.cfg]
    [include nerdygriffin-macros/maintenance_macros.cfg]
+   [include nerdygriffin-macros/nevermore.cfg]           # Optional: Requires [nevermore] controller
    [include nerdygriffin-macros/nozzle_wiper.cfg]        # Optional: Requires servo hardware
    [include nerdygriffin-macros/positioning_macros.cfg]
    [include nerdygriffin-macros/print_macros.cfg]        # Optional: PRINT_START/PRINT_END
@@ -178,6 +180,7 @@ graph and the required-vs-optional breakdown of which macro files depend on each
 | [homing.cfg](docs/homing.md)                           | Sensorless and conditional homing helpers                               |
 | [idle_timeout.cfg](docs/idle_timeout.md)               | Idle cooldown, parking, and paused-print handling                       |
 | [maintenance_macros.cfg](docs/maintenance_macros.md)   | Nozzle cleaning, nozzle changes, and developer diagnostics              |
+| [nevermore.cfg](docs/nevermore.md)                     | Vent servo policy from chamber target and VOC index                     |
 | [nozzle_wiper.cfg](docs/nozzle_wiper.md)               | Servo-based nozzle cleaning with calibration guide                      |
 | [print_macros.cfg](docs/print_macros.md)               | PRINT_START/PRINT_END with hardware detection                           |
 | [rename_existing.cfg](docs/rename_existing.md)         | Safe G-code command overrides                                           |
