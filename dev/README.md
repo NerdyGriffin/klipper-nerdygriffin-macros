@@ -25,7 +25,7 @@ See [.env.example](.env.example) for every setting and its default.
 | `mount_printers.sh`     | Create the mount point, reload systemd, `mount -a`, show the result        |
 | `umount_printers.sh`    | Unmount every NFS mount under `MOUNT_ROOT`                                 |
 | `verify_printers.sh`    | Check local paths, the peer mount, and write access to it                  |
-| `sync_macros_repo.sh`   | `git pull` the macros repo locally and on the peer over SSH                |
+| `sync_macros_repo.sh`   | `git push` local commits, then `git pull` locally and on the peer over SSH |
 | `sync_all.sh`           | Mount, sync macros (optionally a branch), then verify                      |
 | `sync_claude_memory.sh` | Replicate the Claude Code auto-memory dir between hosts (git, cron, hooks) |
 | `setup.sh`              | Developer toolchain: Node, markdownlint, and the git pre-commit hook       |
@@ -55,7 +55,7 @@ The peer must resolve by name on both hosts (`/etc/hosts`, mDNS, or DNS). If it 
 ## Daily workflow
 
 ```bash
-dev/sync_macros_repo.sh              # pull the macros repo on both hosts
+dev/sync_macros_repo.sh              # push local commits, pull on both hosts
 dev/sync_macros_repo.sh my-branch    # check out and pull a branch on both hosts
 dev/sync_all.sh                      # mount, sync, verify
 ```
