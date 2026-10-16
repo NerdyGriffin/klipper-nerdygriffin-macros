@@ -13,15 +13,17 @@ While automatic control is active the policy is evaluated every `poll_interval` 
 
 The chamber target comes from the slicer's `CHAMBER` value via `PRINT_START`, so filament type is implicit: a PLA
 print in a closed enclosure (target ~30 °C) opens the vent once the chamber warms up, an ABS print (target 50–60 °C)
-never does. After `PRINT_END` (or a cancel) the target drops to `post_print_target`, so the controller filters first
-and the vent opens once the air is clean; polling stops when the chamber reaches that target or after
-`post_print_timeout` minutes.
+never does. `PRINT_END` (or a cancel) sets the target back to 0, the idle policy: the chamber is always above 0 °C, so
+the controller filters first and the vent opens once the VOC index drops below `voc_vent_max`.
+
+Automatic control starts at boot when `auto_start` is set and runs continuously. The controller reports no servo
+position, so the first evaluation after a restart always commands the vent, putting the servo in a known state.
 
 ## Usage
 
 ```gcode
 NEVERMORE_VENT_AUTO CHAMBER=30   # Start automatic control for a 30 °C chamber target
-NEVERMORE_VENT_AUTO POST_PRINT=1 # Switch to post-print mode
+NEVERMORE_VENT_AUTO              # Start automatic control with the idle target (0 °C)
 NEVERMORE_VENT_AUTO_OFF          # Stop automatic control, leave the vent as-is
 NEVERMORE_OPEN_VENT              # Manual open
 NEVERMORE_CLOSE_VENT             # Manual close
@@ -38,10 +40,9 @@ Override any variable in `printer.cfg`:
 variable_voc_vent_max: 150        # VOC index ceiling for opening (100 = learned baseline)
 variable_margin: 3                # Hysteresis around the chamber target (C)
 variable_poll_interval: 30        # Seconds between evaluations
-variable_post_print_target: 25    # Post-print chamber target (C)
-variable_post_print_timeout: 60   # Minutes before post-print polling stops
+variable_auto_start: True         # Start automatic control at boot
 variable_vent_open_percent: 0     # Servo position for open (swap with closed to reverse)
 variable_vent_closed_percent: 1   # Servo position for closed
 ```
 
-The controller reports no servo position, so `vent_open` tracks the last commanded state; moving the vent by hand or with `NEVERMORE_VENT_SERVO_SET` directly leaves it stale until the next open/close macro runs.
+`vent_open` tracks the last commanded state; moving the vent by hand or with `NEVERMORE_VENT_SERVO_SET` directly leaves it stale until the next open/close macro runs.

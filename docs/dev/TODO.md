@@ -57,6 +57,11 @@ variable_colors: {
   - Consider storing the user variable as `variable_chamber_sensor: "temperature_sensor chamber"` in the style of `variable_runout_sensor    : "filament_switch_sensor extruder_tool_start"`.
     - Evaluate whether this approach simplifies the code or requires more complex logic, compared to the current logic that stores the user variable as `variable_chamber_sensor_name` and uses `chamber_sensor_name` to construct the `chamber_sensor` string.
 
+### Upstream
+
+- [ ] **Nevermore vent policy in firmware**: Propose an intake-sensor-driven vent servo policy (temperature + VOC, like the existing `fan_policy`) to [nevermore-controller](https://github.com/SanaaHamel/nevermore-controller)
+  - The chamber target would need a new characteristic/config command; until then `nevermore.cfg` keeps the policy in a `delayed_gcode`
+
 ### Infrastructure
 
 - [ ] **Setup automatic Prettier formatting** for Markdown files to maintain consistent style in documentation
