@@ -3,10 +3,27 @@
 # Output is plain text meant to be read by the agent; nothing is parsed downstream.
 set -u
 
+# Host-specific values (peer hostname, mount point, paths) come from the
+# git-ignored dev/.env, loaded through dev/env.sh. This repo is public, so
+# no hostname may appear in this file.
+SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO_DIR="$(cd "$SKILL_DIR/../../.." && pwd)"
+if ! . "$REPO_DIR/dev/env.sh"; then
+  echo "-- dev/env.sh could not be loaded (is dev/.env in place with PEER_HOST set?)."
+  echo "-- Continuing with local repos only; the peer config will be skipped."
+  PEER_HOST=""
+  PEER_MOUNT="/nonexistent"
+  CONFIG_DIR="${CONFIG_DIR:-$HOME/printer_data/config}"
+  MACROS_DIR="${MACROS_DIR:-$HOME/klipper-nerdygriffin-macros}"
+fi
+
+echo "PEER_HOST=${PEER_HOST:-<unset>}   (use http://\$PEER_HOST:7125 for the peer's Moonraker)"
+echo
+
 REPOS=(
-  "Klipper-Config-VT1548|$HOME/printer_data/config"
-  "klipper-nerdygriffin-macros|$HOME/klipper-nerdygriffin-macros"
-  "Klipper-Config-V03048|/mnt/v0-3048/printer_data/config"
+  "Klipper-Config-VT1548|$CONFIG_DIR"
+  "klipper-nerdygriffin-macros|$MACROS_DIR"
+  "Klipper-Config-V03048|$PEER_MOUNT"
 )
 OWNER=NerdyGriffin
 

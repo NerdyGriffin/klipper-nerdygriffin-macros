@@ -17,8 +17,10 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 
 **`dev/` is tracked.** Host-specific values (peer hostname, SSH target, addresses) live only in
 `dev/.env`, which is git-ignored; see `dev/.env.example` and `dev/README.md`. `dev/copilot/` is
-ignored scratch space. `.github/prompts/` holds tracked Copilot prompt files; `.github/tmp/` and `.claude/`
-are git-ignored, host-local scratch. This repo is public: never put a hostname, IP, or FQDN in a tracked
+ignored scratch space. `.github/prompts/` holds tracked Copilot prompt files; `.github/tmp/` is
+git-ignored, host-local scratch. `.claude/skills/` holds tracked Claude Code skills (they must read
+host-specific values from `dev/.env` via `dev/env.sh`, never hard-code them); the rest of `.claude/`
+is git-ignored. This repo is public: never put a hostname, IP, or FQDN in a tracked
 file (the tracked `klipper-nerdygriffin-macros.code-workspace` and `docs/dev/TODO.md` are known
 exceptions), and stage files by explicit path rather than `git add -A`.
 

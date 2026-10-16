@@ -1,6 +1,6 @@
 ---
 name: pick-next-task
-description: Read every TODO.md and every open GitHub issue across the printer repos (this config, the shared klipper-nerdygriffin-macros repo, and the V0-3048 config when mounted), then recommend exactly one item to work on next, with the reasoning and a concrete first step. Use this whenever the user asks what to work on, what's next, what to pick up, what's on the backlog, what's outstanding, "what should we do today", or wants help choosing between open items — even if they don't say "TODO" or "issue". Also use it when they ask to review or triage the TODO list or issues.
+description: Read every TODO.md and every open GitHub issue across the printer repos (this config, the shared klipper-nerdygriffin-macros repo, and the peer printer's config when its NFS mount is present), then recommend exactly one item to work on next, with the reasoning and a concrete first step. Use this whenever the user asks what to work on, what's next, what to pick up, what's on the backlog, what's outstanding, "what should we do today", or wants help choosing between open items — even if they don't say "TODO" or "issue". Also use it when they ask to review or triage the TODO list or issues.
 ---
 
 # Pick the next task
@@ -27,9 +27,13 @@ Repos covered, in this order:
 
 | Repo | Local path | Why it matters |
 | --- | --- | --- |
-| Klipper-Config-VT1548 | `~/printer_data/config` | this printer |
-| klipper-nerdygriffin-macros | `~/klipper-nerdygriffin-macros` | shared by both printers |
-| Klipper-Config-V03048 | `/mnt/v0-3048/printer_data/config` | the V0, mounted over NFS |
+| Klipper-Config-VT1548 | `$CONFIG_DIR` (default `~/printer_data/config`) | this printer |
+| klipper-nerdygriffin-macros | `$MACROS_DIR` (default `~/klipper-nerdygriffin-macros`) | shared by both printers |
+| Klipper-Config-V03048 | `$PEER_MOUNT` (default `/mnt/$PEER_HOST/printer_data/config`) | the V0, mounted over NFS |
+
+The paths and the peer hostname come from the git-ignored `dev/.env`, loaded via
+`dev/env.sh`; the collector prints `PEER_HOST=...` on its first line. The repo is public,
+so never write a real hostname into this file or the collector.
 
 Read `TODO.md` entirely; it may use headings, checkboxes, or free prose. Items under a
 "done" heading or with `[x]` are not candidates. The script searches three levels deep so
@@ -48,8 +52,9 @@ A recommendation that cannot be acted on right now is useless, so before ranking
 Moonraker whether either printer is busy:
 
 ```bash
+. dev/env.sh   # sets PEER_HOST from dev/.env
 curl -s localhost:7125/printer/objects/query?print_stats | python3 -I -c 'import json,sys; print(json.load(sys.stdin)["result"]["status"]["print_stats"]["state"])'
-curl -s http://V0-3048:7125/printer/objects/query?print_stats | python3 -I -c 'import json,sys; print(json.load(sys.stdin)["result"]["status"]["print_stats"]["state"])'
+curl -s "http://$PEER_HOST:7125/printer/objects/query?print_stats" | python3 -I -c 'import json,sys; print(json.load(sys.stdin)["result"]["status"]["print_stats"]["state"])'
 ```
 
 If a printer is `printing` or `paused`, anything that needs a `FIRMWARE_RESTART` on that

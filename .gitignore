@@ -19,3 +19,7 @@ dev/.env
 
 # Local AI session notes
 dev/copilot/
+
+# Claude Code: skills are tracked, everything else under .claude/ is host-local
+.claude/*
+!.claude/skills/
