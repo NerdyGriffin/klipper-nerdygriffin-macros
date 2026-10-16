@@ -29,6 +29,18 @@ variable_purge_distance: 50     # Increase purge amount (default: 25mm)
 variable_unload_distance: 96.8  # Adjust for your hotend (default: 100mm)
 ```
 
+### Filament motion sensor
+
+The shared macros disable the filament motion (encoder) sensor during filament operations,
+pauses and idle time, and enable it once a print is running. The sensor is looked up by name
+and every call goes through `_SET_MOTION_SENSOR`, which does nothing if the sensor is not
+configured. Override the name in your `printer.cfg`, or set it to `""` on a printer without one:
+
+```ini
+[gcode_macro _FILAMENT_SENSOR_VARS]
+variable_motion_sensor: "filament_motion_sensor encoder_sensor"  # default; "" disables all sensor calls
+```
+
 ### Auto-load on insert
 
 `_AUTO_LOAD_FILAMENT` is a minimal stand-in for AFC's auto-load on printers without a
@@ -88,9 +100,10 @@ These macros are called automatically and should not be invoked directly:
 
 ### Operation lifecycle
 
-- `_FILAMENT_OPERATION_INIT` — Common initialization: saves gcode state, disables encoder sensor, determines extruder temperature (with idle-timeout restore), homes if needed, and starts heating
-- `_FILAMENT_OPERATION_CLEANUP` — Common cleanup: parks toolhead, re-enables encoder sensor (if it was enabled), restores gcode state, and emits a completion beep
+- `_FILAMENT_OPERATION_INIT` — Common initialization: saves gcode state, disables the motion sensor, determines extruder temperature (with idle-timeout restore), homes if needed, and starts heating
+- `_FILAMENT_OPERATION_CLEANUP` — Common cleanup: parks toolhead, re-enables the motion sensor (if it was enabled), restores gcode state, and emits a completion beep
 - `_HEAT_AND_PARK` — Parks the toolhead then waits for extruder temperature (`M109`)
+- `_SET_MOTION_SENSOR ENABLE=0|1` — Toggles the sensor named in `_FILAMENT_SENSOR_VARS`; silently does nothing if the name is empty or the sensor does not exist. Other files call it guarded on `is defined`, so they work without this file
 
 ### Parking helpers
 
@@ -108,8 +121,8 @@ These macros are called automatically and should not be invoked directly:
 
 ### Delayed G-code Macros
 
-- `ENABLE_ENCODER_SENSOR` — Enables the filament encoder sensor for motion detection
-- `DISABLE_ENCODER_SENSOR` — Disables encoder sensor (runs 1 second after startup to prevent false triggers)
+- `ENABLE_ENCODER_SENSOR` — Enables the motion sensor via `_SET_MOTION_SENSOR`
+- `DISABLE_ENCODER_SENSOR` — Disables the motion sensor via `_SET_MOTION_SENSOR` (runs 1 second after startup to prevent false triggers)
 
 > **Note**:
 >

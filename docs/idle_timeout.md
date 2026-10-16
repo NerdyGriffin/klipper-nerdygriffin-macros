@@ -12,6 +12,7 @@ Customizes Klipper's native `[idle_timeout]` so an idle printer cools the hotend
 
 - [`client.cfg`](client.md) — cancels its `NOZZLE_STANDBY_COOLDOWN` timer so idle_timeout stays authoritative (guarded on `_AFTER_PAUSE` being defined)
 - AFC — parks and brushes via `AFC_BRUSH` / `AFC_PARK` if present
+- [`filament_management.cfg`](filament_management.md) — disables the filament motion sensor via `_SET_MOTION_SENSOR` (guarded on it being defined)
 
 > **Note**:
 >
@@ -21,7 +22,7 @@ Customizes Klipper's native `[idle_timeout]` so an idle printer cools the hotend
 
 `[idle_timeout]` runs its gcode automatically once the printer has been idle for `timeout` seconds. This file overrides the stock behavior to keep the steppers enabled (no `M84`) while a job can still resume, and branches on whether a print is paused:
 
-- **Always** — turns the hotend off (`M104 S0`, bed left on) and disables the encoder filament sensor. If [`client.cfg`](client.md)'s prolonged-pause standby feature is included, its pending `NOZZLE_STANDBY_COOLDOWN` timer is cancelled first so the two never fight.
+- **Always** — turns the hotend off (`M104 S0`, bed left on) and disables the filament motion sensor (when `_SET_MOTION_SENSOR` is available). If [`client.cfg`](client.md)'s prolonged-pause standby feature is included, its pending `NOZZLE_STANDBY_COOLDOWN` timer is cancelled first so the two never fight.
 - **Paused or printing from virtual SD** (`is_paused` / `virtual_sdcard.is_active`) — parks the toolhead via `AFC_BRUSH` / `AFC_PARK` (only when homed and AFC is present) and leaves the steppers enabled so the print can resume.
 - **Otherwise (fully idle)** — `TURN_OFF_HEATERS`, `STATUS_OFF`, resets the extruder position (`G92 E0`), and disables the steppers (`M84`).
 

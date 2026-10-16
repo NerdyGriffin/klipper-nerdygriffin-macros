@@ -107,7 +107,10 @@ For a comprehensive list of dependencies and compatibility requirements, see [RE
 **Key conditional integrations (auto-detected):**
 
 - AFC macros (`AFC_PARK`, `AFC_BRUSH`, `AFC_CUT`) — check with `{% if printer['gcode_macro AFC_PARK'] is defined %}`
-- Filament sensors (`encoder_sensor`) — check with `{% if 'filament_motion_sensor encoder_sensor' in printer.configfile.settings %}` (not yet applied — every `SET_FILAMENT_SENSOR SENSOR=encoder_sensor` call is currently unguarded; tracked in `docs/dev/TODO.md`)
+- Filament motion sensor — never call `SET_FILAMENT_SENSOR SENSOR=encoder_sensor` directly
+  - Use `_SET_MOTION_SENSOR ENABLE=0|1` (`macros/filament_management.cfg`); it reads the name from `_FILAMENT_SENSOR_VARS.motion_sensor` and no-ops if the sensor is missing
+  - Outside that file, guard the call with `{% if printer['gcode_macro _SET_MOTION_SENSOR'] is defined %}`
+  - To read its state use `printer[sensor] is defined and printer[sensor].enabled` with the same variable
 - Shake&Tune — check with `{% if 'shaketune' in printer %}` (`macros/shaketune.cfg` defines `[shaketune]`)
 
 ## Common Workflows

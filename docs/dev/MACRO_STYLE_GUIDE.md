@@ -211,11 +211,11 @@ Use a section banner when mixed with other groups:
 [delayed_gcode DISABLE_ENCODER_SENSOR]
 initial_duration: 1
 gcode:
-    SET_FILAMENT_SENSOR SENSOR=encoder_sensor ENABLE=0
+    _SET_MOTION_SENSOR ENABLE=0
 
 [delayed_gcode ENABLE_ENCODER_SENSOR]
 gcode:
-    SET_FILAMENT_SENSOR SENSOR=encoder_sensor ENABLE=1
+    _SET_MOTION_SENSOR ENABLE=1
 ```
 
 ---

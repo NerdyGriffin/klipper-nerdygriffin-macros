@@ -77,7 +77,9 @@ graph TD
 
   %% ---- optional (dashed) ----
   idle_timeout -.-> client
+  idle_timeout -.-> filament_management
   client -.-> print_macros
+  client -.-> filament_management
   status_macros -.-> beeper
   homing -.-> nozzle_wiper
   maintenance_macros -.-> nozzle_wiper
@@ -110,12 +112,12 @@ entirely on dashed/optional edges and are therefore safe.
 | [auto_pid.cfg](auto_pid.md)                       | homing, positioning_macros, status_macros           | —                                                                         | —                                                                                                           |
 | [beeper.cfg](beeper.md)                           | —                                                   | —                                                                         | —                                                                                                           |
 | [belt_tension.cfg](belt_tension.md)               | homing                                              | —                                                                         | QUAD_GANTRY_LEVEL                                                                                           |
-| [client.cfg](client.md)                           | beeper                                              | print_macros                                                              | AFC                                                                                                         |
+| [client.cfg](client.md)                           | beeper                                              | print_macros, filament_management                                         | AFC                                                                                                         |
 | [filament_management.cfg](filament_management.md) | homing, status_macros, beeper                       | nozzle_wiper, revo                                                        | **Mainsail/Fluidd client `_CLIENT_EXTRUDE`/`_CLIENT_RETRACT` — required (unguarded)**; AFC                  |
 | [gcode_features.cfg](gcode_features.md)           | —                                                   | —                                                                         | —                                                                                                           |
 | [heat_soak.cfg](heat_soak.md)                     | homing, positioning_macros, status_macros           | —                                                                         | Nevermore (`[nevermore]`, `NEVERMORE_TEMPERATURE_WAIT`)                                                     |
 | [homing.cfg](homing.md)                           | status_macros                                       | nozzle_wiper                                                              | —                                                                                                           |
-| [idle_timeout.cfg](idle_timeout.md)               | status_macros                                       | client                                                                    | AFC                                                                                                         |
+| [idle_timeout.cfg](idle_timeout.md)               | status_macros                                       | client, filament_management                                               | AFC                                                                                                         |
 | [maintenance_macros.cfg](maintenance_macros.md)   | homing, beeper                                      | nozzle_wiper                                                              | AFC                                                                                                         |
 | [nozzle_wiper.cfg](nozzle_wiper.md)               | —                                                   | status_macros, filament_management, revo                                  | KAMP                                                                                                        |
 | [positioning_macros.cfg](positioning_macros.md)   | homing                                              | —                                                                         | —                                                                                                           |

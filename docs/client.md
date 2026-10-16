@@ -16,7 +16,7 @@ variable_user_cancel_macro: "_BEFORE_CANCEL"  # Hook to plugin macro
 
 The hook macros automatically handle:
 
-- Filament sensor management (enabling/disabling as needed)
+- Filament sensor management (enabling/disabling as needed) — via `_SET_MOTION_SENSOR` from [filament_management.cfg](filament_management.md), skipped when that file or the sensor is absent
 - Optional AFC (Automated Filament Control) integration
 - Safe state transitions during pause/resume/cancel operations
 - Prolonged-pause hotend standby (see below)

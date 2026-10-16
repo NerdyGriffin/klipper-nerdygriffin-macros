@@ -72,7 +72,7 @@ After the nozzle reaches print temperature:
 
 ### Encoder sensor
 
-The filament encoder sensor is enabled at the very end of `PRINT_START` (after all purging), so filament motion during setup does not trigger false runout events.
+The filament motion sensor is enabled at the very end of `PRINT_START` (after all purging), so filament motion during setup does not trigger false runout events. The call goes through `_SET_MOTION_SENSOR` from [filament_management.cfg](filament_management.md) and is skipped when that file or the sensor is absent.
 
 ---
 
@@ -90,7 +90,7 @@ If a Beacon probe is configured, the thermal z offset applied during `PRINT_STAR
 
 ### Encoder sensor
 
-The encoder sensor is disabled at the end of `PRINT_END` so idle filament motion does not trigger runouts.
+The filament motion sensor is disabled at the end of `PRINT_END` (via `_SET_MOTION_SENSOR`, if available) so idle filament motion does not trigger runouts.
 
 ### Bed temperature after print
 
