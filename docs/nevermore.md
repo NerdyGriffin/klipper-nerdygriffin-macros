@@ -8,8 +8,11 @@ macros only decide whether the vent is open or closed. Every macro is a no-op wh
 
 While automatic control is active the policy is evaluated every `poll_interval` seconds:
 
-- **Open** when the intake temperature exceeds the chamber target by `margin` **and** the higher of the intake/exhaust VOC index is below `voc_vent_max`.
-- **Close** when the intake temperature drops below the target by `margin` **or** the VOC index reaches `voc_vent_max`.
+- **Open** when the intake temperature exceeds the chamber target by `margin` **and** the exhaust VOC index is below `voc_vent_max`.
+- **Close** when the intake temperature drops below the target by `margin` **or** the exhaust VOC index reaches `voc_vent_max`.
+
+The intake sensor sits in the chamber, so it is the chamber temperature. The exhaust sensor sits after the filter, so
+it measures the air the vent would actually release; the gate falls back to the intake sensor if there is no exhaust sensor.
 
 The chamber target comes from the slicer's `CHAMBER` value via `PRINT_START`, so filament type is implicit: a PLA
 print in a closed enclosure (target ~30 °C) opens the vent once the chamber warms up, an ABS print (target 50–60 °C)
