@@ -51,11 +51,6 @@ variable_colors: {
 
 - [ ] **Consistent status display/message patterns** (post LED standardization)
 - [ ] **Look for additional opportunities to reduce duplicate code** by using abstractions or helper macros
-- [ ] **Chamber sensor helper**: Explore extracting the chamber sensor selection/detection/fallback logic (currently duplicated in `HEAT_SOAK` and `notify_bed_cooled` in `status_macros.cfg`) to a shared helper.
-  - Deferred: the refactor should also cover the Nevermore sensors and possibly the `NEVERMORE_TEMPERATURE_WAIT` command.
-  - Partially addressed: both copies now resolve a `[nevermore]` controller inline (`use_nevermore` flag, intake > exhaust > 0) and `HEAT_SOAK` waits with `NEVERMORE_TEMPERATURE_WAIT`. Helper extraction is still open; the duplicated block is now ~20 lines, which strengthens the case.
-  - Consider storing the user variable as `variable_chamber_sensor: "temperature_sensor chamber"` in the style of `variable_runout_sensor    : "filament_switch_sensor extruder_tool_start"`.
-    - Evaluate whether this approach simplifies the code or requires more complex logic, compared to the current logic that stores the user variable as `variable_chamber_sensor_name` and uses `chamber_sensor_name` to construct the `chamber_sensor` string.
 
 ### Upstream
 
@@ -86,6 +81,7 @@ variable_colors: {
 
 ### Code Quality & Refactoring
 
+- [x] **Chamber sensor helper**: Resolved by removing the duplication instead of extracting a helper — `notify_bed_cooled` reads `_CLIENT_VARIABLE.chamber_sensor` (full object key, default `"temperature_sensor chamber"`) directly; `HEAT_SOAK` keeps the Nevermore path and falls back to the same variable
 - [x] **Nozzle wiper AFC delegation**: `NW_WIPE` sweeps via `AFC_BRUSH` / `_AFC_BRUSH_VARS` when defined, else `_NW_NOZZLE_MOVE` / `_NW_BRUSH_VARS` (now AFC-shaped); exit and park moves are derived from brush geometry and `park_loc`
 - [x] **Parking velocity**: `_TOOLHEAD_PARK_LOAD_UNLOAD` reverted to `recover_velocity` (`14f80a5`)
 - [x] **Guard `encoder_sensor` calls**: all `SET_FILAMENT_SENSOR SENSOR=encoder_sensor` calls now go through `_SET_MOTION_SENSOR` (name in `_FILAMENT_SENSOR_VARS`, no-op when absent); callers outside `filament_management.cfg` guard on `is defined`

@@ -14,6 +14,9 @@ variable_user_resume_macro: "_BEFORE_RESUME"  # Hook to plugin macro
 variable_user_cancel_macro: "_BEFORE_CANCEL"  # Hook to plugin macro
 ```
 
+`status_macros.cfg` adds `variable_chamber_sensor` to the same section; see
+[status_macros.md](status_macros.md#chamber-sensor).
+
 The hook macros automatically handle:
 
 - Filament sensor management (enabling/disabling as needed) — via `_SET_MOTION_SENSOR` from [filament_management.cfg](filament_management.md), skipped when that file or the sensor is absent

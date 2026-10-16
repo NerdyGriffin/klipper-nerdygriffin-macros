@@ -52,6 +52,20 @@ variable_leds: {
 **Custom Groups:**
 You can define additional groups beyond logo/nozzle/chamber. Use them with `_SET_LEDS_BY_NAME LEDS=your_group`.
 
+### Chamber Sensor
+
+`status_macros.cfg` declares `variable_chamber_sensor` on `_CLIENT_VARIABLE` (Klipper merges it with the
+`_CLIENT_VARIABLE` from `client.cfg` and your `printer.cfg`). It is the full object key of the chamber temperature
+sensor, read by `notify_bed_cooled` for its bed-cooled threshold and by `HEAT_SOAK` when there is no `[nevermore]`
+controller. Override it in `printer.cfg` only if your sensor is not named `chamber`:
+
+```ini
+[gcode_macro _CLIENT_VARIABLE]
+variable_chamber_sensor: "temperature_sensor chamber"  # Default; any object with a `temperature` field
+```
+
+If the object does not exist the chamber temperature is treated as 0.
+
 ### Configuration Steps
 
 1. **Include `status_macros.cfg`** in your `printer.cfg`:

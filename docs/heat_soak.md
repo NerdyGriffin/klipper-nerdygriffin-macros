@@ -1,6 +1,6 @@
 # Heat Soak (heat_soak.cfg)
 
-The `HEAT_SOAK` macro provides hardware-agnostic chamber preheating with optional LED animations. It auto-detects chamber temperature sensors (including a Nevermore controller) and supports per-printer customization.
+The `HEAT_SOAK` macro provides hardware-agnostic chamber preheating with optional LED animations. It uses a Nevermore controller as the chamber sensor when one is present, otherwise the sensor named in `_CLIENT_VARIABLE`, and supports per-printer customization.
 
 ## Usage
 
@@ -24,22 +24,22 @@ Override these variables in your `printer.cfg`:
 [gcode_macro HEAT_SOAK]
 variable_max_chamber_target: 58           # Maximum chamber temp achievable via passive heating
 variable_ext_assist_multiplier: 5       # Extruder assist temp multiplier (chamber_temp × multiplier, capped at 200°C)
-variable_chamber_sensor_name: "chamber" # Explicit sensor name (empty = auto-detect: Nevermore > chamber > nitehawk-36)
 variable_frame_rate: 12                 # LED animation frame rate in Hz
 ```
 
-### Chamber Sensor Auto-Detection
+### Chamber Sensor
 
-The macro searches for chamber sensors in this order:
+1. `[nevermore]` controller, if present — temperature is `intake_temperature`, falling back to `exhaust_temperature`,
+   then 0 until the controller reports; waits with `NEVERMORE_TEMPERATURE_WAIT MINIMUM=<target> UNAVAILABLE_TIMEOUT=120`
+   (if the Nevermore is not connected within 120 s the wait is skipped). Automatic vent control is stopped and the vent
+   closed first (see [nevermore.md](nevermore.md)).
+2. Otherwise `_CLIENT_VARIABLE.chamber_sensor` (default `"temperature_sensor chamber"`, see
+   [status_macros.md](status_macros.md#chamber-sensor)) — waits with `TEMPERATURE_WAIT` if that object exists
 
-1. Explicit `chamber_sensor_name` (if set and that `temperature_sensor` exists) — waits with `TEMPERATURE_WAIT`
-2. `[nevermore]` controller — temperature is `intake_temperature`, falling back to `exhaust_temperature`, then 0 until
-   the controller reports; waits with `NEVERMORE_TEMPERATURE_WAIT MINIMUM=<target> UNAVAILABLE_TIMEOUT=120` (if the
-   Nevermore is not connected within 120 s the wait is skipped)
-3. `temperature_sensor chamber`
-4. `temperature_sensor nitehawk-36` (toolhead proxy)
+With neither, the chamber wait is skipped and only the soak countdown runs.
 
-`notify_bed_cooled` in `status_macros.cfg` resolves the chamber sensor the same way.
+`notify_bed_cooled` in `status_macros.cfg` reads the same `_CLIENT_VARIABLE.chamber_sensor` (never the Nevermore
+object directly) for its bed-cooled threshold.
 
 ### LED Animation
 
@@ -59,14 +59,13 @@ For V0 printers with measured thermal limits and stronger extruder assist:
 [gcode_macro HEAT_SOAK]
 variable_max_chamber_target: 58           # V0 measured limit
 variable_ext_assist_multiplier: 5       # Stronger extruder assist for V0
-variable_chamber_sensor_name: "chamber" # Explicit sensor name (if available)
 ```
 
 ### Toolhead-Only Temperature Sensing
 
-For printers with toolhead-only sensors:
+For printers with toolhead-only sensors, point the shared chamber sensor variable at the toolboard sensor:
 
 ```ini
-[gcode_macro HEAT_SOAK]
-variable_chamber_sensor_name: "nitehawk-36"  # Use toolhead as temperature proxy
+[gcode_macro _CLIENT_VARIABLE]
+variable_chamber_sensor: "temperature_sensor nitehawk-36"  # Use toolhead as temperature proxy
 ```

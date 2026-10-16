@@ -319,7 +319,7 @@ Default variables (override in printer.cfg):
 
 - `variable_max_chamber_target: 60` - Maximum chamber temp achievable
 - `variable_ext_assist_multiplier: 4` - Extruder assist multiplier
-- `variable_chamber_sensor_name: ""` - Explicit sensor name (empty = auto-detect)
+- `variable_frame_rate: 12` - LED animation frame rate (Hz)
 ```
 
 ## Table Alignment
