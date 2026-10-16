@@ -157,7 +157,7 @@ Dict-based `_LED_VARS` system supports any combination of neopixels across toolh
 **Optional — used if present:**
 
 - `_CLIENT_VARIABLE` — Parking coordinates and speeds; provided by [Mainsail config](https://github.com/mainsail-crew/mainsail-config)
-- `encoder_sensor` — Filament motion sensor (hardware config entry); name is set in `_FILAMENT_SENSOR_VARS`, all calls are skipped if it is absent
+- Filament motion sensor — opt in by setting its object name in `_FILAMENT_SENSOR_VARS` (e.g. `filament_motion_sensor encoder_sensor`); all sensor calls are skipped by default
 - [Shake&Tune](https://github.com/Frix-x/klippain-shaketune) — Required for `shaketune.cfg`
 - [KAMP](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging) — Used by `print_macros.cfg` if available
 

@@ -34,11 +34,12 @@ variable_unload_distance: 96.8  # Adjust for your hotend (default: 100mm)
 The shared macros disable the filament motion (encoder) sensor during filament operations,
 pauses and idle time, and enable it once a print is running. The sensor is looked up by name
 and every call goes through `_SET_MOTION_SENSOR`, which does nothing if the sensor is not
-configured. Override the name in your `printer.cfg`, or set it to `""` on a printer without one:
+configured. The default is `""` (no sensor), so set the full object name in your `printer.cfg`
+to enable it:
 
 ```ini
 [gcode_macro _FILAMENT_SENSOR_VARS]
-variable_motion_sensor: "filament_motion_sensor encoder_sensor"  # default; "" disables all sensor calls
+variable_motion_sensor: "filament_motion_sensor encoder_sensor"  # default: "" (all sensor calls skipped)
 ```
 
 ### Auto-load on insert
