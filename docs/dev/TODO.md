@@ -49,13 +49,6 @@ variable_colors: {
 
 ### Code Quality
 
-- [ ] Update the nozzle_wiper to conditionally use AFC_BRUSH, with a fallback a simplified version of the brush sequence if AFC_BRUSH is not defined. Both versions should wrap the brush in the cooldown logic. The \_NW_BRUSH_VARS should be only used if AFC_BRUSH is not defined, with the same `-1` or
-  `1000` or other defaults the block the macro from running the if the variables are not configured by the user. See `~/github/chirpy2605/voron/V0/NozzleWiper/nozzlewiper.cfg` and `/mnt/vt-1548/printer_data/config/AFC/` for the existing implementations. [This is the top priority item]
-  - `macros/nozzle_wiper.cfg` should be behave like `~/github/chirpy2605/voron/V0/NozzleWiper/nozzlewiper.cfg` if `AFC_BRUSH` is not defined, and like `/mnt/vt-1548/printer_data/config/AFC/nozzle_wiper.cfg` if `AFC_BRUSH` is defined, but keep the brush_loc, bursh_depth, and brush_width variables for
-    users who want to use the simplified version of the brush sequence with the existing variables.
-  - Could we use `{% set vars = printer['gcode_macro _AFC_BRUSH_VARS']|default(printer['gcode_macro _NW_BRUSH_VARS']) %}` to conditionally pull variables from whichever macro is defined? Then we don't need complex conditional login in the NW_WIPE macros to check which variable set to use.
-
-- [ ] **Parking velocity**: Resolve `TODO` in `_TOOLHEAD_PARK_LOAD_UNLOAD` — choose an appropriate default velocity for parking moves (currently takes `max` of `recover_velocity` and `toolhead.max_velocity`, which may be too fast)
 - [ ] **Consistent status display/message patterns** (post LED standardization)
 - [ ] **Look for additional opportunities to reduce duplicate code** by using abstractions or helper macros
 - [ ] **Chamber sensor helper**: Explore extracting the chamber sensor selection/detection/fallback logic (currently duplicated in `HEAT_SOAK` and `notify_bed_cooled` in `status_macros.cfg`) to a shared helper.
@@ -88,6 +81,8 @@ variable_colors: {
 
 ### Code Quality & Refactoring
 
+- [x] **Nozzle wiper AFC delegation**: `NW_WIPE` sweeps via `AFC_BRUSH` / `_AFC_BRUSH_VARS` when defined, else `_NW_NOZZLE_MOVE` / `_NW_BRUSH_VARS` (now AFC-shaped); exit and park moves are derived from brush geometry and `park_loc`
+- [x] **Parking velocity**: `_TOOLHEAD_PARK_LOAD_UNLOAD` reverted to `recover_velocity` (`14f80a5`)
 - [x] **Guard `encoder_sensor` calls**: all `SET_FILAMENT_SENSOR SENSOR=encoder_sensor` calls now go through `_SET_MOTION_SENSOR` (name in `_FILAMENT_SENSOR_VARS`, no-op when absent); callers outside `filament_management.cfg` guard on `is defined`
 - [x] **Potential shared homing helpers**: Conditional StallGuard current adjust
 - [x] **`homing.cfg` partial abstraction**: Sensorless current + probe sequencing; added `variable_home_accel` to `_HOME_VARS`

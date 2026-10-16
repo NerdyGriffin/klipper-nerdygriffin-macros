@@ -48,18 +48,21 @@ variable_z: 60    # Safe Z height for cleaning operations
 
 ### Optional: Brush Geometry
 
-Override brush dimensions and cleaning performance via the shared `_NW_BRUSH_VARS` macro:
+Override brush dimensions and cleaning performance via the shared `_NW_BRUSH_VARS` macro. It uses
+the same keys and axis conventions as AFC's `_AFC_BRUSH_VARS`:
 
 ```ini
 [gcode_macro _NW_BRUSH_VARS]
-variable_brush_loc          : 10,38     # Position of the center of the brush (X, Y)
-variable_brush_clean_speed  : 30000     # Speed of cleaning moves (mm/min)
-variable_brush_clean_accel  : 3000      # Acceleration during cleaning (mm/s²)
-variable_brush_width        : 35        # Total width in mm (Y direction)
-variable_brush_depth        : 7         # Total depth in mm (X direction)
-variable_x_brush            : True      # Brush along X axis then Y (False = Y only)
+variable_brush_loc          : 10,40,-1  # Center of the brush (X, Y, Z); Z -1 = no Z move
+variable_brush_clean_speed  : 150       # Speed of cleaning moves (mm/s)
+variable_brush_clean_accel  : 3000      # Acceleration during cleaning (mm/s²); 0 = keep global accel
+variable_brush_width        : 7         # Total width in mm (X direction)
+variable_brush_depth        : 35        # Total depth in mm (Y direction)
+variable_y_brush            : True      # Brush along Y axis then X (False = X only)
 variable_brush_count        : 4         # Number of wipe passes
 ```
+
+`brush_loc` defaults to `-1,-1,-1`; `NW_WIPE` refuses to run until it is set.
 
 ### Optional: Wipe Behavior
 
@@ -68,7 +71,19 @@ Override wipe cycle behavior:
 ```ini
 [gcode_macro NW_WIPE]
 variable_enable_hotcold: True   # Wipe while cooling to minimize ooze
+variable_clear_margin: 20       # mm past the brush edge when exiting the brush
+variable_park_loc: 60,60        # Post-wipe park (X, Y); -1,-1 skips the park
 ```
+
+After wiping, `NW_WIPE` exits the brush along its long axis (whichever of `brush_width` / `brush_depth`
+is larger), heading toward `park_loc` — or toward the bed centre when parking is skipped — then parks
+by moving the other axis first, so the toolhead never crosses the servo arm.
+
+### With AFC
+
+When `AFC_BRUSH` is defined, `NW_WIPE` calls it for every sweep (including the hot-to-cold passes)
+and takes the brush geometry from `_AFC_BRUSH_VARS`; `_NW_BRUSH_VARS` is not read at all. Servo
+deploy/retract, purge, exit and park still come from this file.
 
 ### Optional: Purge Parameters
 
