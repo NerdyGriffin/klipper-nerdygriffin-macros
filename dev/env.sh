@@ -30,11 +30,14 @@ CONFIG_DIR="${CONFIG_DIR:-$HOME/printer_data/config}"
 MACROS_DIR="${MACROS_DIR:-$HOME/klipper-nerdygriffin-macros}"
 PEER_CONFIG_DIR="${PEER_CONFIG_DIR:-$CONFIG_DIR}"
 PEER_MACROS_DIR="${PEER_MACROS_DIR:-$MACROS_DIR}"
+# KlipperScreen add-on repo (nevermore-klipperscreen-addon), synced alongside the macros.
+ADDON_DIR="${ADDON_DIR:-$HOME/nevermore-klipperscreen-addon}"
+PEER_ADDON_DIR="${PEER_ADDON_DIR:-$ADDON_DIR}"
 
 # Read-only clone of the peer printer's config repo, kept fresh by sync_peer_config.sh.
 PEER_CONFIG_CLONE="${PEER_CONFIG_CLONE:-$HOME/$(basename "$PEER_CONFIG_REPO" .git)}"
 
 export DEV_DIR REPO_DIR LOCAL_HOST PEER_HOST PEER_SSH
-export CONFIG_DIR MACROS_DIR PEER_CONFIG_DIR PEER_MACROS_DIR
+export CONFIG_DIR MACROS_DIR PEER_CONFIG_DIR PEER_MACROS_DIR ADDON_DIR PEER_ADDON_DIR
 export PEER_CONFIG_REPO PEER_CONFIG_CLONE
 

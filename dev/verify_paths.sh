@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Validate the local config, the local macros repo, and the peer config clone.
+# Validate the local config, the local macros repo, the KlipperScreen add-on, and the peer config clone.
 # Part of klipper-nerdygriffin-macros
 set -euo pipefail
 
@@ -22,6 +22,19 @@ if [[ -d "$MACROS_DIR/macros" ]]; then
   ls "$MACROS_DIR/macros" | head -3 || true
 else
   echo "MISSING  $MACROS_DIR"
+fi
+
+printf "\nKlipperScreen add-on:\n"
+if [[ -d "$ADDON_DIR/.git" ]]; then
+  echo "OK  $ADDON_DIR"
+  git -C "$ADDON_DIR" log -1 --format='    %h %s'
+  if [[ -L "$HOME/KlipperScreen/addons/nevermore.py" ]]; then
+    echo "OK  ~/KlipperScreen/addons/nevermore.py -> $(readlink "$HOME/KlipperScreen/addons/nevermore.py")"
+  else
+    echo "WARN  not linked into ~/KlipperScreen/addons (run $ADDON_DIR/install.sh)"
+  fi
+else
+  echo "MISSING  $ADDON_DIR (optional)"
 fi
 
 printf "\nPeer config clone (%s):\n" "$PEER_HOST"

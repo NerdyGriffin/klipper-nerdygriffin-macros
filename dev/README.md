@@ -24,7 +24,7 @@ and its default.
 | Script                  | Purpose                                                                    |
 | ----------------------- | -------------------------------------------------------------------------- |
 | `sync_peer_config.sh`   | Clone the peer's config repo, or `git pull --ff-only` the existing clone   |
-| `verify_paths.sh`       | Check the local config, the local macros repo, and the peer config clone   |
+| `verify_paths.sh`       | Check the local config, macros repo, KlipperScreen add-on, and peer clone  |
 | `sync_macros_repo.sh`   | `git push` local commits, then `git pull` locally and on the peer over SSH |
 | `sync_all.sh`           | Refresh the peer clone, sync macros (optionally a branch), then verify     |
 | `sync_claude_memory.sh` | Replicate the Claude Code auto-memory dir between hosts (git, cron, hooks) |
@@ -59,11 +59,16 @@ Edit shared macros only in the local macros clone. Edit the peer's printer confi
 (Remote-SSH) and push; the local clone is read-only and `sync_peer_config.sh` refuses to pull over
 local changes.
 
+`sync_macros_repo.sh` also pushes and pulls the KlipperScreen add-on repo (`ADDON_DIR`, default
+`~/nevermore-klipperscreen-addon`) on both hosts, never with the branch argument and never fatally:
+if its origin is unreachable the macros sync still completes. After a pull that changed HEAD it
+re-runs the add-on's `install.sh -t` to relink icons; restart KlipperScreen to load the new code.
+
 ## Daily repo sync
 
 `sync_local_repos.sh` is the cron safety net behind the manual workflow above. Once a day it
-visits the peer config clone, the macros repo, and the printer config (`PEER_CONFIG_CLONE`,
-`MACROS_DIR`, `CONFIG_DIR` from `dev/.env`), fetches each from `origin`, fast-forwards it, and
+visits the peer config clone, the macros repo, the KlipperScreen add-on repo, and the printer
+config (`PEER_CONFIG_CLONE`, `MACROS_DIR`, `ADDON_DIR`, `CONFIG_DIR` from `dev/.env`), fetches each from `origin`, fast-forwards it, and
 pushes commits that are already ahead of origin (never for the read-only peer clone). Each host
 runs its own copy and the clones meet at GitHub, so it never SSHes to the peer; `sync_all.sh`
 remains the on-demand, both-hosts variant.
