@@ -1,6 +1,6 @@
 ---
 name: pick-next-task
-description: Read every TODO.md and every open GitHub issue across the printer repos (this config, the shared klipper-nerdygriffin-macros repo, and the peer printer's config when its NFS mount is present), then recommend exactly one item to work on next, with the reasoning and a concrete first step. Use this whenever the user asks what to work on, what's next, what to pick up, what's on the backlog, what's outstanding, "what should we do today", or wants help choosing between open items — even if they don't say "TODO" or "issue". Also use it when they ask to review or triage the TODO list or issues.
+description: Read every TODO.md and every open GitHub issue across the printer repos (this config, the shared klipper-nerdygriffin-macros repo, and the peer printer's config when its local clone is present), then recommend exactly one item to work on next, with the reasoning and a concrete first step. Use this whenever the user asks what to work on, what's next, what to pick up, what's on the backlog, what's outstanding, "what should we do today", or wants help choosing between open items — even if they don't say "TODO" or "issue". Also use it when they ask to review or triage the TODO list or issues.
 ---
 
 # Pick the next task
@@ -20,7 +20,7 @@ It prints, for each repo it knows about, the contents of `TODO.md` (if present) 
 open GitHub issues. Issues come from `gh` when it is authenticated and fall back to the
 unauthenticated public API otherwise, since the `gh` token on these hosts lapses from
 time to time and the repos are public. The script never fails silently: a missing file,
-an unmounted peer config, or an API error is printed as such, so you can tell "no
+a missing peer clone, or an API error is printed as such, so you can tell "no
 TODO.md" apart from "couldn't read it".
 
 Repos covered, in this order:
@@ -29,7 +29,7 @@ Repos covered, in this order:
 | --- | --- | --- |
 | Klipper-Config-VT1548 | `$CONFIG_DIR` (default `~/printer_data/config`) | this printer |
 | klipper-nerdygriffin-macros | `$MACROS_DIR` (default `~/klipper-nerdygriffin-macros`) | shared by both printers |
-| Klipper-Config-V03048 | `$PEER_MOUNT` (default `/mnt/$PEER_HOST/printer_data/config`) | the V0, mounted over NFS |
+| Klipper-Config-V03048 | `$PEER_CONFIG_CLONE` (default `~/Klipper-Config-<repo>`) | the V0, local git clone |
 
 The paths and the peer hostname come from the git-ignored `dev/.env`, loaded via
 `dev/env.sh`; the collector prints `PEER_HOST=...` on its first line. The repo is public,

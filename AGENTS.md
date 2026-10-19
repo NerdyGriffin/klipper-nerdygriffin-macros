@@ -10,8 +10,8 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
 
 - Edit macros locally at `/home/pi/klipper-nerdygriffin-macros`
 - Sync changes to the other host using `dev/sync_macros_repo.sh` (git pull over SSH); see `dev/README.md` for the full script table
-- Each host NFS-mounts the *other* printer's config for cross-printer dev at
-  `/mnt/<peer-hostname>/printer_data/config` (writable)
+- Each host keeps a read-only git clone of the *other* printer's config at `$PEER_CONFIG_CLONE`
+  (default `~/Klipper-Config-<repo>`), refreshed by `dev/sync_peer_config.sh`
 - Claude Code auto-memory (`~/.claude/projects/<slug>/memory/`) is replicated between the hosts by
   `dev/sync_claude_memory.sh` (git, cron + session hooks); history lives in `~/.claude/memory-sync/`
 

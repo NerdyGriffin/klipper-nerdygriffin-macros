@@ -3,7 +3,7 @@
 # Output is plain text meant to be read by the agent; nothing is parsed downstream.
 set -u
 
-# Host-specific values (peer hostname, mount point, paths) come from the
+# Host-specific values (peer hostname, peer repo, paths) come from the
 # git-ignored dev/.env, loaded through dev/env.sh. This repo is public, so
 # no hostname may appear in this file.
 SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -12,7 +12,7 @@ if ! . "$REPO_DIR/dev/env.sh"; then
   echo "-- dev/env.sh could not be loaded (is dev/.env in place with PEER_HOST set?)."
   echo "-- Continuing with local repos only; the peer config will be skipped."
   PEER_HOST=""
-  PEER_MOUNT="/nonexistent"
+  PEER_CONFIG_CLONE="/nonexistent"
   CONFIG_DIR="${CONFIG_DIR:-$HOME/printer_data/config}"
   MACROS_DIR="${MACROS_DIR:-$HOME/klipper-nerdygriffin-macros}"
 fi
@@ -23,7 +23,7 @@ echo
 REPOS=(
   "Klipper-Config-VT1548|$CONFIG_DIR"
   "klipper-nerdygriffin-macros|$MACROS_DIR"
-  "Klipper-Config-V03048|$PEER_MOUNT"
+  "Klipper-Config-V03048|$PEER_CONFIG_CLONE"
 )
 OWNER=NerdyGriffin
 
@@ -40,7 +40,7 @@ for entry in "${REPOS[@]}"; do
   echo "=================================================================="
 
   if [ ! -d "$path" ]; then
-    echo "-- path not present (peer config not mounted?)"
+    echo "-- path not present (peer clone missing? run dev/sync_peer_config.sh)"
   else
     # TODO.md in the repo root or up to two levels down, any case; skip symlinked dirs and git internals.
     mapfile -t todos < <(find "$path" -maxdepth 3 -type f -iname 'todo.md' -not -path '*/.git/*' 2>/dev/null)

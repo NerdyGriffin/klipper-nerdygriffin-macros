@@ -1,6 +1,7 @@
 // Klipper Macros Development Workspace
 // Folder order: Macros first (primary dev focus), then both printer configs for testing
 // Note: klipper-nerdygriffin-macros is at same path on both printers (/home/pi/...)
+// Peer config: local git clone kept fresh by dev/sync_peer_config.sh
 {
   "folders": [
     {
@@ -17,7 +18,7 @@
     },
     {
       "name": "VT-1548: config",
-      "path": "/mnt/vt-1548/printer_data/config"
+      "path": "/home/pi/Klipper-Config-VT1548"
     }
   ],
   "settings": {
