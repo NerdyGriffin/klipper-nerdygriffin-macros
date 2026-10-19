@@ -16,7 +16,7 @@ if [[ ! -d "$PEER_CONFIG_CLONE/.git" ]]; then
   echo "--- Cloning into: $PEER_CONFIG_CLONE"
   git clone -v "$PEER_CONFIG_REPO" "$PEER_CONFIG_CLONE"
 else
-  dirty=$(git -C "$PEER_CONFIG_CLONE" status --porcelain)
+  dirty=$(git -C "$PEER_CONFIG_CLONE" status --porcelain --untracked-files=no)
   if [[ -n "$dirty" ]]; then
     echo "ERROR: $PEER_CONFIG_CLONE has local changes. It is a read-only reference;" >&2
     echo "       edit the peer's config on the peer host and push, then retry." >&2
