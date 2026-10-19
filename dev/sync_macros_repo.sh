@@ -52,7 +52,11 @@ sync_addon() {
   after=$(git -C "$target" rev-parse --short HEAD)
   echo "--- Add-on: $before -> $after ($target)"
   if [[ "$before" != "$after" && -x "$target/install.sh" ]]; then
-    "$target/install.sh" -t >/dev/null && echo "--- Add-on relinked; restart KlipperScreen to load it"
+    if "$target/install.sh" -t >/dev/null; then
+      echo "--- Add-on relinked; restart KlipperScreen to load it"
+    else
+      echo "WARN: add-on install.sh failed at $target; continuing"
+    fi
   fi
 }
 
