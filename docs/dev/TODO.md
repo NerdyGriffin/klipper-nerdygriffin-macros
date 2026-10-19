@@ -56,6 +56,7 @@ variable_colors: {
 
 - [ ] **Nevermore vent policy in firmware**: Propose an intake-sensor-driven vent servo policy (temperature + VOC, like the existing `fan_policy`) to [nevermore-controller](https://github.com/SanaaHamel/nevermore-controller)
   - The chamber target would need a new characteristic/config command; until then `nevermore.cfg` keeps the policy in a `delayed_gcode`
+  - Refactor `nevermore-klipperscreen-addon` to use the new policy once implemented in a fork of `nevermore-controller`.
 
 ### Infrastructure
 
