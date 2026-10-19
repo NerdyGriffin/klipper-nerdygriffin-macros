@@ -59,7 +59,7 @@ REPOS=(
 
 in_progress() {
   local gitdir
-  gitdir=$(git -C "$1" rev-parse --git-dir)
+  gitdir=$(git -C "$1" rev-parse --absolute-git-dir)
   [[ -e "$gitdir/MERGE_HEAD" || -d "$gitdir/rebase-merge" || -d "$gitdir/rebase-apply" \
      || -e "$gitdir/CHERRY_PICK_HEAD" ]]
 }
