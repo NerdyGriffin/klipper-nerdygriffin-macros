@@ -20,10 +20,17 @@ fi
 echo "PEER_HOST=${PEER_HOST:-<unset>}   (use http://\$PEER_HOST:7125 for the peer's Moonraker)"
 echo
 
+# GitHub repo name from each clone's origin URL, so the labels are right on
+# either host (the local config and the peer clone swap between printers).
+repo_name() {
+  local url
+  url=$(git -C "$1" remote get-url origin 2>/dev/null) || url="$1"
+  basename "$url" .git
+}
 REPOS=(
-  "Klipper-Config-VT1548|$CONFIG_DIR"
-  "klipper-nerdygriffin-macros|$MACROS_DIR"
-  "Klipper-Config-V03048|$PEER_CONFIG_CLONE"
+  "$(repo_name "$CONFIG_DIR")|$CONFIG_DIR"
+  "$(repo_name "$MACROS_DIR")|$MACROS_DIR"
+  "$(basename "${PEER_CONFIG_REPO:-$PEER_CONFIG_CLONE}" .git)|$PEER_CONFIG_CLONE"
 )
 OWNER=NerdyGriffin
 
