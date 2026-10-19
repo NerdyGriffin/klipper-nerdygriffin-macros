@@ -14,6 +14,9 @@ This repository provides hardware-agnostic Klipper G-code macros designed to be 
   (default `~/Klipper-Config-<repo>`), refreshed by `dev/sync_peer_config.sh`
 - Claude Code auto-memory (`~/.claude/projects/<slug>/memory/`) is replicated between the hosts by
   `dev/sync_claude_memory.sh` (git, cron + session hooks); history lives in `~/.claude/memory-sync/`
+- `dev/sync_local_repos.sh` is the daily cron safety net: it fetches and fast-forwards the peer config
+  clone, the macros repo, and the printer config, and pushes commits already ahead of origin. It never
+  auto-commits or overwrites uncommitted edits (log in `~/.local/state/nerdygriffin-macros/`)
 
 **`dev/` is tracked.** Host-specific values (peer hostname, SSH target, addresses) live only in
 `dev/.env`, which is git-ignored; see `dev/.env.example` and `dev/README.md`. `dev/copilot/` is

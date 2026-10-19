@@ -34,3 +34,11 @@
   - Added comprehensive headers to: auto_pid.cfg, gcode_features.cfg, print_macros.cfg, rename_existing.cfg, save_config.cfg
   - All 16 macro files now have clear descriptions of their purpose, features, and usage
   - Completion Date: December 26, 2025
+
+## Development Tooling
+
+- [x] Daily non-clobbering git sync of the local clones (`dev/sync_local_repos.sh`)
+  - Fetches and fast-forwards the peer config clone, the macros repo, and the printer config; pushes commits already ahead of origin
+  - Never auto-commits, stashes, or resets; a fast-forward over an uncommitted edit is refused and logged
+  - `--install-cron` (daily 04:30), `--status`, log in `~/.local/state/nerdygriffin-macros/`
+  - Completion Date: October 19, 2026

@@ -28,6 +28,7 @@ and its default.
 | `sync_macros_repo.sh`   | `git push` local commits, then `git pull` locally and on the peer over SSH |
 | `sync_all.sh`           | Refresh the peer clone, sync macros (optionally a branch), then verify     |
 | `sync_claude_memory.sh` | Replicate the Claude Code auto-memory dir between hosts (git, cron, hooks) |
+| `sync_local_repos.sh`   | Daily cron: fetch, fast-forward, and push the local clones; never clobbers |
 | `setup.sh`              | Developer toolchain: Node, markdownlint, and the git pre-commit hook       |
 
 ## Peer config clone
@@ -57,6 +58,34 @@ dev/sync_all.sh                      # refresh peer clone, sync macros, verify
 Edit shared macros only in the local macros clone. Edit the peer's printer config on the peer host
 (Remote-SSH) and push; the local clone is read-only and `sync_peer_config.sh` refuses to pull over
 local changes.
+
+## Daily repo sync
+
+`sync_local_repos.sh` is the cron safety net behind the manual workflow above. Once a day it
+visits the peer config clone, the macros repo, and the printer config (`PEER_CONFIG_CLONE`,
+`MACROS_DIR`, `CONFIG_DIR` from `dev/.env`), fetches each from `origin`, fast-forwards it, and
+pushes commits that are already ahead of origin (never for the read-only peer clone). Each host
+runs its own copy and the clones meet at GitHub, so it never SSHes to the peer; `sync_all.sh`
+remains the on-demand, both-hosts variant.
+
+It is non-clobbering by construction:
+
+- Nothing is ever auto-committed, stashed, reset, or rebased. Uncommitted edits (for example a
+  `SAVE_CONFIG` block waiting to be committed) are counted in the log and left alone.
+- A fast-forward that would overwrite an uncommitted edit is refused by git and logged as
+  "fast-forward refused"; the repo is picked up again the next day after you commit.
+- A diverged branch, a detached HEAD, a branch without upstream, or an in-progress merge or
+  rebase is logged and skipped, never aborted.
+- An unreachable GitHub is logged and skipped.
+
+Log and lock live in `~/.local/state/nerdygriffin-macros/` (override with
+`SYNC_LOCAL_REPOS_DIR` in `dev/.env`). Setup, once per host:
+
+```bash
+dev/sync_local_repos.sh                 # run it once by hand and read the output
+dev/sync_local_repos.sh --install-cron  # daily at 04:30
+dev/sync_local_repos.sh --status        # ahead/behind, dirty count, recent log, cron line
+```
 
 ## Claude memory sync
 
