@@ -57,7 +57,7 @@ dev/sync_all.sh                      # refresh peer clone, sync macros, verify
 
 Edit shared macros only in the local macros clone. Edit the peer's printer config on the peer host
 (Remote-SSH) and push; the local clone is read-only and `sync_peer_config.sh` refuses to pull over
-local changes.
+uncommitted changes to tracked files (untracked files are ignored).
 
 `sync_macros_repo.sh` also pushes and pulls the KlipperScreen add-on repo (`ADDON_DIR`, default
 `~/nevermore-klipperscreen-addon`) on both hosts, never with the branch argument and never fatally:
