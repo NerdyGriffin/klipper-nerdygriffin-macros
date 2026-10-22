@@ -39,6 +39,7 @@ exceptions), and stage files by explicit path rather than `git add -A`.
 
 - `macros/print_macros.cfg`: `PRINT_START` / `PRINT_END` — the print lifecycle. `PRINT_START` starts with `CLEAR_PAUSE` to clear stale pause state.
 - `macros/status_macros.cfg`: `STATUS_*` / `RESET_STATUS` LED states; zone config in `_LED_VARS`; `_SET_LEDS_BY_NAME` helper; `notify_bed_cooled`/`notify_bed_heated` delayed_gcodes.
+- `macros/filament_sensors.cfg`: BTT SFS V2.0 `[filament_switch_sensor switch_sensor]` (reports only) + `[filament_motion_sensor encoder_sensor]` (`_PAUSE_IF_PRINTING` on a jam, i.e. only while the switch still sees filament); no `switch_pin`, each printer sets both in its overrides file.
 - `macros/filament_management.cfg`: LOAD/UNLOAD/PURGE with AFC auto-detect and safe parking; `_AUTO_LOAD_FILAMENT` (toolhead-sensor `insert_gcode`), `_PAUSE_IF_PRINTING` (sensor `runout_gcode`), `ENABLE_`/`DISABLE_ENCODER_SENSOR` delayed_gcodes.
 - `macros/client.cfg`: Pause/Resume/Cancel hooks for Mainsail/Fluidd with optional AFC handling; `[delayed_gcode NOZZLE_STANDBY_COOLDOWN]` prolonged-pause hotend standby (armed by `_AFTER_PAUSE` only during a print, cancelled by `_BEFORE_RESUME`/`_BEFORE_CANCEL`); an idle-time PAUSE is cleared instead.
 - `macros/heat_soak.cfg`: Chamber preheat via bed+hotend assist, sensor auto-detect, optional LED animations.

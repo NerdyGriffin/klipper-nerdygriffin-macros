@@ -42,6 +42,9 @@ to enable it:
 variable_motion_sensor: "filament_motion_sensor encoder_sensor"  # default: "" (all sensor calls skipped)
 ```
 
+For a BTT SFS V2.0, [filament_sensors.cfg](filament_sensors.md) defines `encoder_sensor` and its
+switch companion; you only set the pins.
+
 ### Auto-load on insert
 
 `_AUTO_LOAD_FILAMENT` is a minimal stand-in for AFC's auto-load on printers without a

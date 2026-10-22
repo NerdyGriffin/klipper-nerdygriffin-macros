@@ -18,6 +18,7 @@ Hardware-agnostic Klipper macros for Voron printers with automatic AFC detection
 - `belt_tension.cfg` - Belt tension calibration and frequency measurement
 - `client.cfg` - Mainsail/Fluidd integration with AFC support
 - `filament_management.cfg` - Load/unload/purge operations with encoder sensor management
+- `filament_sensors.cfg` - BTT SFS V2.0 switch + motion sensor pair (pins set locally)
 - `gcode_features.cfg` - Enables advanced G-code features (force_move, pause/resume, arcs, etc.)
 - `heat_soak.cfg` - Chamber preheating with chamber sensor / Nevermore auto-detection
 - `homing.cfg` - Sensorless and conditional homing helpers
@@ -81,6 +82,7 @@ The install script will:
    [include nerdygriffin-macros/belt_tension.cfg]
    [include nerdygriffin-macros/client.cfg]
    [include nerdygriffin-macros/filament_management.cfg]
+   [include nerdygriffin-macros/filament_sensors.cfg]    # Optional: BTT SFS V2.0; requires pin configuration
    [include nerdygriffin-macros/heat_soak.cfg]
    [include nerdygriffin-macros/maintenance_macros.cfg]
    [include nerdygriffin-macros/nevermore.cfg]           # Optional: Requires [nevermore] controller
@@ -175,6 +177,7 @@ graph and the required-vs-optional breakdown of which macro files depend on each
 | [belt_tension.cfg](docs/belt_tension.md)               | Belt tension calibration and frequency measurement                      |
 | [client.cfg](docs/client.md)                           | Mainsail/Fluidd pause/resume/cancel integration                         |
 | [filament_management.cfg](docs/filament_management.md) | Load, unload, and purge with AFC auto-detect                            |
+| [filament_sensors.cfg](docs/filament_sensors.md)       | BTT SFS V2.0 switch + motion sensor pair, jam-only pause                |
 | [gcode_features.cfg](docs/gcode_features.md)           | Enables advanced G-code features (force_move, pause/resume, arcs, etc.) |
 | [heat_soak.cfg](docs/heat_soak.md)                     | Chamber preheating with LED animations and sensor/Nevermore auto-detect |
 | [homing.cfg](docs/homing.md)                           | Sensorless and conditional homing helpers                               |

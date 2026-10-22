@@ -67,6 +67,8 @@ graph TD
   filament_management --> homing
   filament_management --> status_macros
   filament_management --> beeper
+  filament_sensors --> filament_management
+  filament_sensors --> status_macros
   shaketune --> positioning_macros
   shaketune --> beeper
   shaketune --> belt_tension
@@ -114,6 +116,7 @@ entirely on dashed/optional edges and are therefore safe.
 | [belt_tension.cfg](belt_tension.md)               | homing                                              | —                                                                         | QUAD_GANTRY_LEVEL                                                                                           |
 | [client.cfg](client.md)                           | beeper                                              | print_macros, filament_management                                         | AFC                                                                                                         |
 | [filament_management.cfg](filament_management.md) | homing, status_macros, beeper                       | nozzle_wiper, revo                                                        | **Mainsail/Fluidd client `_CLIENT_EXTRUDE`/`_CLIENT_RETRACT` — required (unguarded)**; AFC                  |
+| [filament_sensors.cfg](filament_sensors.md)       | filament_management, status_macros                  | —                                                                         | —                                                                                                           |
 | [gcode_features.cfg](gcode_features.md)           | —                                                   | —                                                                         | —                                                                                                           |
 | [heat_soak.cfg](heat_soak.md)                     | homing, positioning_macros, status_macros           | —                                                                         | Nevermore (`[nevermore]`, `NEVERMORE_TEMPERATURE_WAIT`)                                                     |
 | [homing.cfg](homing.md)                           | status_macros                                       | nozzle_wiper                                                              | —                                                                                                           |
