@@ -26,7 +26,8 @@ and its default.
 | `sync_peer_config.sh`   | Clone the peer's config repo, or `git pull --ff-only` the existing clone   |
 | `verify_paths.sh`       | Check the local config, macros repo, KlipperScreen add-on, and peer clone  |
 | `sync_macros_repo.sh`   | `git push` local commits, then `git pull` locally and on the peer over SSH |
-| `sync_all.sh`           | Refresh the peer clone, sync macros (optionally a branch), then verify     |
+| `sync_config_repos.sh`  | `git push` both printers' configs, then refresh the peer clone on both     |
+| `sync_all.sh`           | Sync macros (optionally a branch), configs and both peer clones; verify    |
 | `sync_claude_memory.sh` | Replicate the Claude Code auto-memory dir between hosts (git, cron, hooks) |
 | `sync_local_repos.sh`   | Daily cron: fetch, fast-forward, and push the local clones; never clobbers |
 | `setup.sh`              | Developer toolchain: Node, markdownlint, and the git pre-commit hook       |
@@ -52,8 +53,14 @@ stalled VS Code Remote-SSH on every access to the mount.
 dev/sync_macros_repo.sh              # push local commits, pull on both hosts
 dev/sync_macros_repo.sh my-branch    # check out and pull a branch on both hosts
 dev/sync_peer_config.sh              # pull the peer's latest config commits
-dev/sync_all.sh                      # refresh peer clone, sync macros, verify
+dev/sync_config_repos.sh             # push both configs, refresh the peer clone on both hosts
+dev/sync_all.sh                      # sync macros, configs and both peer clones, verify
 ```
+
+`sync_peer_config.sh` only pulls the clone on the host it runs on, and only sees what the peer has
+already pushed. `sync_config_repos.sh` closes both gaps: it pushes committed config changes on this
+host and, over SSH, on the peer, then runs `sync_peer_config.sh` on both. It never commits;
+uncommitted config edits are reported and left alone.
 
 Edit shared macros only in the local macros clone. Edit the peer's printer config on the peer host
 (Remote-SSH) and push; the local clone is read-only and `sync_peer_config.sh` refuses to pull over
