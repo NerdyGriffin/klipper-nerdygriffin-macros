@@ -106,7 +106,7 @@ Reset to `0` automatically after each print so it does not carry over.
 After print end, two delayed gcodes are armed:
 
 - `delayed_save_config` — fires after 60 s (saves any pending config changes)
-- `delayed_shutdown` — fires after 90 s (optional auto-shutdown; no-op unless configured)
+- `delayed_shutdown` — fires after 90 s (optional auto-shutdown or reboot; no-op unless configured)
 
 ## Configuration
 
