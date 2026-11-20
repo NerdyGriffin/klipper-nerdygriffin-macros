@@ -45,6 +45,10 @@ variable_colors: {
     }
 ```
 
+- [ ] <https://github.com/SanaaHamel/nevermore-controller> has a `fan_policy` that could be used as a model for a Nevermore `vent_policy`.
+  - We could fork the firmware repo and port the vent policy to the firmware, so that the Nevermore vent is controlled by the intake sensor and a `vent_policy_control:` with options for `pid` or `watermark` control, just like Klipper `[heater]` and `[temperature_fan]` objects.
+  - `voc_vent_max` becomes `vent_policy_voc_passive_max: 250` (like the existing `fan_policy_voc_passive_max`)
+
 ## Next
 
 ### Code Quality
