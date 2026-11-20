@@ -52,6 +52,21 @@ variable_colors: {
 - [ ] **Consistent status display/message patterns** (post LED standardization)
 - [ ] **Look for additional opportunities to reduce duplicate code** by using abstractions or helper macros
 
+### Nevermore Vent
+
+- [ ] **Mirror Klipper-native heater variables in `_NEVERMORE_VARS`** (`control`, `pid_Kp` / `pid_Ki` / `pid_Kd`, `max_delta`, `smooth_time`), so the vent is tuned with the same vocabulary as a Klipper heater
+  - [x] `margin` → `temp_max_delta`, `voc_margin` → `voc_max_delta` (Klipper `max_delta`; `fb4fd36`)
+  - [ ] `control: 'pid'` / `'watermark'`, replacing the `kp: 0` sentinel
+  - [ ] `kp` → `pid_kp` (macro variable names are lowercase)
+  - [ ] `pid_ki`, `pid_kd`, defaulting to 0 so behaviour stays proportional-only
+    - Both need state carried between polls (integral with anti-windup, previous temperature) and use `poll_interval` as the time step — implement fully, or only reserve the names?
+  - [ ] `smooth_time` for the temperature fed to the policy
+    - Klipper's 1 s default smooths nothing against a 30 s poll — scale the default with `poll_interval`, or smooth as an EMA across polls?
+  - [ ] Rename any per-printer overrides of the old names in both printer configs; update `nevermore.md` and the header comment
+  - Document the sign: Klipper's error is `requested - measured` (heating); the vent cools, so it is `measured - target`
+  - `voc_max_delta` is one-sided (below `voc_vent_max`), where Klipper's `max_delta` is symmetric
+  - Done when default behaviour during a print and at idle is unchanged and `control: 'watermark'` reproduces today's `kp: 0` behaviour
+
 ### Upstream
 
 - [ ] **Nevermore vent policy in firmware**: Propose an intake-sensor-driven vent servo policy (temperature + VOC, like the existing `fan_policy`) to [nevermore-controller](https://github.com/SanaaHamel/nevermore-controller)
