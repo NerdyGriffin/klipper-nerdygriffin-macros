@@ -7,6 +7,7 @@ The `HEAT_SOAK` macro provides hardware-agnostic chamber preheating with optiona
 ```gcode
 HEAT_SOAK [CHAMBER=50] [DURATION=10]  # Heat soak chamber to 50°C for 10 minutes
 M191 S50                               # Marlin-style chamber wait (uses HEAT_SOAK)
+M141 S50                               # Marlin-style chamber target: display message + Nevermore vent target (S0 = idle)
 ```
 
 ### HEAT_SOAK Parameters
@@ -32,7 +33,7 @@ variable_frame_rate: 12                 # LED animation frame rate in Hz
 1. `[nevermore]` controller, if present — temperature is `intake_temperature`, falling back to `exhaust_temperature`,
    then 0 until the controller reports; waits with `NEVERMORE_TEMPERATURE_WAIT MINIMUM=<target> UNAVAILABLE_TIMEOUT=120`
    (if the Nevermore is not connected within 120 s the wait is skipped). Automatic vent control is stopped and the vent
-   closed first (see [nevermore.md](nevermore.md)).
+   closed first, then resumed at its previous target when the soak ends (see [nevermore.md](nevermore.md)).
 2. Otherwise `_CLIENT_VARIABLE.chamber_sensor` (default `"temperature_sensor chamber"`, see
    [status_macros.md](status_macros.md#chamber-sensor)) — waits with `TEMPERATURE_WAIT` if that object exists
 

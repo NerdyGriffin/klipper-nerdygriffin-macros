@@ -38,7 +38,12 @@ NEVERMORE_OPEN_VENT              # Manual open
 NEVERMORE_CLOSE_VENT             # Manual close
 ```
 
-`PRINT_START`, `PRINT_END`, `_BEFORE_CANCEL` and `HEAT_SOAK` call these automatically when the file is included (`HEAT_SOAK` stops automatic control and closes the vent before heating).
+`PRINT_START`, `PRINT_END`, `_BEFORE_CANCEL`, `HEAT_SOAK` and `M141` / `M191` call these automatically when the file is included:
+
+- `M141 S<target>` sets the chamber target, the same as `NEVERMORE_VENT_AUTO CHAMBER=<target>`; `M141 S0` returns to the idle policy.
+- `HEAT_SOAK` stops automatic control and closes the vent before heating, then resumes automatic control at the
+  target that was set before it started. Run on its own at idle it therefore returns to the idle policy; `M191 S<target>`
+  sets the target first (via `M141`), so its soak resumes at that target.
 
 ## Configuration
 
