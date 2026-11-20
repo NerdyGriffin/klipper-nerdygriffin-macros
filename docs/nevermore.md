@@ -8,15 +8,19 @@ macros only decide whether the vent is open or closed. Every macro is a no-op wh
 
 While automatic control is active the policy is evaluated every `poll_interval` seconds:
 
-- **Open** when the intake temperature exceeds the chamber target by `margin` **and** the exhaust VOC index is below `voc_vent_max`.
-- **Close** when the intake temperature drops below the target by `margin` **or** the exhaust VOC index reaches `voc_vent_max`.
+- **Open** when the intake temperature exceeds the chamber target by `margin`.
+- **Close** when the intake temperature drops below the target by `margin`.
+- **VOC gate (idle only)**: with a target of 0 the vent also stays closed while the exhaust VOC index is at or above
+  `voc_vent_max`. The gate is bypassed whenever a print has set a target above 0.
 
 The intake sensor sits in the chamber, so it is the chamber temperature. The exhaust sensor sits after the filter, so
 it measures the air the vent would actually release; the gate falls back to the intake sensor if there is no exhaust sensor.
 
 The chamber target comes from the slicer's `CHAMBER` value via `PRINT_START`, so filament type is implicit: a PLA
 print in a closed enclosure (target ~30 °C) opens the vent once the chamber warms up, an ABS print (target 50–60 °C)
-never does. `PRINT_END` (or a cancel) sets the target back to 0, the idle policy: the chamber is always above 0 °C, so
+never does. The VOC index is relative to a baseline the sensors learn at idle, so it reads high during any print;
+gating on it there would keep the vent shut on exactly the low-temperature materials that need the cooling, while
+high-temperature materials are already held closed by their chamber target. `PRINT_END` (or a cancel) sets the target back to 0, the idle policy: the chamber is always above 0 °C, so
 the controller filters first and the vent opens once the VOC index drops below `voc_vent_max`.
 
 Automatic control starts at boot when `auto_start` is set and runs continuously. The controller reports no servo
@@ -40,7 +44,7 @@ Override any variable in `printer.cfg`:
 
 ```ini
 [gcode_macro _NEVERMORE_VARS]
-variable_voc_vent_max: 150        # VOC index ceiling for opening (100 = learned baseline)
+variable_voc_vent_max: 250        # Idle VOC index ceiling for opening (100 = learned baseline)
 variable_margin: 3                # Hysteresis around the chamber target (C)
 variable_poll_interval: 30        # Seconds between evaluations
 variable_auto_start: True         # Start automatic control at boot
