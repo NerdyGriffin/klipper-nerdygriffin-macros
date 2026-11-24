@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Daily, non-clobbering git sync of the local clones: the peer config clone, the
-# macros repo, the KlipperScreen add-on repo, and the printer config. Part of klipper-nerdygriffin-macros
+# macros repo, the KlipperScreen add-on repo, the mcuflash repo, and the printer config. Part of klipper-nerdygriffin-macros
 #
 # Each repo is fetched and fast-forwarded from its upstream; commits already
 # ahead of origin are pushed (never for the read-only peer config clone).
@@ -54,6 +54,7 @@ REPOS=(
   "$PEER_CONFIG_CLONE|0"
   "$MACROS_DIR|1"
   "$ADDON_DIR|1"
+  "$MCUFLASH_DIR|1"
   "$CONFIG_DIR|1"
 )
 
