@@ -62,6 +62,20 @@ already pushed. `sync_config_repos.sh` closes both gaps: it pushes committed con
 host and, over SSH, on the peer, then runs `sync_peer_config.sh` on both. It never commits;
 uncommitted config edits are reported and left alone.
 
+The four `sync_*` scripts above end with a summary: one row per push or pull on each host, named after the repo (from its origin URL) and marked
+`OK`, `FAIL`, `WARN` (non-fatal, e.g. an add-on, or uncommitted config edits) or `SKIP` (repo not
+present). A failed step does not stop the run; the remaining repos are still attempted and the
+script exits non-zero. Under `sync_all.sh` the rows from every step are combined into one table.
+The shared helpers are in `results.sh`.
+
+```text
+Summary
+  OK    push  klipper-nerdygriffin-macros  vt-1548  2 commit(s)
+  OK    pull  klipper-nerdygriffin-macros  v0-3048  715411f -> 0a1b2c3
+  FAIL  push  Klipper-Config-V03048        v0-3048  git push failed
+2 ok, 0 skipped, 0 warning(s), 1 failed
+```
+
 Edit shared macros only in the local macros clone. Edit the peer's printer config on the peer host
 (Remote-SSH) and push; the local clone is read-only and `sync_peer_config.sh` refuses to pull over
 uncommitted changes to tracked files (untracked files are ignored).
